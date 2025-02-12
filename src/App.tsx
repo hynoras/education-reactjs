@@ -1,12 +1,13 @@
-import {} from "react-router-dom"
+import Login from "components/admin/Login"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
 const App = () => {
   return (
-    <div className='App'>
-      <a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-        Learn React
-      </a>
-    </div>
+    <Router>
+      <Routes>
+        <Route path='/' element={<Login />}></Route>
+      </Routes>
+    </Router>
   )
 }
 
