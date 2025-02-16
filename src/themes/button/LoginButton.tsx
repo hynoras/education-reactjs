@@ -10,8 +10,11 @@ const LoginButton = styled(Button)({
   fontSize: "16px",
   color: "#fff",
   fontWeight: 600,
+  margin: "10px 0",
+  fontFamily: "'Poppins', sans-serif",
+  textTransform: "none",
   "&:hover": {
-    backgroundColor: "#5a7fde",
+    backgroundColor: "#5a7fde"
   }
 })
 

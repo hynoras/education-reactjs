@@ -4,13 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons"
 import "./style.scss"
 import LoginButton from "themes/button/LoginButton"
+import Title from "themes/text/Text"
+import { Link } from "react-router"
 
 const Login: React.FC = () => {
   return (
     <div className="login-container">
       <div className="form-box login">
         <form>
-          <Typography
+          <Title
             variant="h4"
             gutterBottom
             sx={{
@@ -18,9 +20,9 @@ const Login: React.FC = () => {
             }}
           >
             Login
-          </Typography>
+          </Title>
           <div className={"input-container"}>
-            <Input placeholder="Username" required />
+            <Input placeholder="Username" />
             <i>
               <FontAwesomeIcon icon={faUser} />
             </i>
@@ -31,11 +33,17 @@ const Login: React.FC = () => {
               <FontAwesomeIcon icon={faLock} />
             </i>
           </div>
-          <Typography variant="body2">
-            <a href="#">Forgot password?</a>
-          </Typography>
-          <LoginButton type="submit">Login</LoginButton>
+          <Link to="/admin">Forgot password?</Link>
+          <LoginButton type="submit" disableRipple>
+            Login
+          </LoginButton>
         </form>
+      </div>
+      <div className="toggle-box">
+        <div className="toggle-panel toggle-left">
+          <Title variant="h4">Hello, Welcome back!</Title>
+          <Typography variant="subtitle1">Don't have an account?</Typography>
+        </div>
       </div>
     </div>
   )
