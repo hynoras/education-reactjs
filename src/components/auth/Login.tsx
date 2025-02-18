@@ -5,10 +5,13 @@ import { faUser, faLock } from "@fortawesome/free-solid-svg-icons"
 import "./style.scss"
 import LoginButton from "themes/button/LoginButton"
 import Title from "themes/text/Text"
-import { Link } from "react-router"
-import { useForm } from "react-hook-form"
+import { Link, useNavigate } from "react-router"
+import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "utils/store"
+import { loginUser } from "contexts/loginReducer"
 
 interface LoginForm {
   username: string
@@ -20,30 +23,36 @@ const loginSchema = yup.object({
     .string()
     .min(4, "Username must be at least 4 characters")
     .max(20, "Username must not exceed 20 characters")
-    .required("Username must not empty"),
-  password: yup.string().min(6, "Password must be at least 6 characters").required("Password must not empty")
+    .required("Username must not be empty"),
+  password: yup.string().min(6, "Password must be at least 6 characters").required("Password must not be empty")
 })
 
 const Login: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
+  const { loading, error } = useSelector((state: RootState) => state.auth)
+
+  const { Password } = Input
+
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors }
   } = useForm<LoginForm>({
-    resolver: yupResolver(loginSchema) // Integrating Yup with React Hook Form
+    resolver: yupResolver(loginSchema)
   })
 
-  // const onSubmit = async (data: LoginForm) => {
-  //   const resultAction = await dispatch(loginUser(data));
-  //   if (loginUser.fulfilled.match(resultAction)) {
-  //     navigate("/dashboard");
-  //   }
-  // }
+  const onSubmit = async (data: LoginForm) => {
+    const resultAction = await dispatch(loginUser(data))
+    if (loginUser.fulfilled.match(resultAction)) {
+      navigate("/dashboard")
+    }
+  }
 
   return (
     <div className="login-container">
       <div className="form-box login">
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Title
             variant="h4"
             gutterBottom
@@ -54,7 +63,12 @@ const Login: React.FC = () => {
             Login
           </Title>
           <div className={"input-container"}>
-            <Input placeholder="Username" />
+            <Controller
+              name="username"
+              control={control}
+              defaultValue=""
+              render={({ field }) => <Input {...field} placeholder="Username" />}
+            />
             {errors.username && (
               <Typography variant="subtitle1" className="error">
                 {errors.username.message}
@@ -65,7 +79,12 @@ const Login: React.FC = () => {
             </i>
           </div>
           <div className={"input-container"}>
-            <Input.Password type="password" placeholder="Password" />
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              render={({ field }) => <Password {...field} placeholder="Password" />}
+            />
             {errors.password && (
               <Typography variant="subtitle1" className="error">
                 {errors.password.message}
