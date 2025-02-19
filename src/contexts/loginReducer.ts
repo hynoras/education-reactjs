@@ -1,27 +1,40 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import AuthService from "../services/auth/authService"
-import { LoginRequest, LoginResponse } from "models/auth/authModel"
+import { LoginRequest, UserResponse } from "models/auth/authModel"
 
 interface AuthState {
-  token: string | null
+  user: UserResponse | null
   loading: boolean
   error: string | null
 }
 
+// ✅ Instead of storing the token, we store the user info
 const initialState: AuthState = {
-  token: localStorage.getItem("token"),
+  user: null,
   loading: false,
   error: null
 }
 
-export const loginUser = createAsyncThunk("auth/login", async (payload: LoginRequest, { rejectWithValue }) => {
-  try {
-    const response: LoginResponse = await AuthService.login(payload)
-    localStorage.setItem("token", response.token)
-    return response
-  } catch (error: any) {
-    return rejectWithValue(error.message)
+export const loadUser = createAsyncThunk("auth/loadUser", async () => {
+  return await AuthService.checkAuth()
+})
+
+// ✅ Login action (no need to store token)
+export const loginUser = createAsyncThunk(
+  "auth/login",
+  async (payload: LoginRequest, { dispatch, rejectWithValue }) => {
+    try {
+      await AuthService.login(payload)
+      dispatch(loadUser())
+    } catch (error: any) {
+      return rejectWithValue("Invalid username or password")
+    }
   }
+)
+
+export const logoutUser = createAsyncThunk("auth/logout", async (_, { dispatch }) => {
+  await AuthService.logout()
+  dispatch(logout())
 })
 
 const authSlice = createSlice({
@@ -29,22 +42,15 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state.token = null
-      localStorage.removeItem("token")
+      state.user = null
     }
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.pending, (state) => {
-        state.loading = true
-        state.error = null
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false
-        state.token = action.payload.token
+      .addCase(loadUser.fulfilled, (state, action) => {
+        state.user = action.payload
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false
         state.error = action.payload as string
       })
   }
