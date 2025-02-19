@@ -8,7 +8,6 @@ interface AuthState {
   error: string | null
 }
 
-// ✅ Instead of storing the token, we store the user info
 const initialState: AuthState = {
   user: null,
   loading: false,
@@ -19,7 +18,6 @@ export const loadUser = createAsyncThunk("auth/loadUser", async () => {
   return await AuthService.checkAuth()
 })
 
-// ✅ Login action (no need to store token)
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (payload: LoginRequest, { dispatch, rejectWithValue }) => {

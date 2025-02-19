@@ -5,5 +5,5 @@ export interface LoginRequest {
 
 export interface UserResponse {
   username: string
-  role: string
+  roles: string[]
 }

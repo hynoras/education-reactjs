@@ -21,7 +21,10 @@ class AuthService {
     try {
       const response = await api.get("/get-user")
       return response.data
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        window.location.href = "/"
+      }
       return null
     }
   }

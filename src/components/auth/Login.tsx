@@ -31,6 +31,8 @@ const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const { loading, error } = useSelector((state: RootState) => state.auth)
+  const user = useSelector((state: RootState) => state.auth.user)
+  const role = user?.roles?.[0]?.authority
 
   const { Password } = Input
 
@@ -45,7 +47,7 @@ const Login: React.FC = () => {
   const onSubmit = async (data: LoginForm) => {
     const result = await dispatch(loginUser(data))
     if (loginUser.fulfilled.match(result)) {
-      navigate("/dashboard")
+      if (role === "admin") navigate("/dashboard")
     }
   }
 
