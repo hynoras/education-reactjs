@@ -9,9 +9,9 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ requiredRole, redirectPath = "/", children }: ProtectedRouteProps) => {
-  const role = useSelector((state: RootState) => state.auth.user?.roles)
+  const role = useSelector((state: RootState) => state.auth.user?.role)
 
-  if (roles !== requiredRole) {
+  if (role !== requiredRole) {
     return <Navigate to={redirectPath} replace />
   }
 
