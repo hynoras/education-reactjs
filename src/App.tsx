@@ -1,12 +1,23 @@
-import {} from "react-router-dom"
+import Login from "components/auth/Login"
+import Dashboard from "components/admin/Dashboard"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import ProtectedRoute from "components/auth/ProtectedRoute"
 
 const App = () => {
   return (
-    <div className='App'>
-      <a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-        Learn React
-      </a>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route
+          path="dashboard"
+          element={
+            <ProtectedRoute requiredRole="ADMIN" redirectPath="/">
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   )
 }
 
