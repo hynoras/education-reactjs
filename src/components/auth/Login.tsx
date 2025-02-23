@@ -12,11 +12,7 @@ import * as yup from "yup"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "utils/store"
 import { loginUser } from "contexts/loginReducer"
-
-interface LoginForm {
-  username: string
-  password: string
-}
+import { LoginRequest } from "models/auth/authModel"
 
 const loginSchema = yup.object({
   username: yup
@@ -39,11 +35,11 @@ const Login: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm<LoginForm>({
+  } = useForm<LoginRequest>({
     resolver: yupResolver(loginSchema)
   })
 
-  const onSubmit = async (data: LoginForm) => {
+  const onSubmit = async (data: LoginRequest) => {
     const result = await dispatch(loginUser(data))
     if (loginUser.fulfilled.match(result)) {
       if (role === "ADMIN") navigate("/dashboard")
