@@ -47,6 +47,9 @@ const Login: React.FC = () => {
   }
 
   return (
+    <body className="login-body">
+
+    
     <div className="login-container">
       <div className="form-box login">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -104,6 +107,7 @@ const Login: React.FC = () => {
         </div>
       </div>
     </div>
+    </body>
   )
 }
 

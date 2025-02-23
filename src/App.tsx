@@ -1,5 +1,5 @@
-import Login from "components/auth/Login"
-import Dashboard from "components/admin/Dashboard"
+import Login from "components/auth/login/Login"
+import Dashboard from "components/admin/dashboard/Dashboard"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import ProtectedRoute from "components/auth/ProtectedRoute"
 
