@@ -1,11 +1,16 @@
 import Sidebar from "../sidebar/Sidebar"
+import "./style.scss"
 
 const Dashboard = () => {
   return (
-    <>
-      <Sidebar />
-      <p>Admin Dashboard</p>
-    </>
+    <body className="dashboard-body">
+      <div className="dashboard-container">
+        <Sidebar />
+        <div className="dashboard-content">
+          <p>Admin Dashboard</p>
+        </div>
+      </div>
+    </body>
   )
 }
 

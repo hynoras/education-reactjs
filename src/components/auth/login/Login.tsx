@@ -48,65 +48,63 @@ const Login: React.FC = () => {
 
   return (
     <body className="login-body">
-
-    
-    <div className="login-container">
-      <div className="form-box login">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Title
-            variant="h4"
-            gutterBottom
-            sx={{
-              margin: "-15px 0 15px"
-            }}
-          >
-            Login
-          </Title>
-          <div className={"input-container"}>
-            <Controller
-              name="username"
-              control={control}
-              defaultValue=""
-              render={({ field }) => <Input {...field} placeholder="Username" />}
-            />
-            {errors.username && (
-              <Typography variant="subtitle1" className="error">
-                {errors.username.message}
-              </Typography>
-            )}
-            <i>
-              <FontAwesomeIcon icon={faUser} />
-            </i>
+      <div className="login-container">
+        <div className="form-box login">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Title
+              variant="h4"
+              gutterBottom
+              sx={{
+                margin: "-15px 0 15px"
+              }}
+            >
+              Login
+            </Title>
+            <div className={"input-container"}>
+              <Controller
+                name="username"
+                control={control}
+                defaultValue=""
+                render={({ field }) => <Input {...field} placeholder="Username" />}
+              />
+              {errors.username && (
+                <Typography variant="subtitle1" className="error">
+                  {errors.username.message}
+                </Typography>
+              )}
+              <i>
+                <FontAwesomeIcon icon={faUser} />
+              </i>
+            </div>
+            <div className={"input-container"}>
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                render={({ field }) => <Password {...field} placeholder="Password" />}
+              />
+              {errors.password && (
+                <Typography variant="subtitle1" className="error">
+                  {errors.password.message}
+                </Typography>
+              )}
+              <i>
+                <FontAwesomeIcon icon={faLock} />
+              </i>
+            </div>
+            <Link to="/admin">Forgot password?</Link>
+            <LoginButton type="submit" disableRipple>
+              Login
+            </LoginButton>
+          </form>
+        </div>
+        <div className="toggle-box">
+          <div className="toggle-panel toggle-left">
+            <Title variant="h4">Hello, Welcome back!</Title>
+            <Typography variant="subtitle1">Don't have an account?</Typography>
           </div>
-          <div className={"input-container"}>
-            <Controller
-              name="password"
-              control={control}
-              defaultValue=""
-              render={({ field }) => <Password {...field} placeholder="Password" />}
-            />
-            {errors.password && (
-              <Typography variant="subtitle1" className="error">
-                {errors.password.message}
-              </Typography>
-            )}
-            <i>
-              <FontAwesomeIcon icon={faLock} />
-            </i>
-          </div>
-          <Link to="/admin">Forgot password?</Link>
-          <LoginButton type="submit" disableRipple>
-            Login
-          </LoginButton>
-        </form>
-      </div>
-      <div className="toggle-box">
-        <div className="toggle-panel toggle-left">
-          <Title variant="h4">Hello, Welcome back!</Title>
-          <Typography variant="subtitle1">Don't have an account?</Typography>
         </div>
       </div>
-    </div>
     </body>
   )
 }
