@@ -26,7 +26,6 @@ const loginSchema = yup.object({
 const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
-  const { loading, error } = useSelector((state: RootState) => state.auth)
   const role = useSelector((state: RootState) => state.auth.user?.role)
 
   const { Password } = Input
@@ -42,12 +41,12 @@ const Login: React.FC = () => {
   const onSubmit = async (data: LoginRequest) => {
     const result = await dispatch(loginUser(data))
     if (loginUser.fulfilled.match(result)) {
-      if (role === "ADMIN") navigate("/dashboard")
+      if (role === "ADMIN") navigate("/admin")
     }
   }
 
   return (
-    <body className="login-body">
+    <div className="login-body">
       <div className="login-container">
         <div className="form-box login">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -105,7 +104,7 @@ const Login: React.FC = () => {
           </div>
         </div>
       </div>
-    </body>
+    </div>
   )
 }
 

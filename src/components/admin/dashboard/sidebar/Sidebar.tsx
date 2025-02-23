@@ -1,14 +1,14 @@
-import React from "react"
 import { UserOutlined, AppstoreOutlined, SettingOutlined } from "@ant-design/icons"
 import type { MenuProps } from "antd"
 import { Menu } from "antd"
+import { useNavigate } from "react-router"
 import "./style.scss"
 
 type MenuItem = Required<MenuProps>["items"][number]
 
 const items: MenuItem[] = [
   {
-    key: "sub1",
+    key: "student",
     label: "Student",
     icon: <UserOutlined />
   },
@@ -16,7 +16,7 @@ const items: MenuItem[] = [
     type: "divider"
   },
   {
-    key: "sub2",
+    key: "course",
     label: "Course",
     icon: <AppstoreOutlined />
   },
@@ -24,18 +24,20 @@ const items: MenuItem[] = [
     type: "divider"
   },
   {
-    key: "sub3",
+    key: "setting",
     label: "Help",
     icon: <SettingOutlined />
   }
 ]
 
 const Sidebar: React.FC = () => {
+  const navigate = useNavigate()
+
   const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e)
+    navigate(`/admin/${e.key}`)
   }
 
-  return <Menu onClick={onClick} defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} mode="inline" items={items} />
+  return <Menu onClick={onClick} defaultSelectedKeys={["student"]} mode="inline" items={items} />
 }
 
 export default Sidebar

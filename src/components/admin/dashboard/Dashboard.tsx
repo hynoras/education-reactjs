@@ -1,16 +1,15 @@
-import Sidebar from "../sidebar/Sidebar"
+import Sidebar from "./sidebar/Sidebar"
+import { Outlet } from "react-router"
 import "./style.scss"
 
 const Dashboard = () => {
   return (
-    <body className="dashboard-body">
+    <div className="dashboard-body">
       <div className="dashboard-container">
         <Sidebar />
-        <div className="dashboard-content">
-          <p>Admin Dashboard</p>
-        </div>
+        <Outlet />
       </div>
-    </body>
+    </div>
   )
 }
 
