@@ -1,9 +1,8 @@
 @import "src/themes/body/style1.scss";
+@import "src/themes/mixin.scss";
 
 .login-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   margin: 0px;
 }
 
@@ -22,9 +21,7 @@
   right: 0;
   width: 50%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   color: #333;
   text-align: center;
   z-index: 1;
@@ -58,7 +55,7 @@ form {
   font-weight: 400;
 }
 
-i {
+.login-user-icon {
   position: absolute;
   left: 10px;
   top: 50%;
@@ -109,9 +106,7 @@ i {
   width: 50%;
   height: 100%;
   color: #fff;
-  display: flex;
+  @include flex-center;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   z-index: 2;
 }

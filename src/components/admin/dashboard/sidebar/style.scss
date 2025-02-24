@@ -1,14 +1,30 @@
+.item {
+  margin: 0px !important;
+  width: 100% !important;
+}
+
 .ant-menu {
-  width: 20%;
+  width: 15%;
   height: 100vh;
 }
 
 .ant-menu-item {
+  @extend .item;
   padding: 40px;
   font-size: 24px;
 }
 
-.ant-menu-item svg {
+.ant-menu-item-icon svg {
   width: 24px;
   height: 24px;
+}
+
+.ant-menu-item-selected {
+  @extend .item;
+  background: #7494ec !important;
+  color: white !important;
+}
+
+.ant-menu-item-active {
+  @extend .item;
 }

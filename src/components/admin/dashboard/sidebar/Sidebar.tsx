@@ -1,4 +1,6 @@
-import { UserOutlined, AppstoreOutlined, SettingOutlined } from "@ant-design/icons"
+import { AppstoreOutlined, SettingOutlined } from "@ant-design/icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faGraduationCap } from "@fortawesome/free-solid-svg-icons"
 import type { MenuProps } from "antd"
 import { Menu } from "antd"
 import { useNavigate } from "react-router"
@@ -10,7 +12,11 @@ const items: MenuItem[] = [
   {
     key: "student",
     label: "Student",
-    icon: <UserOutlined />
+    icon: (
+      <i className="sidebar-user-icon">
+        <FontAwesomeIcon icon={faGraduationCap} />
+      </i>
+    )
   },
   {
     type: "divider"

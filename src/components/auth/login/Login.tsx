@@ -46,7 +46,7 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="login-body">
+    <body className="login-body">
       <div className="login-container">
         <div className="form-box login">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +71,7 @@ const Login: React.FC = () => {
                   {errors.username.message}
                 </Typography>
               )}
-              <i>
+              <i className="login-user-icon">
                 <FontAwesomeIcon icon={faUser} />
               </i>
             </div>
@@ -104,7 +104,7 @@ const Login: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </body>
   )
 }
 
