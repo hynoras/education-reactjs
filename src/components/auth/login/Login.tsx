@@ -88,7 +88,7 @@ const Login: React.FC = () => {
                 </Typography>
               )}
               <i>
-                <FontAwesomeIcon icon={faLock} />
+                <FontAwesomeIcon className="login-user-icon" icon={faLock} />
               </i>
             </div>
             <Link to="/admin">Forgot password?</Link>

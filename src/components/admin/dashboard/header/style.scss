@@ -1,7 +1,7 @@
 @import "/src/themes/mixin.scss";
 
 .user-margin {
-    margin: 0 16px 0 8px !important;
+  margin: 0 16px 0 8px !important;
 }
 
 .header-container {
@@ -31,11 +31,10 @@
 .user-container {
   @include flex-center;
   flex-direction: row;
-    .username {
-        @extend .user-margin;
-    }
-    .role {
-        @extend .user-margin;
-    }
+  .username {
+    @extend .user-margin;
+  }
+  .role {
+    @extend .user-margin;
+  }
 }
-
