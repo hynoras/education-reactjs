@@ -40,6 +40,7 @@ const Login: React.FC = () => {
 
   const onSubmit = async (data: LoginRequest) => {
     const result = await dispatch(loginUser(data))
+    console.log("result: ", result)
     if (loginUser.fulfilled.match(result)) {
       if (role === "ADMIN") navigate("/admin/student")
     }
