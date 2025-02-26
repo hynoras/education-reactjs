@@ -2,7 +2,7 @@ import axios from "axios"
 
 const DEVELOPMENT_API = "http://localhost:8080/api"
 
-const changeURL = (stage: string) => {
+const changeURL = (stage: string): string | undefined => {
   switch (stage) {
     case "development":
       return DEVELOPMENT_API

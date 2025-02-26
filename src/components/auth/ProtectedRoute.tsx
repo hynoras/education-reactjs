@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
   children?: JSX.Element
 }
 
-const ProtectedRoute = ({ requiredRole, redirectPath = "/", children }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ requiredRole, redirectPath = "/login", children }: ProtectedRouteProps) => {
   const role = useSelector((state: RootState) => state.auth.user?.role)
 
   if (role !== requiredRole) {

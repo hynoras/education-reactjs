@@ -41,7 +41,7 @@ const Login: React.FC = () => {
   const onSubmit = async (data: LoginRequest) => {
     const result = await dispatch(loginUser(data))
     if (loginUser.fulfilled.match(result)) {
-      if (role === "ADMIN") navigate("/admin")
+      if (role === "ADMIN") navigate("/admin/student")
     }
   }
 

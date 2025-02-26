@@ -1,5 +1,6 @@
 import { LoginRequest, UserResponse } from "models/auth/authModel"
 import { api } from "utils/axios"
+import useNavigateHook from "hook/useNavigate"
 
 class AuthService {
   async login(payload: LoginRequest): Promise<void> {
@@ -10,13 +11,13 @@ class AuthService {
     await api.post("/logout")
   }
 
-  async checkAuth(): Promise<UserResponse | null> {
+  async checkAuth(): Promise<UserResponse | any> {
     try {
       const response = await api.get("/auth/get-user")
       return response.data
     } catch (error: any) {
       if (error.response?.status === 401) {
-        window.location.href = "/"
+        return "unauthorized"
       }
       return null
     }

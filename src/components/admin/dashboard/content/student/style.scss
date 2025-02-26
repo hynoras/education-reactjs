@@ -1,9 +1,9 @@
 @import "/src/themes/mixin.scss";
 
 .student-container {
-    @include flex-center;
-    width: 83%;
-    height: 95vh;
-    margin: auto;
-    background: white;
+  @include flex-center;
+  width: 83%;
+  height: 95vh;
+  margin: auto;
+  background: white;
 }

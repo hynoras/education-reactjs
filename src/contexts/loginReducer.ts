@@ -46,7 +46,11 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loadUser.fulfilled, (state, action) => {
-        state.user = action.payload
+        if (action.payload === "unauthorized") {
+          state.user = null
+        } else {
+          state.user = action.payload
+        }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload as string

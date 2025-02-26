@@ -1,5 +1,4 @@
 import { StudentList } from "models/admin/studentModel"
-import StudentService from "services/admin/studentService"
 import { Table } from "antd"
 import { Typography } from "@mui/material"
 import { useState, useEffect } from "react"
