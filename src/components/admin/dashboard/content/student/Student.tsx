@@ -30,20 +30,28 @@ const columns = [
   }
 ]
 
-const StudentPage = () => {
+const StudentPage: React.FC = () => {
   const [studentList, setStudentList] = useState<StudentList[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+  const [totalElement, setTotalElement] = useState<number>(0)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [pageSize, setPageSize] = useState<number>(10)
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      setLoading(true)
-      const response = await studentService.getAllStudent()
-      setStudentList(response.content)
-      setLoading(false)
-    }
+    fetchStudents(currentPage)
+  }, [currentPage])
 
-    fetchStudents()
-  }, [])
+  const fetchStudents = async (page: number) => {
+    setLoading(true)
+    const response = await studentService.getAllStudent(page)
+    setStudentList(response.content)
+    setTotalElement(response.total_element)
+    setLoading(false)
+  }
+
+  const onChangePage: PaginationProps["onChange"] = (page) => {
+    setCurrentPage(page)
+  }
 
   return (
     <div className="student-container">
@@ -53,16 +61,16 @@ const StudentPage = () => {
             Student list
           </Typography>
         </div>
-        <Table
-          columns={columns}
-          dataSource={studentList}
-          pagination={{ pageSize: 10, position: ["none"] }}
-          loading={loading}
-          rowKey="student_id"
-        />
+        <Table columns={columns} dataSource={studentList} pagination={false} loading={loading} rowKey="identity" />
         <Pagination
           align="end"
-         />
+          total={totalElement}
+          current={currentPage}
+          pageSize={pageSize}
+          onChange={onChangePage}
+          showQuickJumper
+          showTotal={(total) => `Total ${total} items`}
+        />
       </div>
     </div>
   )

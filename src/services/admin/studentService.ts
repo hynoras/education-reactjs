@@ -1,10 +1,16 @@
-import { StudentList, PaginatedStudentList } from "models/admin/studentModel"
+import { PaginatedStudentList } from "models/admin/studentModel"
 import { api } from "utils/axios"
 
 class StudentService {
-  async getAllStudent(): Promise<PaginatedStudentList | any> {
+  async getAllStudent(
+    currentPage: number = 1,
+    pageSize: number = 10,
+    sortBy: string = "identity"
+  ): Promise<PaginatedStudentList | any> {
     try {
-      const response = await api.get("/admin/students")
+      const response = await api.get(
+        `/admin/students?currentPage=${currentPage - 1}&pageSize=${pageSize}&sortBy=${sortBy}`
+      )
       return response.data
     } catch (error: any) {
       console.error("Error fetching students:", error)
