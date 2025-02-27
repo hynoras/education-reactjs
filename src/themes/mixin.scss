@@ -3,10 +3,6 @@
   justify-content: space-between;
 }
 
-@mixin flex {
-  display: flex;
-}
-
 @mixin flex-center {
   display: flex;
   justify-content: center;
@@ -16,4 +12,9 @@
 @mixin flex-column {
   display: flex;
   flex-direction: column;
+}
+
+@mixin flex-space-around {
+  display: flex;
+  justify-content: space-around;
 }

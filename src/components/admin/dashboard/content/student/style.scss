@@ -18,3 +18,9 @@
   }
 }
 
+.student-table-action-container {
+  @include flex-space-around;
+  i {
+    cursor: pointer;
+  }
+}

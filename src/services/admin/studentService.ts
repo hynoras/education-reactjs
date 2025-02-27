@@ -1,8 +1,8 @@
-import { StudentList } from "models/admin/studentModel"
+import { StudentList, PaginatedStudentList } from "models/admin/studentModel"
 import { api } from "utils/axios"
 
 class StudentService {
-  async getAllStudent(): Promise<StudentList[]> {
+  async getAllStudent(): Promise<PaginatedStudentList | any> {
     try {
       const response = await api.get("/admin/students")
       return response.data

@@ -6,3 +6,10 @@ export interface StudentList {
   major_name: string
   department_name: string
 }
+
+export interface PaginatedStudentList {
+  content: StudentList[]
+  total_element: number
+  total_page: number
+  last: boolean
+}
