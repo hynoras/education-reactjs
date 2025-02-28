@@ -38,9 +38,9 @@ const Login: React.FC = () => {
     resolver: yupResolver(loginSchema)
   })
 
-  const onSubmit = async (data: LoginRequest) => {
-    const result = await dispatch(loginUser(data))
-    console.log("result: ", result)
+  const onSubmit = async (payload: LoginRequest) => {
+    console.log("payload in login component: ", payload);
+    const result = await dispatch(loginUser(payload))
     if (loginUser.fulfilled.match(result)) {
       if (role === "ADMIN") navigate("/admin/student")
     }
