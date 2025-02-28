@@ -1,33 +1,27 @@
-import axios from "axios"
 import { LoginRequest, UserResponse } from "models/auth/authModel"
-
-const API_URL = "http://localhost:8080/api/auth"
-
-const api = axios.create({
-  baseURL: API_URL,
-  withCredentials: true
-})
+import { api } from "utils/api"
 
 class AuthService {
-  async login(payload: LoginRequest): Promise<void> {
-    await api.post("/login", payload)
+  async login(payload: LoginRequest): Promise<string | any> {
+    console.log("payload in authService: ", payload)
+    const response = await api.post("/auth/login", payload)
+    console.log("response: ", response)
+    return response.data.token
+
   }
 
-  async logout(): Promise<void> {
-    await api.post("/logout")
-  }
-
-  async checkAuth(): Promise<UserResponse | null> {
+  async checkAuth(token: string): Promise<UserResponse | any> {
     try {
-      const response = await api.get("/get-user")
+      const response = await api.get("/auth/get-user", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       return response.data
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        window.location.href = "/"
-      }
+      console.log("Failed to check auth: ", error)
       return null
     }
   }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new AuthService()

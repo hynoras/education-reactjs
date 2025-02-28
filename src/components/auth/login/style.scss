@@ -1,9 +1,13 @@
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(90deg, #e2e2e2, #9eb2f5);
+@import "src/themes/body/style1.scss";
+@import "src/themes/mixin.scss";
+
+.input-focus {
+  border: 3px solid #7494ec !important;
+}
+
+.login-body {
+  @include flex-center;
+  margin: 0px;
 }
 
 .login-container {
@@ -21,9 +25,7 @@ body {
   right: 0;
   width: 50%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   color: #333;
   text-align: center;
   z-index: 1;
@@ -37,27 +39,28 @@ form {
 .input-container {
   position: relative;
   margin: 30px 0;
+  .ant-input,
+  .ant-input-affix-wrapper {
+    width: 100%;
+    padding: 13px 10px 13px 40px;
+    background: #eee;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+    &::placeholder {
+      color: #888;
+      font-weight: 400;
+    }
+    &:hover {
+      background: #eee;
+    }
+  }
 }
 
-.ant-input,
-.ant-input-affix-wrapper {
-  width: 100%;
-  padding: 13px 10px 13px 40px;
-  background: #eee;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  color: #333;
-  font-weight: 500;
-}
-
-.ant-input::placeholder {
-  color: #888;
-  font-weight: 400;
-}
-
-i {
+.login-user-icon {
   position: absolute;
   left: 10px;
   top: 50%;
@@ -108,9 +111,7 @@ i {
   width: 50%;
   height: 100%;
   color: #fff;
-  display: flex;
+  @include flex-center;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   z-index: 2;
 }

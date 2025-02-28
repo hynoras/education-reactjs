@@ -1,0 +1,26 @@
+@import "/src/themes/mixin.scss";
+
+.student-container {
+  @include flex-column;
+  width: 83%;
+  height: 97vh;
+  margin: auto;
+  background: white;
+  border-radius: 12px;
+  .student-wrapper {
+    padding: 5%;
+    .ant-table {
+      height: 70vh;
+      .ant-table-thead th {
+        background: rgb(226, 226, 226);
+      }
+    }
+  }
+}
+
+.student-table-action-container {
+  @include flex-space-around;
+  i {
+    cursor: pointer;
+  }
+}

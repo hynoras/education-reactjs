@@ -1,38 +1,38 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import AuthService from "../services/auth/authService"
+import { setAuthToken } from "utils/api"
 import { LoginRequest, UserResponse } from "models/auth/authModel"
 
 interface AuthState {
   user: UserResponse | null
+  token: string | null
   loading: boolean
-  error: string | null
 }
 
 const initialState: AuthState = {
   user: null,
-  loading: false,
-  error: null
+  token: null,
+  loading: false
 }
 
-export const loadUser = createAsyncThunk("auth/loadUser", async () => {
-  return await AuthService.checkAuth()
+export const loginUser = createAsyncThunk("auth/login", async (payload: LoginRequest, { rejectWithValue }) => {
+  try {
+    console.log("payload in async thunk: ", payload)
+    const token = await AuthService.login(payload)
+    setAuthToken(token)
+    return token
+  } catch (error) {
+    return rejectWithValue("Invalid username or password")
+  }
 })
 
-export const loginUser = createAsyncThunk(
-  "auth/login",
-  async (payload: LoginRequest, { dispatch, rejectWithValue }) => {
-    try {
-      await AuthService.login(payload)
-      dispatch(loadUser())
-    } catch (error: any) {
-      return rejectWithValue("Invalid username or password")
-    }
+export const loadUser = createAsyncThunk("auth/loadUser", async (token: string, { rejectWithValue }) => {
+  setAuthToken(token)
+  try {
+    return await AuthService.checkAuth(token)
+  } catch (error) {
+    return rejectWithValue("Unauthorized")
   }
-)
-
-export const logoutUser = createAsyncThunk("auth/logout", async (_, { dispatch }) => {
-  await AuthService.logout()
-  dispatch(logout())
 })
 
 const authSlice = createSlice({
@@ -41,18 +41,18 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.user = null
+      state.token = null
+      setAuthToken(null)
     }
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(loadUser.fulfilled, (state, action) => {
-        state.user = action.payload
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.error = action.payload as string
-      })
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.token = action.payload
+    })
+    builder.addCase(loadUser.fulfilled, (state, action) => {
+      state.user = action.payload
+    })
   }
 })
-
 export const { logout } = authSlice.actions
 export default authSlice.reducer

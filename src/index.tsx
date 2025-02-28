@@ -8,7 +8,10 @@ import { PersistGate } from "redux-persist/integration/react"
 import { Provider } from "react-redux"
 // import reportWebVitals from './reportWebVitals';
 
-store.dispatch(loadUser())
+const token = store.getState().auth.token
+if (token) {
+  store.dispatch(loadUser(token))
+}
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>
