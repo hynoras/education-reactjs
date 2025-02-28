@@ -39,7 +39,6 @@ const Login: React.FC = () => {
   })
 
   const onSubmit = async (payload: LoginRequest) => {
-    console.log("payload in login component: ", payload);
     const result = await dispatch(loginUser(payload))
     if (loginUser.fulfilled.match(result)) {
       if (role === "ADMIN") navigate("/admin/student")

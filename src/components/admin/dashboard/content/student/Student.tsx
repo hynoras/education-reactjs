@@ -1,10 +1,12 @@
 import { StudentList } from "models/admin/studentModel"
+import { useEffect, useState } from "react"
 import { Table, Pagination, PaginationProps } from "antd"
 import { Typography } from "@mui/material"
-import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import studentService from "services/admin/studentService"
+import SearchBar from "components/search/SearchBar"
+import useSearch from "hook/useSearch"
 import "./style.scss"
 
 const columns = [
@@ -31,26 +33,23 @@ const columns = [
 ]
 
 const StudentPage: React.FC = () => {
-  const [studentList, setStudentList] = useState<StudentList[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  const [totalElement, setTotalElement] = useState<number>(0)
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(10)
+  const {
+    data: students,
+    totalElements,
+    loading,
+    setSearchQuery,
+    setOptions
+  } = useSearch<StudentList>(studentService.getAllStudent)
 
   useEffect(() => {
-    fetchStudents(currentPage)
-  }, [currentPage])
+    setOptions((prev) => ({ ...prev, currentPage: currentPage, pageSize }))
+  }, [currentPage, pageSize, setOptions])
 
-  const fetchStudents = async (page: number) => {
-    setLoading(true)
-    const response = await studentService.getAllStudent(page)
-    setStudentList(response.content)
-    setTotalElement(response.total_element)
-    setLoading(false)
-  }
-
-  const onChangePage: PaginationProps["onChange"] = (page) => {
+  const onChangePage: PaginationProps["onChange"] = (page: number, size: number) => {
     setCurrentPage(page)
+    setPageSize(size)
   }
 
   return (
@@ -58,18 +57,22 @@ const StudentPage: React.FC = () => {
       <div className="student-wrapper">
         <div className="student-title">
           <Typography variant="h3" sx={{ color: "black" }}>
-            Student list
+            Student List
           </Typography>
         </div>
-        <Table columns={columns} dataSource={studentList} pagination={false} loading={loading} rowKey="identity" />
+        <div className="student-filter-search container">
+          <SearchBar onSearch={(query) => setSearchQuery(query)} />
+        </div>
+        <Table columns={columns} dataSource={students} pagination={false} loading={loading} rowKey="identity" />
         <Pagination
           align="end"
-          total={totalElement}
+          defaultCurrent={1}
           current={currentPage}
+          total={totalElements}
           pageSize={pageSize}
           onChange={onChangePage}
           showQuickJumper
-          showTotal={(total) => `Total ${total} items`}
+          showTotal={(total) => `Total ${total} students`}
         />
       </div>
     </div>

@@ -3,11 +3,8 @@ import { api } from "utils/api"
 
 class AuthService {
   async login(payload: LoginRequest): Promise<string | any> {
-    console.log("payload in authService: ", payload)
     const response = await api.post("/auth/login", payload)
-    console.log("response: ", response)
     return response.data.token
-
   }
 
   async checkAuth(token: string): Promise<UserResponse | any> {
@@ -23,5 +20,5 @@ class AuthService {
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new AuthService()
+const authService = new AuthService()
+export default authService
