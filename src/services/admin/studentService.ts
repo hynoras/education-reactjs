@@ -1,5 +1,5 @@
 import { PaginatedStudentList } from "models/admin/studentModel"
-import { api } from "utils/axios"
+import { api } from "utils/api"
 
 class StudentService {
   async getAllStudent(

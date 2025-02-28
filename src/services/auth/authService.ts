@@ -1,6 +1,5 @@
 import { LoginRequest, UserResponse } from "models/auth/authModel"
-import { api } from "utils/axios"
-import useNavigateHook from "hook/useNavigate"
+import { api } from "utils/api"
 
 class AuthService {
   async login(payload: LoginRequest): Promise<void> {
