@@ -4,6 +4,7 @@ interface FetchOptions {
   currentPage?: number
   pageSize?: number
   sortBy?: string
+  sortOrder?: string
   searchQuery?: string
 }
 
@@ -16,6 +17,8 @@ const useFetch = <T>(fetchFunction: (options?: FetchOptions) => Promise<any>, in
   const [options, setOptions] = useState<FetchOptions>({
     currentPage: initialOptions.currentPage ?? 1,
     pageSize: initialOptions.pageSize ?? 10,
+    sortBy: initialOptions.sortBy,
+    sortOrder: initialOptions.sortOrder,
     searchQuery: initialOptions.searchQuery ?? ""
   })
 

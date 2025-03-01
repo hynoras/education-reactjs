@@ -1,21 +1,26 @@
 import { PaginatedStudentList } from "models/admin/studentModel"
 import { api } from "utils/api"
+import { store } from "utils/store"
 
 class StudentService {
   async getAllStudent(options?: {
     currentPage?: number
     pageSize?: number
     sortBy?: string
+    sortOrder?: string
     searchQuery?: string
   }): Promise<PaginatedStudentList | any> {
     try {
+      const token = store.getState().auth.token
       const response = await api.get("/admin/students", {
         params: {
           currentPage: options?.currentPage ? options.currentPage - 1 : 0,
           pageSize: options?.pageSize ?? 10,
           sortBy: options?.sortBy ?? "identity",
+          sortOrder: options?.sortOrder,
           search: options?.searchQuery ?? ""
-        }
+        },
+        headers: { Authorization: `Bearer ${token}` }
       })
       return response
     } catch (error) {
