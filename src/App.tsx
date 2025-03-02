@@ -1,7 +1,7 @@
 import Login from "components/auth/login/Login"
-import Dashboard from "components/admin/dashboard/Dashboard"
-import StudentPage from "components/admin/dashboard/content/student/Student"
-import CoursePage from "components/admin/dashboard/content/course/Course"
+import AdminMainPage from "components/admin/main/AdminMain"
+import StudentPage from "components/admin/content/student/Student"
+import CoursePage from "components/admin/content/course/Course"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import ProtectedRoute from "components/auth/ProtectedRoute"
 import { useDispatch, useSelector } from "react-redux"
@@ -30,7 +30,7 @@ const App = () => {
           path="/admin/*"
           element={
             <ProtectedRoute requiredRole="ADMIN" redirectPath="/">
-              <Dashboard />
+              <AdminMainPage />
             </ProtectedRoute>
           }
         >

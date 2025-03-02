@@ -3,7 +3,7 @@ import { api } from "utils/api"
 
 class AuthService {
   async login(payload: LoginRequest): Promise<string | any> {
-    const response = await api.post("/auth/login", payload)
+    const response = await api.post("/auth/login", payload, { headers: { Authorization: `` } })
     return response.data.token
   }
 

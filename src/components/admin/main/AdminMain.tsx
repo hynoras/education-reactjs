@@ -1,9 +1,9 @@
-import Sidebar from "./sidebar/Sidebar"
-import Header from "./header/Header"
+import Sidebar from "../sidebar/Sidebar"
+import Header from "../header/Header"
 import { Outlet } from "react-router"
 import "./style.scss"
 
-const Dashboard = () => {
+const AdminMainPage = () => {
   return (
     <div className="dashboard-body">
       <Header />
@@ -15,4 +15,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default AdminMainPage
