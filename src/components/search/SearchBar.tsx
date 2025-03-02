@@ -5,9 +5,11 @@ const { Search } = Input
 
 interface SearchBarProps {
   onSearch: (value: string) => void
+  className?: string
+  placeholder?: string
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, className, placeholder }) => {
   const [searchQuery, setSearchQuery] = useState<string>("")
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,11 +22,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
   return (
     <Search
-      placeholder="Search student identity, name..."
+      placeholder={placeholder}
       value={searchQuery}
       onChange={handleChange}
       onSearch={handleSearch}
       enterButton
+      className={className}
     />
   )
 }

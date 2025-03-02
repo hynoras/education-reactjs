@@ -9,9 +9,9 @@ import { Link, useNavigate } from "react-router"
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { useDispatch, useSelector } from "react-redux"
-import { AppDispatch, RootState } from "utils/store"
-import { loginUser } from "contexts/loginReducer"
+import { useDispatch } from "react-redux"
+import { AppDispatch, store } from "utils/store"
+import { loadUser, loginUser } from "contexts/loginReducer"
 import { LoginRequest } from "models/auth/authModel"
 
 const loginSchema = yup.object({
@@ -26,7 +26,6 @@ const loginSchema = yup.object({
 const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
-  const role = useSelector((state: RootState) => state.auth.user?.role)
 
   const { Password } = Input
 
@@ -41,6 +40,10 @@ const Login: React.FC = () => {
   const onSubmit = async (payload: LoginRequest) => {
     const result = await dispatch(loginUser(payload))
     if (loginUser.fulfilled.match(result)) {
+      const token = store.getState().auth.token
+      dispatch(loadUser(token as string))
+      const role = store.getState().auth.user?.role
+      console.log("role: ", role)
       if (role === "ADMIN") navigate("/admin/student")
     }
   }

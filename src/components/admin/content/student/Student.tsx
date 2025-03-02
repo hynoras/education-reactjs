@@ -7,8 +7,8 @@ import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import studentService from "services/admin/studentService"
 import SearchBar from "components/search/SearchBar"
 import useSearch from "hook/useSearch"
+import { Gender } from "enums/gender"
 import "./style.scss"
-import { SortOrder } from "antd/es/table/interface"
 
 const StudentPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -38,7 +38,8 @@ const StudentPage: React.FC = () => {
     setPageSize(size)
   }
 
-  const onChangeTable: TableProps<StudentList>["onChange"] = (_, __, sorter) => {
+  const onChangeTable: TableProps<StudentList>["onChange"] = (_, __, sorter, filters) => {
+    console.log("filters: ", filters)
     const singleSorter = Array.isArray(sorter) ? sorter[0] : sorter
     if (!singleSorter?.columnKey) return
     const newSortOrder = singleSorter.order === "ascend" ? "asc" : "desc"
@@ -46,11 +47,21 @@ const StudentPage: React.FC = () => {
     setSortOrder(newSortOrder)
   }
 
+  const filters = Object.values(Gender).map((value) => ({
+    text: value,
+    value: value
+  }))
+
   const columns: TableColumnsType<StudentList> = [
     { title: "Student ID", dataIndex: "identity", key: "identity", sorter: true },
     { title: "Full Name", dataIndex: "full_name", key: "fullName", sorter: true },
     { title: "Date of Birth", dataIndex: "birth_date", key: "birth_date" },
-    { title: "Gender", dataIndex: "gender", key: "gender" },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      filters: filters
+    },
     { title: "Major", dataIndex: "major_name", key: "major_name" },
     { title: "Department", dataIndex: "department_name", key: "department_name" },
     {
@@ -65,7 +76,8 @@ const StudentPage: React.FC = () => {
             <FontAwesomeIcon icon={faTrash} />
           </i>
         </div>
-      )
+      ),
+      align: "center"
     }
   ]
 
@@ -77,8 +89,13 @@ const StudentPage: React.FC = () => {
             Student List
           </Typography>
         </div>
-        <div className="student-filter-search container">
-          <SearchBar onSearch={(query) => setSearchQuery(query)} />
+        <div className="student-filter-search-container">
+          <button></button>
+          <SearchBar
+            onSearch={(query) => setSearchQuery(query)}
+            className="student-search-bar"
+            placeholder="Search identity or name..."
+          />
         </div>
         <Table<StudentList>
           columns={columns}
