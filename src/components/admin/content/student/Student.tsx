@@ -15,6 +15,8 @@ const StudentPage: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(10)
   const [sortBy, setSortBy] = useState<string>("identity")
   const [sortOrder, setSortOrder] = useState<string>("desc")
+  const [filterBy, setFilterBy] = useState<string>("")
+  const [filterValue, setFilterValue] = useState<string>("")
   const {
     data: students,
     totalElements,
@@ -29,17 +31,19 @@ const StudentPage: React.FC = () => {
       currentPage: currentPage,
       pageSize: pageSize,
       sortBy: sortBy,
-      sortOrder: sortOrder
+      sortOrder: sortOrder,
+      filterBy: filterBy,
+      filterValue: filterValue
     }))
-  }, [setOptions, currentPage, pageSize, sortBy, sortOrder])
+  }, [setOptions, currentPage, pageSize, sortBy, sortOrder, filterBy, filterValue])
 
   const onChangePagination: PaginationProps["onChange"] = (page: number, size: number) => {
     setCurrentPage(page)
     setPageSize(size)
   }
 
-  const onChangeTable: TableProps<StudentList>["onChange"] = (_, __, sorter, filters) => {
-    console.log("filters: ", filters)
+  const onChangeTable: TableProps<StudentList>["onChange"] = (_, filters, sorter) => {
+    console.log(`filters: ${filters}`, filters)
     const singleSorter = Array.isArray(sorter) ? sorter[0] : sorter
     if (!singleSorter?.columnKey) return
     const newSortOrder = singleSorter.order === "ascend" ? "asc" : "desc"
@@ -47,7 +51,7 @@ const StudentPage: React.FC = () => {
     setSortOrder(newSortOrder)
   }
 
-  const filters = Object.values(Gender).map((value) => ({
+  const genderFilter = Object.values(Gender).map((value) => ({
     text: value,
     value: value
   }))
@@ -60,10 +64,49 @@ const StudentPage: React.FC = () => {
       title: "Gender",
       dataIndex: "gender",
       key: "gender",
-      filters: filters
+      filters: genderFilter,
+      filterMultiple: false
     },
-    { title: "Major", dataIndex: "major_name", key: "major_name" },
-    { title: "Department", dataIndex: "department_name", key: "department_name" },
+    {
+      title: "Major",
+      dataIndex: "major_name",
+      key: "major_name",
+      filters: [
+        {
+          text: "Quản trị kinh doanh",
+          value: "Quản trị kinh doanh"
+        },
+        {
+          text: "Khoa học máy tính",
+          value: "Khoa học máy tính"
+        },
+        {
+          text: "Y học cổ truyền",
+          value: "Y học cổ truyền"
+        }
+      ],
+      filterMultiple: false
+    },
+    {
+      title: "Department",
+      dataIndex: "department_name",
+      key: "department_name",
+      filters: [
+        {
+          text: "Kinh tế",
+          value: "Kinh tế"
+        },
+        {
+          text: "Công nghệ thông tin",
+          value: "Công nghệ thông tin"
+        },
+        {
+          text: "Y học",
+          value: "Y học"
+        }
+      ],
+      filterMultiple: false
+    },
     {
       title: "Action",
       key: "action",
