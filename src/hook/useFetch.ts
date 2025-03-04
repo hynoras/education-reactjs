@@ -5,8 +5,9 @@ interface FetchOptions {
   pageSize?: number
   sortBy?: string
   sortOrder?: string
-  filterBy?: string
-  filterValue?: string
+  gender?: string
+  major?: string
+  department?: string
   searchQuery?: string
 }
 
@@ -21,8 +22,9 @@ const useFetch = <T>(fetchFunction: (options?: FetchOptions) => Promise<any>, in
     pageSize: initialOptions.pageSize ?? 10,
     sortBy: initialOptions.sortBy,
     sortOrder: initialOptions.sortOrder,
-    filterBy: initialOptions.filterBy,
-    filterValue: initialOptions.filterValue,
+    gender: initialOptions.gender,
+    major: initialOptions.major,
+    department: initialOptions.department,
     searchQuery: initialOptions.searchQuery ?? ""
   })
 

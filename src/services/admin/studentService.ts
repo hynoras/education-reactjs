@@ -8,8 +8,9 @@ class StudentService {
     pageSize?: number
     sortBy?: string
     sortOrder?: string
-    filterBy?: string
-    filterValue?: string
+    gender?: string
+    major?: string
+    department?: string
     searchQuery?: string
   }): Promise<PaginatedStudentList | any> {
     try {
@@ -20,8 +21,9 @@ class StudentService {
           pageSize: options?.pageSize ?? 10,
           sortBy: options?.sortBy ?? "identity",
           sortOrder: options?.sortOrder,
-          filterBy: options?.filterBy,
-          filterValue: options?.filterValue,
+          gender: options?.gender,
+          major: options?.major,
+          department: options?.department,
           search: options?.searchQuery ?? ""
         },
         headers: { Authorization: `Bearer ${token}` }

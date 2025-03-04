@@ -15,8 +15,9 @@ const StudentPage: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(10)
   const [sortBy, setSortBy] = useState<string>("identity")
   const [sortOrder, setSortOrder] = useState<string>("desc")
-  const [filterBy, setFilterBy] = useState<string>("")
-  const [filterValue, setFilterValue] = useState<string>("")
+  const [gender, setGender] = useState<string>("")
+  const [major, setMajor] = useState<string>("")
+  const [department, setDepartment] = useState<string>("")
   const {
     data: students,
     totalElements,
@@ -32,18 +33,45 @@ const StudentPage: React.FC = () => {
       pageSize: pageSize,
       sortBy: sortBy,
       sortOrder: sortOrder,
-      filterBy: filterBy,
-      filterValue: filterValue
+      gender: gender,
+      major: major,
+      department: department
     }))
-  }, [setOptions, currentPage, pageSize, sortBy, sortOrder, filterBy, filterValue])
+  }, [setOptions, currentPage, pageSize, sortBy, sortOrder, gender, major, department])
 
   const onChangePagination: PaginationProps["onChange"] = (page: number, size: number) => {
     setCurrentPage(page)
     setPageSize(size)
   }
 
+  const extractFilterValues = (filtersArray: Array<any>, filterKey: string, setter: (value: string) => void) => {
+    const filterSubArray = filtersArray.find((key) => key.includes(filterKey))
+    setter(filterSubArray ? filterSubArray[1]?.join(",") : "")
+  }
+
+  const handleFilter = (filters: Record<any, any | null>, filtersList: Array<any>) => {
+    if (filters["gender"] === null) {
+      setGender("")
+    }
+    if (filters["major_name"] === null) {
+      setMajor("")
+    }
+    if (filters["department_name"] === null) {
+      setDepartment("")
+    }
+    if (filtersList.length === 0) {
+      setGender("")
+      setMajor("")
+      setDepartment("")
+    }
+    extractFilterValues(filtersList, "gender", setGender)
+    extractFilterValues(filtersList, "major_name", setMajor)
+    extractFilterValues(filtersList, "department_name", setDepartment)
+  }
+
   const onChangeTable: TableProps<StudentList>["onChange"] = (_, filters, sorter) => {
-    console.log(`filters: ${filters}`, filters)
+    const filtersList = Object.entries(filters).filter(([_, value]) => value && value.length > 0)
+    handleFilter(filters, filtersList)
     const singleSorter = Array.isArray(sorter) ? sorter[0] : sorter
     if (!singleSorter?.columnKey) return
     const newSortOrder = singleSorter.order === "ascend" ? "asc" : "desc"
@@ -64,8 +92,7 @@ const StudentPage: React.FC = () => {
       title: "Gender",
       dataIndex: "gender",
       key: "gender",
-      filters: genderFilter,
-      filterMultiple: false
+      filters: genderFilter
     },
     {
       title: "Major",
@@ -84,8 +111,7 @@ const StudentPage: React.FC = () => {
           text: "Y học cổ truyền",
           value: "Y học cổ truyền"
         }
-      ],
-      filterMultiple: false
+      ]
     },
     {
       title: "Department",
@@ -104,20 +130,19 @@ const StudentPage: React.FC = () => {
           text: "Y học",
           value: "Y học"
         }
-      ],
-      filterMultiple: false
+      ]
     },
     {
       title: "Action",
       key: "action",
       render: () => (
         <div className="student-table-action-container">
-          <i>
+          <button>
             <FontAwesomeIcon icon={faPenToSquare} />
-          </i>
-          <i>
+          </button>
+          <button>
             <FontAwesomeIcon icon={faTrash} />
-          </i>
+          </button>
         </div>
       ),
       align: "center"
