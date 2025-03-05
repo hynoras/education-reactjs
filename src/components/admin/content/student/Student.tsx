@@ -1,3 +1,4 @@
+import "./style.scss"
 import { StudentList } from "models/admin/studentModel"
 import { useEffect, useState } from "react"
 import { Table, Pagination, PaginationProps, TableProps, TableColumnsType } from "antd"
@@ -8,7 +9,12 @@ import studentService from "services/admin/studentService"
 import SearchBar from "components/search/SearchBar"
 import useSearch from "hook/useSearch"
 import { Gender } from "enums/gender"
-import "./style.scss"
+import useFetch from "hook/useFetch"
+import { DepartmentNameList } from "models/admin/departmentModel"
+import departmentService from "services/admin/departmentService"
+import { MajorNameList } from "models/admin/majorModel"
+import majorService from "services/admin/majorService"
+import Title from "themes/text/Text"
 
 const StudentPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -25,6 +31,9 @@ const StudentPage: React.FC = () => {
     setSearchQuery,
     setOptions
   } = useSearch<StudentList>(studentService.getAllStudent)
+
+  const { data: departments } = useFetch<DepartmentNameList>(departmentService.getAllDepartmentName)
+  const { data: majors } = useFetch<MajorNameList>(majorService.getAllMajorName)
 
   useEffect(() => {
     setOptions((prev) => ({
@@ -73,7 +82,10 @@ const StudentPage: React.FC = () => {
     const filtersList = Object.entries(filters).filter(([_, value]) => value && value.length > 0)
     handleFilter(filters, filtersList)
     const singleSorter = Array.isArray(sorter) ? sorter[0] : sorter
-    if (!singleSorter?.columnKey) return
+    if (singleSorter?.columnKey === undefined) {
+      setSortBy("")
+      setSortOrder("")
+    }
     const newSortOrder = singleSorter.order === "ascend" ? "asc" : "desc"
     setSortBy(singleSorter.columnKey as string)
     setSortOrder(newSortOrder)
@@ -82,6 +94,16 @@ const StudentPage: React.FC = () => {
   const genderFilter = Object.values(Gender).map((value) => ({
     text: value,
     value: value
+  }))
+
+  const departmentFilter = departments.map((value) => ({
+    text: String(value.department_name),
+    value: String(value.department_name)
+  }))
+
+  const majorFilter = majors.map((value) => ({
+    text: String(value.major_name),
+    value: String(value.major_name)
   }))
 
   const columns: TableColumnsType<StudentList> = [
@@ -98,39 +120,13 @@ const StudentPage: React.FC = () => {
       title: "Major",
       dataIndex: "major_name",
       key: "major_name",
-      filters: [
-        {
-          text: "Quản trị kinh doanh",
-          value: "Quản trị kinh doanh"
-        },
-        {
-          text: "Khoa học máy tính",
-          value: "Khoa học máy tính"
-        },
-        {
-          text: "Y học cổ truyền",
-          value: "Y học cổ truyền"
-        }
-      ]
+      filters: majorFilter
     },
     {
       title: "Department",
       dataIndex: "department_name",
       key: "department_name",
-      filters: [
-        {
-          text: "Kinh tế",
-          value: "Kinh tế"
-        },
-        {
-          text: "Công nghệ thông tin",
-          value: "Công nghệ thông tin"
-        },
-        {
-          text: "Y học",
-          value: "Y học"
-        }
-      ]
+      filters: departmentFilter
     },
     {
       title: "Action",
@@ -153,12 +149,12 @@ const StudentPage: React.FC = () => {
     <div className="student-container">
       <div className="student-wrapper">
         <div className="student-title">
-          <Typography variant="h3" sx={{ color: "black" }}>
+          <Title variant="h4" sx={{ color: "black" }}>
             Student List
-          </Typography>
+          </Title>
         </div>
         <div className="student-filter-search-container">
-          <button></button>
+          <div></div>
           <SearchBar
             onSearch={(query) => setSearchQuery(query)}
             className="student-search-bar"
@@ -174,6 +170,7 @@ const StudentPage: React.FC = () => {
           onChange={onChangeTable}
         />
         <Pagination
+          className="student-table-pagination"
           align="end"
           defaultCurrent={1}
           current={currentPage}

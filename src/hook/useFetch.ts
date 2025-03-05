@@ -39,7 +39,7 @@ const useFetch = <T>(fetchFunction: (options?: FetchOptions) => Promise<any>, in
           setTotalElements(response.data.total_element)
           setTotalPages(response.data.total_page)
         } else {
-          setData(response.content)
+          setData(response)
         }
       } catch (err) {
         setError("Failed to fetch data.")

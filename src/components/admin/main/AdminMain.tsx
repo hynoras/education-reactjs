@@ -5,9 +5,9 @@ import "./style.scss"
 
 const AdminMainPage = () => {
   return (
-    <div className="dashboard-body">
+    <div className="admin-main-body">
       <Header />
-      <div className="dashboard-container">
+      <div className="admin-main-container">
         <Sidebar />
         <Outlet />
       </div>

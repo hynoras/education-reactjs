@@ -39,12 +39,9 @@ const Login: React.FC = () => {
 
   const onSubmit = async (payload: LoginRequest) => {
     const result = await dispatch(loginUser(payload))
-    console.log("result: ", result)
     const token = store.getState().auth.token
-    console.log("token: ", token)
     await dispatch(loadUser(token as string))
     const role = store.getState().auth.user?.role
-    console.log("role: ", role)
     if (loginUser.fulfilled.match(result)) {
       if (role === "ADMIN") navigate("/admin/student")
     }

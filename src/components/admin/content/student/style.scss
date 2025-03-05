@@ -1,6 +1,30 @@
 @import "/src/themes/mixin.scss";
 $main-color: #7494ec;
 
+.border {
+  border: none;
+  border-radius: 16px;
+}
+
+@mixin sort-icon-format($active) {
+  @if ($active == "active") {
+    .anticon-caret-up {
+      color: white;
+    }
+    .anticon-caret-down {
+      color: $main-color;
+    }
+  }
+  @else {
+    .anticon-caret-up {
+      color: $main-color;
+    }
+    .anticon-caret-down {
+      color: white;
+    }
+  }
+}
+
 .student-container {
   @include flex-column;
   width: 83%;
@@ -9,11 +33,56 @@ $main-color: #7494ec;
   background: white;
   border-radius: 12px;
   .student-wrapper {
-    padding: 5%;
+    padding: 2%;
     .ant-table {
       height: 70vh;
       .ant-table-thead th {
+        background: $main-color;
+        color: white !important;
+        .anticon {
+          color: white;
+        }
+        span {
+          @include sort-icon-format("active");
+        }
+      }
+    }
+    .student-filter-search-container {
+      @include flex-space-between;
+      margin: 20px 0 20px 0;
+      .student-search-bar {
+        right: 0;
+        width: 30%;
+        input {
+          border: 1px solid rgb(153, 153, 153);
+          border-radius: 10px 0 0 10px;
+          &:focus {
+            border: 1px solid $main-color;
+          }
+          &::placeholder {
+            color: rgb(177, 177, 177);
+          }
+        }
+        button {
+          background: $main-color;
+          border-radius: 0 10px 10px 0;
+          &:hover {
+            background: $main-color;
+          }
+        }
+      }
+    }
+    .student-table-pagination {
+      .ant-pagination-item:hover {
         background: rgb(226, 226, 226);
+        @extend .border;
+      }
+      .ant-pagination-item-active, .ant-pagination-item-active:hover {
+        background: $main-color;
+        @extend .border;
+        a {
+          color: white;
+        }
       }
     }
   }
@@ -23,30 +92,5 @@ $main-color: #7494ec;
   @include flex-space-around;
   i {
     cursor: pointer;
-  }
-}
-
-.student-filter-search-container {
-  @include flex-space-between;
-  margin: 20px 0 20px 0;
-  .student-search-bar {
-    width: 30%;
-    input {
-      border: 1px solid rgb(153, 153, 153);
-      border-radius: 10px 0 0 10px;
-      &:focus {
-        border: 2px solid $main-color;
-      }
-      &::placeholder {
-        color: rgb(177, 177, 177);
-      }
-    }
-    button {
-      background: $main-color;
-      border-radius: 0 10px 10px 0;
-      &:hover {
-        background: $main-color;
-      }
-    }
   }
 }

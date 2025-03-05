@@ -4,13 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 import { useSelector } from "react-redux"
 import { RootState } from "utils/store"
-import Title from "themes/text/Text"
+import { Title, Subtitle } from "themes/text/Text"
 import "./style.scss"
 
 const Header = () => {
   const username = useSelector((state: RootState) => state.auth.user?.username)
-  const role = useSelector((state: RootState) => state.auth.user?.role)
-
+  const role = useSelector((state: RootState) => state.auth.user?.role.toLowerCase())
   return (
     <Layout className="header-container">
       <AppBar className="header-appbar" position="static" sx={{ backgroundColor: "white" }}>
@@ -23,12 +22,12 @@ const Header = () => {
               <FontAwesomeIcon icon={faUser} />
             </i>
             <div>
-              <Title className="username" variant="h6" sx={{ color: "black" }}>
+              <Title className="username" variant="h6" sx={{ color: "black", fontSize: "16px" }}>
                 {username}
               </Title>
-              <Typography className="role" variant="subtitle1" sx={{ color: "black" }}>
+              <Subtitle className="role" variant="subtitle1" sx={{ color: "black", fontSize: "16px" }}>
                 {role}
-              </Typography>
+              </Subtitle>
             </div>
           </div>
         </Toolbar>

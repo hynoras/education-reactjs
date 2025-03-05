@@ -5,36 +5,32 @@
 }
 
 .header-container {
-  height: 100px;
-}
-
-.header-appbar {
-  @extend .header-container;
-  display: flex;
-  justify-content: center;
-}
-
-.header-user-icon {
-  font-size: 28px;
-  color: white;
-  background: rgb(221, 221, 221);
-  width: 48px;
-  height: 48px;
-  border-radius: 24px;
-  @include flex-center;
-}
-
-.header-toolbar {
-  @include flex-space-between;
-}
-
-.user-container {
-  @include flex-center;
-  flex-direction: row;
-  .username {
-    @extend .user-margin;
-  }
-  .role {
-    @extend .user-margin;
+  height: 20%;
+  .header-appbar {
+    @extend .header-container;
+    display: flex;
+    justify-content: center;
+    .header-toolbar {
+      @include flex-space-between;
+      .user-container {
+        @include flex-center;
+        flex-direction: row;
+        .header-user-icon {
+          font-size: 24px;
+          color: white;
+          background: rgb(221, 221, 221);
+          width: 40px;
+          height: 40px;
+          border-radius: 24px;
+          @include flex-center;
+        }
+        .username {
+          @extend .user-margin;
+        }
+        .role {
+          @extend .user-margin;
+        }
+      }
+    }
   }
 }
