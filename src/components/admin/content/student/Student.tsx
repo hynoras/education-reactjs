@@ -2,7 +2,6 @@ import "./style.scss"
 import { StudentList } from "models/admin/studentModel"
 import { useEffect, useState } from "react"
 import { Table, Pagination, PaginationProps, TableProps, TableColumnsType } from "antd"
-import { Typography } from "@mui/material"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import studentService from "services/admin/studentService"
@@ -15,6 +14,7 @@ import departmentService from "services/admin/departmentService"
 import { MajorNameList } from "models/admin/majorModel"
 import majorService from "services/admin/majorService"
 import Title from "themes/text/Text"
+import { IconButton } from "@mui/material"
 
 const StudentPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -110,35 +110,20 @@ const StudentPage: React.FC = () => {
     { title: "Student ID", dataIndex: "identity", key: "identity", sorter: true },
     { title: "Full Name", dataIndex: "full_name", key: "fullName", sorter: true },
     { title: "Date of Birth", dataIndex: "birth_date", key: "birth_date" },
-    {
-      title: "Gender",
-      dataIndex: "gender",
-      key: "gender",
-      filters: genderFilter
-    },
-    {
-      title: "Major",
-      dataIndex: "major_name",
-      key: "major_name",
-      filters: majorFilter
-    },
-    {
-      title: "Department",
-      dataIndex: "department_name",
-      key: "department_name",
-      filters: departmentFilter
-    },
+    { title: "Gender", dataIndex: "gender", key: "gender", filters: genderFilter },
+    { title: "Major", dataIndex: "major_name", key: "major_name", filters: majorFilter },
+    { title: "Department", dataIndex: "department_name", key: "department_name", filters: departmentFilter },
     {
       title: "Action",
       key: "action",
       render: () => (
         <div className="student-table-action-container">
-          <button>
+          <IconButton aria-label="edit" size="small" sx={{ fontSize: "16px", color: "#7494ec" }}>
             <FontAwesomeIcon icon={faPenToSquare} />
-          </button>
-          <button>
+          </IconButton>
+          <IconButton aria-label="delete" size="small" sx={{ fontSize: "16px", color: "#7494ec" }}>
             <FontAwesomeIcon icon={faTrash} />
-          </button>
+          </IconButton>
         </div>
       ),
       align: "center"

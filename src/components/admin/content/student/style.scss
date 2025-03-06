@@ -1,28 +1,11 @@
 @import "/src/themes/mixin.scss";
 $main-color: #7494ec;
+$main-color-light: rgb(133, 157, 212);
+$main-color-dark: #5a78cc;
 
 .border {
   border: none;
   border-radius: 16px;
-}
-
-@mixin sort-icon-format($active) {
-  @if ($active == "active") {
-    .anticon-caret-up {
-      color: white;
-    }
-    .anticon-caret-down {
-      color: $main-color;
-    }
-  }
-  @else {
-    .anticon-caret-up {
-      color: $main-color;
-    }
-    .anticon-caret-down {
-      color: white;
-    }
-  }
 }
 
 .student-container {
@@ -35,16 +18,17 @@ $main-color: #7494ec;
   .student-wrapper {
     padding: 2%;
     .ant-table {
-      height: 70vh;
+      height: 65vh;
       .ant-table-thead th {
         background: $main-color;
         color: white !important;
+        padding: 12px !important;
         .anticon {
           color: white;
         }
-        span {
-          @include sort-icon-format("active");
-        }
+      }
+      .ant-table-tbody td {
+        padding: 12px !important;
       }
     }
     .student-filter-search-container {
@@ -79,6 +63,8 @@ $main-color: #7494ec;
       }
       .ant-pagination-item-active, .ant-pagination-item-active:hover {
         background: $main-color;
+        box-shadow: 2px 2px 4px 1px $main-color-light;
+        font-weight: bold;
         @extend .border;
         a {
           color: white;
