@@ -2,16 +2,11 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import "./themes/global.scss"
 import App from "./App"
-import { loadUser } from "contexts/loginReducer"
 import { store, persistor } from "./utils/store"
 import { PersistGate } from "redux-persist/integration/react"
 import { Provider } from "react-redux"
 // import reportWebVitals from './reportWebVitals';
 
-const token = store.getState().auth.token
-if (token) {
-  store.dispatch(loadUser(token))
-}
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>

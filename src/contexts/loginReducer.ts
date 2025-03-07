@@ -17,7 +17,6 @@ const initialState: AuthState = {
 
 export const loginUser = createAsyncThunk("auth/login", async (payload: LoginRequest, { rejectWithValue }) => {
   try {
-    console.log("payload in async thunk: ", payload)
     const token = await AuthService.login(payload)
     setAuthToken(token)
     return token
