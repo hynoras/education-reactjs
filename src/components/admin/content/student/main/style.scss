@@ -61,7 +61,8 @@ $main-color-dark: #5a78cc;
         background: rgb(226, 226, 226);
         @extend .border;
       }
-      .ant-pagination-item-active, .ant-pagination-item-active:hover {
+      .ant-pagination-item-active,
+      .ant-pagination-item-active:hover {
         background: $main-color;
         box-shadow: 2px 2px 4px 1px $main-color-light;
         font-weight: bold;

@@ -1,13 +1,14 @@
 import Login from "components/auth/login/Login"
 import AdminMainPage from "components/admin/main/AdminMain"
-import StudentPage from "components/admin/content/student/Student"
+import StudentPage from "components/admin/content/student/main/Student"
 import CoursePage from "components/admin/content/course/Course"
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from "react-router-dom"
 import ProtectedRoute from "components/auth/ProtectedRoute"
 import { useDispatch, useSelector } from "react-redux"
 import { loadUser } from "contexts/loginReducer"
 import { useEffect } from "react"
 import { AppDispatch, RootState } from "utils/store"
+import StudentDetailPage from "components/admin/content/student/detail/StudentDetail"
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -35,6 +36,7 @@ const App = () => {
           }
         >
           <Route path="student" element={<StudentPage />} />
+          <Route path="student/:studentId" element={<StudentDetailPage />} />
           <Route path="course" element={<CoursePage />} />
         </Route>
       </Routes>

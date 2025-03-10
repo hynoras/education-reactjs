@@ -15,6 +15,7 @@ import { MajorNameList } from "models/admin/majorModel"
 import majorService from "services/admin/majorService"
 import Title from "themes/text/Text"
 import { IconButton } from "@mui/material"
+import { useNavigate, useParams } from "react-router-dom"
 
 const StudentPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -31,6 +32,8 @@ const StudentPage: React.FC = () => {
     setSearchQuery,
     setOptions
   } = useSearch<StudentList>(studentService.getAllStudent)
+
+  const navigate = useNavigate()
 
   const { data: departments } = useFetch<DepartmentNameList>(departmentService.getAllDepartmentName)
   const { data: majors } = useFetch<MajorNameList>(majorService.getAllMajorName)
@@ -91,6 +94,11 @@ const StudentPage: React.FC = () => {
     setSortOrder(newSortOrder)
   }
 
+  const onClick = (record: any) => {
+    console.log("record identity", record.identity)
+    navigate(`/admin/student/${record.identity}`)
+  }
+
   const genderFilter = Object.values(Gender).map((value) => ({
     text: value,
     value: value
@@ -106,9 +114,33 @@ const StudentPage: React.FC = () => {
     value: String(value.major_name)
   }))
 
+  const style = {
+    cursor: "pointer",
+    color: "#7494ec",
+    textDecoration: "underlined"
+  }
+
   const columns: TableColumnsType<StudentList> = [
-    { title: "Student ID", dataIndex: "identity", key: "identity", sorter: true },
-    { title: "Full Name", dataIndex: "full_name", key: "fullName", sorter: true },
+    {
+      title: "Student ID",
+      dataIndex: "identity",
+      key: "identity",
+      onCell: (record) => ({
+        onClick: () => onClick(record),
+        style: style
+      }),
+      sorter: true
+    },
+    {
+      title: "Full Name",
+      dataIndex: "full_name",
+      key: "fullName",
+      onCell: (record) => ({
+        onClick: () => onClick(record),
+        style: style
+      }),
+      sorter: true
+    },
     { title: "Date of Birth", dataIndex: "birth_date", key: "birth_date" },
     { title: "Gender", dataIndex: "gender", key: "gender", filters: genderFilter },
     { title: "Major", dataIndex: "major_name", key: "major_name", filters: majorFilter },
