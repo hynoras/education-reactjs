@@ -1,4 +1,4 @@
-import { PaginatedStudentList } from "models/admin/studentModel"
+import { PaginatedStudentList, StudentDetail } from "models/admin/studentModel"
 import { api } from "utils/api"
 import { store } from "utils/store"
 
@@ -32,6 +32,19 @@ class StudentService {
     } catch (error) {
       console.error("Error fetching students:", error)
       return { data: { content: [], totalElements: 0 } }
+    }
+  }
+
+  async getStudentDetail(options?: { pathParams?: any }): Promise<StudentDetail | any> {
+    try {
+      const token = store.getState().auth.token
+      const response = await api.get(`/admin/students/${options?.pathParams}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      return response.data
+    } catch (error) {
+      console.error("Error fetching student detail:", error)
+      return
     }
   }
 }

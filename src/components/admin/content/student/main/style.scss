@@ -27,8 +27,21 @@ $main-color-dark: #5a78cc;
           color: white;
         }
       }
-      .ant-table-tbody td {
-        padding: 12px !important;
+      .ant-table-tbody {
+        td {
+          padding: 12px !important;
+        }
+        .student-table-action-container {
+          @include flex-space-around;
+          i {
+            cursor: pointer;
+          }
+        }
+        td:hover {
+          cursor: pointer;
+          color: $main-color;
+          text-decoration: underline;
+        }
       }
     }
     .student-filter-search-container {
@@ -72,12 +85,5 @@ $main-color-dark: #5a78cc;
         }
       }
     }
-  }
-}
-
-.student-table-action-container {
-  @include flex-space-around;
-  i {
-    cursor: pointer;
   }
 }

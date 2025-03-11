@@ -1,6 +1,6 @@
 import "./style.scss"
 import { StudentList } from "models/admin/studentModel"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Table, Pagination, PaginationProps, TableProps, TableColumnsType } from "antd"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons"
@@ -15,16 +15,18 @@ import { MajorNameList } from "models/admin/majorModel"
 import majorService from "services/admin/majorService"
 import Title from "themes/text/Text"
 import { IconButton } from "@mui/material"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const StudentPage: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [pageSize, setPageSize] = useState<number>(10)
-  const [sortBy, setSortBy] = useState<string>("identity")
-  const [sortOrder, setSortOrder] = useState<string>("desc")
-  const [gender, setGender] = useState<string>("")
-  const [major, setMajor] = useState<string>("")
-  const [department, setDepartment] = useState<string>("")
+  const [queryOptions, setQueryOptions] = useState({
+    currentPage: 1,
+    pageSize: 10,
+    sortBy: "identity",
+    sortOrder: "desc",
+    gender: "",
+    major: "",
+    department: ""
+  })
   const {
     data: students,
     totalElements,
@@ -39,59 +41,49 @@ const StudentPage: React.FC = () => {
   const { data: majors } = useFetch<MajorNameList>(majorService.getAllMajorName)
 
   useEffect(() => {
-    setOptions((prev) => ({
-      ...prev,
-      currentPage: currentPage,
-      pageSize: pageSize,
-      sortBy: sortBy,
-      sortOrder: sortOrder,
-      gender: gender,
-      major: major,
-      department: department
-    }))
-  }, [setOptions, currentPage, pageSize, sortBy, sortOrder, gender, major, department])
+    setOptions(queryOptions)
+  }, [queryOptions, setOptions])
 
   const onChangePagination: PaginationProps["onChange"] = (page: number, size: number) => {
-    setCurrentPage(page)
-    setPageSize(size)
+    setQueryOptions((prev) => ({ ...prev, currentPage: page, pageSize: size }))
   }
 
-  const extractFilterValues = (filtersArray: Array<any>, filterKey: string, setter: (value: string) => void) => {
-    const filterSubArray = filtersArray.find((key) => key.includes(filterKey))
-    setter(filterSubArray ? filterSubArray[1]?.join(",") : "")
+  const updateFilter = (filtersList: Array<any>, key: string) => {
+    const filter = filtersList.find(([filterKey]) => filterKey.includes(key))
+    return filter ? filter[1]?.join(",") : ""
   }
 
-  const handleFilter = (filters: Record<any, any | null>, filtersList: Array<any>) => {
-    if (filters["gender"] === null) {
-      setGender("")
-    }
-    if (filters["major_name"] === null) {
-      setMajor("")
-    }
-    if (filters["department_name"] === null) {
-      setDepartment("")
-    }
+  const handleFilter = (filtersList: Array<any>) => {
     if (filtersList.length === 0) {
-      setGender("")
-      setMajor("")
-      setDepartment("")
+      setQueryOptions((prev) => ({
+        ...prev,
+        gender: "",
+        major: "",
+        department: ""
+      }))
+      return
     }
-    extractFilterValues(filtersList, "gender", setGender)
-    extractFilterValues(filtersList, "major_name", setMajor)
-    extractFilterValues(filtersList, "department_name", setDepartment)
+
+    setQueryOptions((prev) => ({
+      ...prev,
+      gender: updateFilter(filtersList, "gender"),
+      major: updateFilter(filtersList, "major_name"),
+      department: updateFilter(filtersList, "department_name")
+    }))
   }
 
   const onChangeTable: TableProps<StudentList>["onChange"] = (_, filters, sorter) => {
     const filtersList = Object.entries(filters).filter(([_, value]) => value && value.length > 0)
-    handleFilter(filters, filtersList)
+    handleFilter(filtersList)
+
     const singleSorter = Array.isArray(sorter) ? sorter[0] : sorter
-    if (singleSorter?.columnKey === undefined) {
-      setSortBy("")
-      setSortOrder("")
-    }
-    const newSortOrder = singleSorter.order === "ascend" ? "asc" : "desc"
-    setSortBy(singleSorter.columnKey as string)
-    setSortOrder(newSortOrder)
+    if (!singleSorter?.columnKey) return
+
+    setQueryOptions((prev) => ({
+      ...prev,
+      sortBy: singleSorter.columnKey as string,
+      sortOrder: singleSorter.order === "ascend" ? "asc" : "desc"
+    }))
   }
 
   const onClick = (record: any) => {
@@ -117,50 +109,53 @@ const StudentPage: React.FC = () => {
   const style = {
     cursor: "pointer",
     color: "#7494ec",
-    textDecoration: "underlined"
+    textDecoration: "underline"
   }
 
-  const columns: TableColumnsType<StudentList> = [
-    {
-      title: "Student ID",
-      dataIndex: "identity",
-      key: "identity",
-      onCell: (record) => ({
-        onClick: () => onClick(record),
-        style: style
-      }),
-      sorter: true
-    },
-    {
-      title: "Full Name",
-      dataIndex: "full_name",
-      key: "fullName",
-      onCell: (record) => ({
-        onClick: () => onClick(record),
-        style: style
-      }),
-      sorter: true
-    },
-    { title: "Date of Birth", dataIndex: "birth_date", key: "birth_date" },
-    { title: "Gender", dataIndex: "gender", key: "gender", filters: genderFilter },
-    { title: "Major", dataIndex: "major_name", key: "major_name", filters: majorFilter },
-    { title: "Department", dataIndex: "department_name", key: "department_name", filters: departmentFilter },
-    {
-      title: "Action",
-      key: "action",
-      render: () => (
-        <div className="student-table-action-container">
-          <IconButton aria-label="edit" size="small" sx={{ fontSize: "16px", color: "#7494ec" }}>
-            <FontAwesomeIcon icon={faPenToSquare} />
-          </IconButton>
-          <IconButton aria-label="delete" size="small" sx={{ fontSize: "16px", color: "#7494ec" }}>
-            <FontAwesomeIcon icon={faTrash} />
-          </IconButton>
-        </div>
-      ),
-      align: "center"
-    }
-  ]
+  const columns: TableColumnsType<StudentList> = useMemo(
+    () => [
+      {
+        title: "Student ID",
+        dataIndex: "identity",
+        key: "identity",
+        onCell: (record) => ({
+          onClick: () => onClick(record),
+          style: style
+        }),
+        sorter: true
+      },
+      {
+        title: "Full Name",
+        dataIndex: "full_name",
+        key: "fullName",
+        onCell: (record) => ({
+          onClick: () => onClick(record),
+          style: style
+        }),
+        sorter: true
+      },
+      { title: "Date of Birth", dataIndex: "birth_date", key: "birth_date" },
+      { title: "Gender", dataIndex: "gender", key: "gender", filters: genderFilter },
+      { title: "Major", dataIndex: "major_name", key: "major_name", filters: majorFilter },
+      { title: "Department", dataIndex: "department_name", key: "department_name", filters: departmentFilter },
+      {
+        title: "Action",
+        key: "action",
+        render: () => (
+          <div className="student-table-action-container">
+            <IconButton aria-label="edit" size="small" sx={{ fontSize: "16px", color: "#7494ec" }}>
+              <FontAwesomeIcon icon={faPenToSquare} />
+            </IconButton>
+            <IconButton aria-label="delete" size="small" sx={{ fontSize: "16px", color: "#7494ec" }}>
+              <FontAwesomeIcon icon={faTrash} />
+            </IconButton>
+          </div>
+        ),
+        align: "center"
+      }
+    ],
+    [departmentFilter, genderFilter, majorFilter, onClick, style]
+  )
 
   return (
     <div className="student-container">
@@ -190,9 +185,9 @@ const StudentPage: React.FC = () => {
           className="student-table-pagination"
           align="end"
           defaultCurrent={1}
-          current={currentPage}
+          current={queryOptions.currentPage}
           total={totalElements}
-          pageSize={pageSize}
+          pageSize={queryOptions.pageSize}
           onChange={onChangePagination}
           showQuickJumper
           showTotal={(total) => `Total ${total} students`}

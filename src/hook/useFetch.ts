@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 
 interface FetchOptions {
+  pathParams?: any
   currentPage?: number
   pageSize?: number
   sortBy?: string
@@ -18,6 +19,7 @@ const useFetch = <T>(fetchFunction: (options?: FetchOptions) => Promise<any>, in
   const [totalElements, setTotalElements] = useState<number>(0)
   const [totalPages, setTotalPages] = useState<number>(0)
   const [options, setOptions] = useState<FetchOptions>({
+    pathParams: initialOptions.pathParams ?? undefined,
     currentPage: initialOptions.currentPage ?? 1,
     pageSize: initialOptions.pageSize ?? 10,
     sortBy: initialOptions.sortBy,
@@ -33,6 +35,10 @@ const useFetch = <T>(fetchFunction: (options?: FetchOptions) => Promise<any>, in
       setLoading(true)
       setError(null)
       try {
+        let finalFetchFunction = fetchFunction
+        if (options.pathParams && Object.keys(options.pathParams).length > 0) {
+          finalFetchFunction = (fetchOptions) => fetchFunction({ ...fetchOptions, pathParams: options.pathParams })
+        }
         const response = await fetchFunction(options)
         if (response.data?.content) {
           setData(response.data.content)
