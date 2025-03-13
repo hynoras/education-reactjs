@@ -16,7 +16,7 @@ export interface PaginatedStudentList {
 
 export interface ParentInformation {
   full_name: string
-  birth_date: string
+  date_of_birth: string
   nationality: string
   permanent_address: string
   relationship: string
@@ -25,7 +25,7 @@ export interface ParentInformation {
 export interface PersonalInformation {
   identity: string
   full_name: string
-  birth_date: string
+  date_of_birth: string
   gender: string
   permanent_address: string
   temporary_address: string

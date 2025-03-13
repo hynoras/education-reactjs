@@ -35,10 +35,10 @@ const useFetch = <T>(fetchFunction: (options?: FetchOptions) => Promise<any>, in
       setLoading(true)
       setError(null)
       try {
-        let finalFetchFunction = fetchFunction
-        if (options.pathParams && Object.keys(options.pathParams).length > 0) {
-          finalFetchFunction = (fetchOptions) => fetchFunction({ ...fetchOptions, pathParams: options.pathParams })
-        }
+        // let finalFetchFunction = fetchFunction
+        // if (options.pathParams && Object.keys(options.pathParams).length > 0) {
+        //   finalFetchFunction = (fetchOptions) => fetchFunction({ ...fetchOptions, pathParams: options.pathParams })
+        // }
         const response = await fetchFunction(options)
         if (response.data?.content) {
           setData(response.data.content)

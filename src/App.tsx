@@ -10,29 +10,29 @@ import { useEffect } from "react"
 import { AppDispatch, RootState } from "utils/store"
 import StudentDetailPage from "components/admin/content/student/detail/StudentDetail"
 
-const App = () => {
-  // const dispatch = useDispatch<AppDispatch>()
-  // const token = useSelector((state: RootState) => state.auth.token)
-  // const rehydrated = useSelector((state: RootState) => state.auth._persist?.rehydrated)
+const App: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>()
+  const token = useSelector((state: RootState) => state.auth.token)
+  const rehydrated = useSelector((state: RootState) => state.auth._persist?.rehydrated)
 
-  // useEffect(() => {
-  //   if (rehydrated) {
-  //     if (token) {
-  //       dispatch(loadUser(token))
-  //     }
-  //   }
-  // }, [rehydrated, token, dispatch])
+  useEffect(() => {
+    if (rehydrated) {
+      if (token) {
+        dispatch(loadUser(token))
+      }
+    }
+  }, [rehydrated, token, dispatch])
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="admin/student/:studentId" />} />
+        <Route path="/" element={<Navigate to="login" />} />
         <Route path="/login" element={<Login />} />
         <Route
           path="/admin/*"
           element={
-            // <ProtectedRoute requiredRole="ADMIN" redirectPath="/">
-            <AdminMainPage />
-            // </ProtectedRoute>
+            <ProtectedRoute requiredRole="ADMIN" redirectPath="/">
+              <AdminMainPage />
+            </ProtectedRoute>
           }
         >
           <Route path="student" element={<StudentPage />} />
