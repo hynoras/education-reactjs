@@ -1,7 +1,6 @@
 import "./style.scss"
 import { useNavigate, useParams } from "react-router-dom"
 import studentService from "services/student/studentService"
-import { StudentDetail } from "models/dtos/student/studentModel"
 import useFetch from "hook/useFetch"
 import { Row, Col, Card, Divider } from "antd"
 import { Content } from "antd/es/layout/layout"
@@ -11,16 +10,16 @@ import { IconButton } from "@mui/material"
 import { ReactNode, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "utils/store"
+import { Student } from "models/domains/student"
 
 const className: string[] = ["student-detail-banner", "student-info"]
 
 const StudentDetailPage: React.FC = () => {
-  const [studentDetail, setStudentDetail] = useState<StudentDetail | null>(null)
-  const [toggleEdit, setToggleEdit] = useState<boolean>(false)
+  const [studentDetail, setStudentDetail] = useState<Student>()
   const role = useSelector((state: RootState) => state.auth.user?.role)
   let { studentId } = useParams()
   const navigate = useNavigate()
-  const { data: students, loading } = useFetch<StudentDetail>(studentService.getStudentDetail, {
+  const { data: students, loading } = useFetch<Student>(studentService.getStudentDetail, {
     pathParams: studentId
   })
 
@@ -54,8 +53,8 @@ const StudentDetailPage: React.FC = () => {
                   <FontAwesomeIcon icon={faUser} />
                 </i>
                 <div className={`${className[0]}-lower-general`}>
-                  <p className={`${className[0]}-full-name`}>{studentDetail?.personal_information.full_name}</p>
-                  <p className={`${className[0]}-identity`}>{studentDetail?.personal_information.identity}</p>
+                  <p className={`${className[0]}-full-name`}>{studentDetail?.full_name}</p>
+                  <p className={`${className[0]}-identity`}>{studentDetail?.identity}</p>
                 </div>
               </div>
             </div>
@@ -69,15 +68,15 @@ const StudentDetailPage: React.FC = () => {
                 title="Personal Information"
                 extra={extra}
               >
-                <RowInfo label="Full name: " value={studentDetail?.personal_information.full_name} />
-                <RowInfo label="Date of Birth: " value={studentDetail?.personal_information.date_of_birth} />
-                <RowInfo label="Gender: " value={studentDetail?.personal_information.gender} />
-                <RowInfo label="Permanent Address: " value={studentDetail?.personal_information.permanent_address} />
-                <RowInfo label="Temporary Address: " value={studentDetail?.personal_information.temporary_address} />
-                <RowInfo label="Ethnic Group: " value={studentDetail?.personal_information.ethnic_group} />
-                <RowInfo label="Religion: " value={studentDetail?.personal_information.religion} />
-                <RowInfo label="Citizen ID: " value={studentDetail?.personal_information.citizen_id} />
-                <RowInfo label="Priority Group: " value={studentDetail?.personal_information.priority_group} />
+                <RowInfo label="Full name: " value={studentDetail?.full_name} />
+                <RowInfo label="Date of Birth: " value={studentDetail?.date_of_birth} />
+                <RowInfo label="Gender: " value={studentDetail?.gender} />
+                <RowInfo label="Permanent Address: " value={studentDetail?.permanent_address} />
+                <RowInfo label="Temporary Address: " value={studentDetail?.temporary_address} />
+                <RowInfo label="Ethnic Group: " value={studentDetail?.ethnic_group} />
+                <RowInfo label="Religion: " value={studentDetail?.religion} />
+                <RowInfo label="Citizen ID: " value={studentDetail?.citizen_id} />
+                <RowInfo label="Priority Group: " value={studentDetail?.priority_group} />
               </Card>
             </div>
           </Col>

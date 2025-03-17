@@ -1,6 +1,6 @@
 import Login from "components/features/auth/login/Login"
 import AdminMainPage from "components/shared/main/admin/AdminMain"
-import StudentPage from "components/features/student/list/Student"
+import StudentPage from "components/features/student/list/StudentList"
 import CoursePage from "components/features/course/Course"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import ProtectedRoute from "components/features/auth/ProtectedRoute"
@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { loadUser } from "contexts/loginReducer"
 import { useEffect } from "react"
 import { AppDispatch, RootState } from "utils/store"
-import StudentDetailPage from "components/features/student/detail/StudentDetail"
-import StudentDetailEditPage from "components/features/student/detail/edit/StudentDetailView"
+import StudentDetailPage from "components/features/student/detail/view/StudentDetailView"
+import StudentDetailEditPage from "components/features/student/detail/edit/StudentDetailEdit"
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()

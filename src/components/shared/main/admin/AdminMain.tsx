@@ -1,7 +1,7 @@
-import Sidebar from "../sidebar/Sidebar"
-import Header from "../header/Header"
 import { Outlet } from "react-router"
 import "./style.scss"
+import Header from "components/shared/header/Header"
+import Sidebar from "components/shared/sidebar/Sidebar"
 
 const AdminMainPage = () => {
   return (

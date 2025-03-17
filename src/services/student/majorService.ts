@@ -1,4 +1,4 @@
-import { MajorNameList } from "models/dtos/student/majorModel"
+import { MajorNameList } from "models/dtos/student/major"
 import { api } from "utils/api"
 import { store } from "utils/store"
 

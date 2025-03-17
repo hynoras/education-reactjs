@@ -1,6 +1,8 @@
-import { PaginatedStudentList, StudentDetail } from "models/dtos/student/studentModel"
+import { StudentDetail } from "models/dtos/student/studentDetail"
+import { Student } from "models/domains/student"
 import { api } from "utils/api"
 import { store } from "utils/store"
+import { PaginatedStudentList } from "models/dtos/student/studentList"
 
 class StudentService {
   async getAllStudent(options?: {
@@ -35,13 +37,14 @@ class StudentService {
     }
   }
 
-  async getStudentDetail(options?: { pathParams?: any }): Promise<StudentDetail | undefined> {
+  async getStudentDetail(options?: { pathParams?: any }): Promise<Student | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get(`/admin/students/${options?.pathParams}`, {
+      const response = await api.get<StudentDetail>(`/admin/students/${options?.pathParams}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      return response.data
+      const studentDetail = response.data
+      return Student.fromDTO(studentDetail)
     } catch (error) {
       console.error("Error fetching student detail:", error)
       return

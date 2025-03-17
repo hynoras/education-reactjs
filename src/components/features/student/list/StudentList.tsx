@@ -1,5 +1,4 @@
 import "./style.scss"
-import { StudentList } from "models/dtos/student/studentModel"
 import { useEffect, useMemo, useState } from "react"
 import { Table, Pagination, PaginationProps, TableProps, TableColumnsType } from "antd"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -9,13 +8,14 @@ import SearchBar from "components/shared/search/SearchBar"
 import useSearch from "hook/useSearch"
 import { Gender } from "enums/gender"
 import useFetch from "hook/useFetch"
-import { DepartmentNameList } from "models/dtos/student/departmentModel"
+import { DepartmentNameList } from "models/dtos/student/department"
 import departmentService from "services/student/departmentService"
-import { MajorNameList } from "models/dtos/student/majorModel"
+import { MajorNameList } from "models/dtos/student/major"
 import majorService from "services/student/majorService"
 import Title from "themes/text/Text"
 import { IconButton } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { StudentList } from "models/dtos/student/studentList"
 
 const StudentPage: React.FC = () => {
   const [queryOptions, setQueryOptions] = useState({
