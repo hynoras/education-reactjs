@@ -1,4 +1,4 @@
-import { DepartmentNameList } from "models/admin/departmentModel"
+import { DepartmentNameList } from "models/dtos/student/departmentModel"
 import { api } from "utils/api"
 import { store } from "utils/store"
 

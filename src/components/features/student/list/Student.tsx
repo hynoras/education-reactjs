@@ -1,18 +1,18 @@
 import "./style.scss"
-import { StudentList } from "models/admin/studentModel"
+import { StudentList } from "models/dtos/student/studentModel"
 import { useEffect, useMemo, useState } from "react"
 import { Table, Pagination, PaginationProps, TableProps, TableColumnsType } from "antd"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons"
-import studentService from "services/admin/studentService"
-import SearchBar from "components/search/SearchBar"
+import studentService from "services/student/studentService"
+import SearchBar from "components/shared/search/SearchBar"
 import useSearch from "hook/useSearch"
 import { Gender } from "enums/gender"
 import useFetch from "hook/useFetch"
-import { DepartmentNameList } from "models/admin/departmentModel"
-import departmentService from "services/admin/departmentService"
-import { MajorNameList } from "models/admin/majorModel"
-import majorService from "services/admin/majorService"
+import { DepartmentNameList } from "models/dtos/student/departmentModel"
+import departmentService from "services/student/departmentService"
+import { MajorNameList } from "models/dtos/student/majorModel"
+import majorService from "services/student/majorService"
 import Title from "themes/text/Text"
 import { IconButton } from "@mui/material"
 import { useNavigate } from "react-router-dom"
@@ -87,8 +87,7 @@ const StudentPage: React.FC = () => {
   }
 
   const onClick = (record: any) => {
-    console.log("record identity", record.identity)
-    navigate(`/admin/student/${record.identity}`)
+    navigate(`/admin/student/${record.identity}/view`)
   }
 
   const genderFilter = Object.values(Gender).map((value) => ({

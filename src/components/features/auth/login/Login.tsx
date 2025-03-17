@@ -12,7 +12,7 @@ import * as yup from "yup"
 import { useDispatch } from "react-redux"
 import { AppDispatch, store } from "utils/store"
 import { loadUser, loginUser } from "contexts/loginReducer"
-import { LoginRequest } from "models/auth/authModel"
+import { LoginRequest } from "models/dtos/auth/authModel"
 
 const loginSchema = yup.object({
   username: yup

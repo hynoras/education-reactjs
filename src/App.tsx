@@ -1,14 +1,15 @@
-import Login from "components/auth/login/Login"
-import AdminMainPage from "components/admin/main/AdminMain"
-import StudentPage from "components/admin/content/student/main/Student"
-import CoursePage from "components/admin/content/course/Course"
+import Login from "components/features/auth/login/Login"
+import AdminMainPage from "components/shared/main/admin/AdminMain"
+import StudentPage from "components/features/student/list/Student"
+import CoursePage from "components/features/course/Course"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import ProtectedRoute from "components/auth/ProtectedRoute"
+import ProtectedRoute from "components/features/auth/ProtectedRoute"
 import { useDispatch, useSelector } from "react-redux"
 import { loadUser } from "contexts/loginReducer"
 import { useEffect } from "react"
 import { AppDispatch, RootState } from "utils/store"
-import StudentDetailPage from "components/admin/content/student/detail/StudentDetail"
+import StudentDetailPage from "components/features/student/detail/StudentDetail"
+import StudentDetailEditPage from "components/features/student/detail/edit/StudentDetailView"
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -35,8 +36,9 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         >
-          <Route path="student" element={<StudentPage />} />
-          <Route path="student/:studentId" element={<StudentDetailPage />} />
+          <Route path="student/" element={<StudentPage />} />
+          <Route path="student/:studentId/view" element={<StudentDetailPage />} />
+          <Route path="student/:studentId/edit" element={<StudentDetailEditPage />} />
           <Route path="course" element={<CoursePage />} />
         </Route>
       </Routes>

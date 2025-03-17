@@ -1,4 +1,4 @@
-import { PaginatedStudentList, StudentDetail } from "models/admin/studentModel"
+import { PaginatedStudentList, StudentDetail } from "models/dtos/student/studentModel"
 import { api } from "utils/api"
 import { store } from "utils/store"
 
@@ -35,7 +35,7 @@ class StudentService {
     }
   }
 
-  async getStudentDetail(options?: { pathParams?: any }): Promise<StudentDetail | any> {
+  async getStudentDetail(options?: { pathParams?: any }): Promise<StudentDetail | undefined> {
     try {
       const token = store.getState().auth.token
       const response = await api.get(`/admin/students/${options?.pathParams}`, {

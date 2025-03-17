@@ -1,4 +1,4 @@
-import { LoginRequest, UserResponse } from "models/auth/authModel"
+import { LoginRequest, UserResponse } from "models/dtos/auth/authModel"
 import { api } from "utils/api"
 
 class AuthService {

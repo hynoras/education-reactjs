@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import AuthService from "../services/auth/authService"
 import { setAuthToken } from "utils/api"
-import { LoginRequest, UserResponse } from "models/auth/authModel"
+import { LoginRequest, UserResponse } from "models/dtos/auth/authModel"
 
 interface AuthState {
   user: UserResponse | null
