@@ -27,8 +27,6 @@ const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
-  const { Password } = Input
-
   const {
     control,
     handleSubmit,
@@ -36,6 +34,11 @@ const Login: React.FC = () => {
   } = useForm<LoginRequest>({
     resolver: yupResolver(loginSchema)
   })
+
+  let status: "" | "error" | "warning" | undefined = ""
+  if (errors.password) {
+    status = "error"
+  }
 
   const onSubmit = async (payload: LoginRequest) => {
     const result = await dispatch(loginUser(payload))
@@ -66,33 +69,33 @@ const Login: React.FC = () => {
                 name="username"
                 control={control}
                 defaultValue=""
-                render={({ field }) => <Input {...field} placeholder="Username" />}
+                render={({ field }) => <Input {...field} status={status} placeholder="Username" />}
               />
-              {errors.username && (
-                <Typography variant="subtitle1" className="error">
-                  {errors.username.message}
-                </Typography>
-              )}
               <i className="login-user-icon">
                 <FontAwesomeIcon icon={faUser} />
               </i>
             </div>
+            {errors.username && (
+              <Typography variant="subtitle1" className="error">
+                {errors.username.message}
+              </Typography>
+            )}
             <div className={"input-container"}>
               <Controller
                 name="password"
                 control={control}
                 defaultValue=""
-                render={({ field }) => <Password {...field} placeholder="Password" />}
+                render={({ field }) => <Input.Password {...field} className="password" placeholder="Password" />}
               />
-              {errors.password && (
-                <Typography variant="subtitle1" className="error">
-                  {errors.password.message}
-                </Typography>
-              )}
               <i>
                 <FontAwesomeIcon className="login-user-icon" icon={faLock} />
               </i>
             </div>
+            {errors.password && (
+              <Typography variant="subtitle1" className="error">
+                {errors.password.message}
+              </Typography>
+            )}
             <Link to="/admin">Forgot password?</Link>
             <LoginButton type="submit" disableRipple>
               Login
