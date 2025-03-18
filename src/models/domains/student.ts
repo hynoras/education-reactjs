@@ -1,5 +1,5 @@
 import { Gender } from "enums/gender"
-import { ParentInformation, StudentDetail, StudentForm } from "models/dtos/student/studentDetail"
+import { ParentInformation, StudentDetail } from "models/dtos/student/studentDetail"
 
 export class Student {
   constructor(
@@ -31,6 +31,4 @@ export class Student {
       dto.parent_information
     )
   }
-
-  static toJSON(dto: StudentForm) {}
 }

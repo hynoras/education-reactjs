@@ -26,9 +26,9 @@ export interface StudentDetail {
   parent_information: Array<ParentInformation>
 }
 
-export interface StudentForm {
+export interface StudentDetailForm {
   full_name: string
-  date_of_birth: string
+  birth_date: string
   gender?: string | undefined
   permanent_address: string
   temporary_address?: string | undefined

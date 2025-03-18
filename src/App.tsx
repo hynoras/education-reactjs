@@ -10,8 +10,10 @@ import { useEffect } from "react"
 import { AppDispatch, RootState } from "utils/store"
 import StudentDetailPage from "components/features/student/detail/view/StudentDetailView"
 import StudentDetailEditPage from "components/features/student/detail/edit/StudentDetailEdit"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 const App: React.FC = () => {
+  const queryClient = new QueryClient()
   const dispatch = useDispatch<AppDispatch>()
   const token = useSelector((state: RootState) => state.auth.token)
   const rehydrated = useSelector((state: RootState) => state.auth._persist?.rehydrated)
@@ -24,25 +26,27 @@ const App: React.FC = () => {
     }
   }, [rehydrated, token, dispatch])
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/admin/*"
-          element={
-            <ProtectedRoute requiredRole="ADMIN" redirectPath="/">
-              <AdminMainPage />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="student/" element={<StudentPage />} />
-          <Route path="student/:studentId/view" element={<StudentDetailPage />} />
-          <Route path="student/:studentId/edit" element={<StudentDetailEditPage />} />
-          <Route path="course" element={<CoursePage />} />
-        </Route>
-      </Routes>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="login" />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute requiredRole="ADMIN" redirectPath="/">
+                <AdminMainPage />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="student/" element={<StudentPage />} />
+            <Route path="student/:studentId/view" element={<StudentDetailPage />} />
+            <Route path="student/:studentId/edit" element={<StudentDetailEditPage />} />
+            <Route path="course" element={<CoursePage />} />
+          </Route>
+        </Routes>
+      </Router>
+    </QueryClientProvider>
   )
 }
 
