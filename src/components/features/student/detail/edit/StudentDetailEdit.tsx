@@ -1,17 +1,21 @@
 import "./style.scss"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Button, Col, DatePicker, Input, Radio, Row, Skeleton } from "antd"
+import { Button, Col, DatePicker, Form, Input, Radio, Row, Skeleton, Typography } from "antd"
 import { Content } from "antd/es/layout/layout"
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import useFetch from "hook/useFetch"
 import { Student } from "models/domains/student"
 import { StudentDetailForm } from "models/dtos/student/studentDetail"
 import { studentDetailSchema } from "models/validation/student/studentDetailSchema"
 import { useEffect, useState } from "react"
-import { Controller, useForm } from "react-hook-form"
+import { Control, Controller, useForm } from "react-hook-form"
 import { useParams } from "react-router"
 import studentService from "services/student/studentService"
 import { useMutation } from "@tanstack/react-query"
+import type { DatePickerProps } from "antd"
+import { Gender } from "enums/gender"
+
+const { Text } = Typography
 
 const StudentDetailEditPage: React.FC = () => {
   const [studentDetail, setStudentDetail] = useState<Student>()
@@ -37,8 +41,8 @@ const StudentDetailEditPage: React.FC = () => {
     resolver: yupResolver(studentDetailSchema),
     defaultValues: {
       full_name: "",
-      birth_date: "",
-      gender: "",
+      birth_date: new Date(),
+      gender: Gender.MALE,
       permanent_address: "",
       temporary_address: "",
       ethnic_group: "",
@@ -47,6 +51,20 @@ const StudentDetailEditPage: React.FC = () => {
       priority_group: ""
     }
   })
+
+  useEffect(() => {
+    if (studentDetail) {
+      setValue("full_name", studentDetail.full_name)
+      setValue("birth_date", new Date(studentDetail.date_of_birth))
+      setValue("gender", studentDetail.gender)
+      setValue("permanent_address", studentDetail.permanent_address)
+      setValue("temporary_address", studentDetail.temporary_address)
+      setValue("ethnic_group", studentDetail.ethnic_group)
+      setValue("religion", studentDetail.religion)
+      setValue("citizen_id", studentDetail.citizen_id)
+      setValue("priority_group", studentDetail.priority_group)
+    }
+  }, [studentDetail, setValue])
 
   const mutation = useMutation({
     mutationFn: (updatedStudentDetail: StudentDetailForm) => {
@@ -70,99 +88,72 @@ const StudentDetailEditPage: React.FC = () => {
         {(studentDetail && (
           <form className={"student-detail-form"} onSubmit={handleSubmit(onSubmitHandler)}>
             <Row gutter={[16, 16]}>
-              <Col span={12}>
-                <Controller
-                  name="full_name"
-                  control={control}
-                  render={({ field }) => <Input {...field} placeholder="Ex: Quach Vinh Quang" />}
-                />
-                {errors.full_name && <p>{errors.full_name?.message}</p>}
+              <Col className="student-detail-form-wrapper" span={12}>
+                <InputRow control={control} name={"full_name"} placeholder="Ex: Quach Vinh Quang" label={"Full Name"} />
+                {errors.full_name && <Text type="danger">{errors.full_name?.message}</Text>}
                 <Controller
                   name="birth_date"
                   control={control}
                   render={({ field }) => (
-                    <DatePicker
-                      format="YYYY/MM/DD"
-                      defaultValue={studentDetail?.date_of_birth ? dayjs(studentDetail.date_of_birth) : undefined}
-                      onChange={(date, dateString) => field.onChange(dateString)}
-                    />
+                    <DatePicker {...field} format="YYYY-MM-DD" value={field.value ? dayjs(field.value) : undefined} />
                   )}
                 />
-                {errors.birth_date && <p>{errors.birth_date?.message}</p>}
-                <Controller
-                  name="gender"
+                {errors.birth_date && <Text type="danger">{errors.birth_date?.message}</Text>}
+                <Form.Item className="student-detail-item-label" label={"Gender"}>
+                  <Controller
+                    name="gender"
+                    control={control}
+                    render={({ field }) => (
+                      <Radio.Group
+                        {...field}
+                        defaultValue={studentDetail?.gender}
+                        options={[
+                          { value: "Male", label: "Male" },
+                          { value: "Female", label: "Female" }
+                        ]}
+                      />
+                    )}
+                  />
+                </Form.Item>
+                <InputRow
                   control={control}
-                  render={({ field }) => (
-                    <Radio.Group
-                      {...field}
-                      defaultValue={studentDetail?.gender}
-                      options={[
-                        { value: "Male", label: "Male" },
-                        { value: "Female", label: "Female" }
-                      ]}
-                    />
-                  )}
+                  name={"permanent_address"}
+                  placeholder="Enter permanent address"
+                  label={"Permanent Address"}
                 />
-                <Controller
-                  name="permanent_address"
+                {errors.permanent_address && <Text type="danger">{errors.permanent_address?.message}</Text>}
+                <InputRow
                   control={control}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      defaultValue={studentDetail?.permanent_address}
-                      placeholder="Enter permanent address"
-                    />
-                  )}
+                  name={"temporary_address"}
+                  placeholder="Enter temporary address"
+                  label={"Temporary Address"}
                 />
-                {errors.permanent_address && <p>{errors.permanent_address?.message}</p>}
-                <Controller
-                  name="temporary_address"
+                <InputRow
                   control={control}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      defaultValue={studentDetail?.temporary_address}
-                      placeholder="Enter temporary address"
-                    />
-                  )}
+                  name={"ethnic_group"}
+                  placeholder="Enter ethnic group"
+                  label={"Ethnic Group"}
                 />
-                <Controller
-                  name="ethnic_group"
-                  control={control}
-                  render={({ field }) => (
-                    <Input {...field} defaultValue={studentDetail?.ethnic_group} placeholder="Enter ethnic group" />
-                  )}
-                />
-                <Controller
-                  name="religion"
-                  control={control}
-                  render={({ field }) => (
-                    <Input {...field} defaultValue={studentDetail?.religion} placeholder="Enter religion" />
-                  )}
-                />
-                <Controller
-                  name="citizen_id"
-                  control={control}
-                  render={({ field }) => (
-                    <Input {...field} defaultValue={studentDetail?.citizen_id} placeholder="Enter citizen ID" />
-                  )}
-                />
-                {errors.citizen_id && <p>{errors.citizen_id?.message}</p>}
-                <Controller
-                  name="priority_group"
-                  control={control}
-                  render={({ field }) => (
-                    <Radio.Group
-                      {...field}
-                      defaultValue={studentDetail?.priority_group}
-                      options={[
-                        { value: "None", label: "None" },
-                        { value: "Vùng sâu", label: "Vùng sâu" },
-                        { value: "Con thương binh", label: "Con thương binh" }
-                      ]}
-                    />
-                  )}
-                />
+                <InputRow control={control} name={"religion"} placeholder="Enter religion" label={"Religion"} />
+                <InputRow control={control} name={"citizen_id"} placeholder="Enter citizen id" label={"Citizen ID"} />
+                {errors.citizen_id && <Text type="danger">{errors.citizen_id?.message}</Text>}
+                <Form.Item className="student-detail-item-label" label={"Priority Group"}>
+                  <Controller
+                    name="priority_group"
+                    control={control}
+                    render={({ field }) => (
+                      <Radio.Group
+                        {...field}
+                        defaultValue={studentDetail?.priority_group}
+                        options={[
+                          { value: "None", label: "None" },
+                          { value: "Vùng sâu", label: "Vùng sâu" },
+                          { value: "Con thương binh", label: "Con thương binh" }
+                        ]}
+                      />
+                    )}
+                  />
+                </Form.Item>
               </Col>
             </Row>
             <Button type="primary" htmlType="submit" disabled={mutation.isPending}>
@@ -171,6 +162,25 @@ const StudentDetailEditPage: React.FC = () => {
           </form>
         )) || <Skeleton active />}
       </Content>
+    </>
+  )
+}
+
+const InputRow: React.FC<{
+  control?: Control<any> | undefined
+  name: string
+  label: string
+  placeholder?: string
+}> = ({ control, name, label, placeholder }) => {
+  return (
+    <>
+      <Form.Item className="student-detail-item-label" label={label}>
+        <Controller
+          name={name}
+          control={control}
+          render={({ field }) => <Input className="student-detail-item-input" {...field} placeholder={placeholder} />}
+        />
+      </Form.Item>
     </>
   )
 }

@@ -111,7 +111,7 @@ const StudentDetailPage: React.FC = () => {
   )
 }
 
-const RowInfo: React.FC<{ label: string; value: string | undefined }> = ({ label, value }) => {
+const RowInfo: React.FC<{ label: string; value: any | undefined }> = ({ label, value }) => {
   return (
     <p className={`${className[1]}-content`}>
       <span className={`${className[1]}-label`}>{label}</span>

@@ -5,7 +5,7 @@ export class Student {
   constructor(
     public identity: string,
     public full_name: string,
-    public date_of_birth: string,
+    public date_of_birth: Date,
     public gender: Gender,
     public permanent_address: string,
     public temporary_address: string | undefined,

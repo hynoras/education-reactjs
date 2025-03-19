@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs"
 import { Gender } from "enums/gender"
 
 export interface ParentInformation {
@@ -11,7 +12,7 @@ export interface ParentInformation {
 export interface PersonalInformation {
   identity: string
   full_name: string
-  date_of_birth: string
+  date_of_birth: Date
   gender: Gender
   permanent_address: string
   temporary_address?: string
@@ -28,8 +29,8 @@ export interface StudentDetail {
 
 export interface StudentDetailForm {
   full_name: string
-  birth_date: string
-  gender?: string | undefined
+  birth_date: Date
+  gender?: Gender | undefined
   permanent_address: string
   temporary_address?: string | undefined
   ethnic_group?: string | undefined
