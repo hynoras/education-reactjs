@@ -91,14 +91,16 @@ const StudentDetailEditPage: React.FC = () => {
               <Col className="student-detail-form-wrapper" span={12}>
                 <InputRow control={control} name={"full_name"} placeholder="Ex: Quach Vinh Quang" label={"Full Name"} />
                 {errors.full_name && <Text type="danger">{errors.full_name?.message}</Text>}
-                <Controller
-                  name="birth_date"
-                  control={control}
-                  render={({ field }) => (
-                    <DatePicker {...field} format="YYYY-MM-DD" value={field.value ? dayjs(field.value) : undefined} />
-                  )}
-                />
-                {errors.birth_date && <Text type="danger">{errors.birth_date?.message}</Text>}
+                <Form.Item className="student-detail-item-label" label={"Birth Date"}>
+                  <Controller
+                    name="birth_date"
+                    control={control}
+                    render={({ field }) => (
+                      <DatePicker {...field} format="YYYY-MM-DD" value={field.value ? dayjs(field.value) : undefined} />
+                    )}
+                  />
+                  {errors.birth_date && <Text type="danger">{errors.birth_date?.message}</Text>}
+                </Form.Item>
                 <Form.Item className="student-detail-item-label" label={"Gender"}>
                   <Controller
                     name="gender"
