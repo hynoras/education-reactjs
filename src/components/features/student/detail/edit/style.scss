@@ -1,9 +1,41 @@
+@import "/src/themes/mixin.scss";
+$main-color: #7494ec;
+$main-color-light: rgb(178, 187, 208);
+$main-color-dark: #5a78cc;
+
 .student-detail-form {
   padding: 0;
   .student-detail-form-wrapper {
     line-height: 1.5;
-    display: flex;
-    vertical-align: middle;
+    @include flex-column;
     flex-direction: column;
+    .student-detail-item-label {
+      margin-bottom: 12px;
+      .ant-row {
+        @include flex-column;
+        align-items: flex-start;
+        .ant-picker {
+          background: #eee;
+          &:focus {
+            border: 2px solid $main-color;
+          }
+        }
+        .student-detail-item-input {
+          @extend .ant-picker;
+        }
+      }
+    }
+    .student-detail-form-button {
+      background: $main-color !important;
+      color: white;
+      &:hover {
+        color: white;
+        box-shadow: 2px 2px 4px 1px $main-color-light;
+      }
+      &:focus {
+        background: $main-color-dark !important;
+        color: #eee;
+      }
+    }
   }
 }
