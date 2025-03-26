@@ -19,7 +19,6 @@ export interface PersonalInformation {
   ethnic_group: string
   religion: string
   citizen_id: string
-  priority_group: string
 }
 
 export interface StudentDetail {
@@ -36,5 +35,4 @@ export interface StudentDetailForm {
   ethnic_group?: string | undefined
   religion?: string | undefined
   citizen_id: string
-  priority_group?: string | undefined
 }

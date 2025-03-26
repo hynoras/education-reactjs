@@ -76,7 +76,6 @@ const StudentDetailPage: React.FC = () => {
                 <RowInfo label="Ethnic Group: " value={studentDetail?.ethnic_group} />
                 <RowInfo label="Religion: " value={studentDetail?.religion} />
                 <RowInfo label="Citizen ID: " value={studentDetail?.citizen_id} />
-                <RowInfo label="Priority Group: " value={studentDetail?.priority_group} />
               </Card>
             </div>
           </Col>
