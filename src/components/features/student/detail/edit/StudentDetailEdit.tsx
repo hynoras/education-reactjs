@@ -1,6 +1,6 @@
 import "./style.scss"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Button, Card, Col, Row, Skeleton, Typography } from "antd"
+import { Button, Card, Skeleton, Typography } from "antd"
 import { Content } from "antd/es/layout/layout"
 import useFetch from "hook/useFetch"
 import { Student } from "models/domains/student"
@@ -16,7 +16,6 @@ import RadioGroup from "components/shared/radio/RadioGroup"
 import InputRow from "components/shared/input/InputRow"
 import DatePickerRow from "components/shared/datepicker/DatePickerRow"
 import { formatString } from "utils/stringUtils"
-import { array } from "yup"
 
 const { Title } = Typography
 
@@ -99,58 +98,47 @@ const StudentDetailEditPage: React.FC = () => {
       <Content className="student-detail-container">
         <Title level={2}> Edit student</Title>
         {(studentDetail && (
-          <form className={"student-detail-form"} onSubmit={handleSubmit(onSubmitHandler)}>
-            <Row gutter={[16, 16]}>
-              <Col className="student-detail-form-wrapper" span={12}>
-                <Card className={"student-detail-card-body"}>
-                  {controllerName.map((item, index) => (
-                    <div key={index}>
-                      {isValidItem(["birth_date"], item) && (
-                        <DatePickerRow
-                          className={["student-detail-item-label"]}
-                          control={control}
-                          name={"birth_date"}
-                          label={"Birth Date: "}
-                          format={""}
-                        />
-                      )}
-                      {isValidItem(["gender"], item) && (
-                        <RadioGroup
-                          className={["student-detail-item-label"]}
-                          control={control}
-                          name={item}
-                          label={"Gender:"}
-                          value={studentDetail?.gender}
-                          options={genderMap}
-                        />
-                      )}
-                      {isValidItem(
-                        [
-                          "full_name",
-                          "permanent_address",
-                          "temporary_address",
-                          "ethnic_group",
-                          "religion",
-                          "citizen_id"
-                        ],
-                        item
-                      ) && (
-                        <InputRow
-                          className={["student-detail-item-label", "student-detail-item-input"]}
-                          control={control}
-                          name={item}
-                          label={`${formatString(controllerName[index])}:`}
-                        />
-                      )}
-                    </div>
-                  ))}
-                  <Button className={"student-detail-form-button"} htmlType="submit" disabled={mutation.isPending}>
-                    {mutation.isPending ? "Saving..." : "Submit"}
-                  </Button>
-                </Card>
-              </Col>
-            </Row>
-          </form>
+          <Card className={"student-detail-card"}>
+            <form className={"student-detail-form"} onSubmit={handleSubmit(onSubmitHandler)}>
+              {controllerName.map((item, index) => (
+                <>
+                  {isValidItem(["date_of_birth"], item) && (
+                    <DatePickerRow
+                      className={["student-detail-item-label"]}
+                      control={control}
+                      name={"birth_date"}
+                      label={"Birth Date: "}
+                      format={""}
+                    />
+                  )}
+                  {isValidItem(["gender"], item) && (
+                    <RadioGroup
+                      className={["student-detail-item-label", "student-detail-item-radio"]}
+                      control={control}
+                      name={item}
+                      label={"Gender:"}
+                      value={studentDetail?.gender}
+                      options={genderMap}
+                    />
+                  )}
+                  {isValidItem(
+                    ["full_name", "permanent_address", "temporary_address", "ethnic_group", "religion", "citizen_id"],
+                    item
+                  ) && (
+                    <InputRow
+                      className={["student-detail-item-label", "student-detail-item-input"]}
+                      control={control}
+                      name={item}
+                      label={`${formatString(controllerName[index])}:`}
+                    />
+                  )}
+                </>
+              ))}
+              <Button className={"student-detail-form-button"} htmlType="submit" disabled={mutation.isPending}>
+                {mutation.isPending ? "Saving..." : "Submit"}
+              </Button>
+            </form>
+          </Card>
         )) || <Skeleton active />}
       </Content>
     </>

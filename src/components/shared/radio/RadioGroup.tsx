@@ -1,4 +1,4 @@
-import { CheckboxOptionType, Radio, Typography } from "antd"
+import { Radio, Typography } from "antd"
 import { Control, Controller } from "react-hook-form"
 
 const { Text } = Typography
