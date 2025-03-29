@@ -53,12 +53,10 @@ class StudentService {
 
   async putStudentDetail(studentId: any, payload: StudentDetailForm): Promise<string | undefined> {
     try {
-      console.log("Sending API request with:", payload)
       const token = store.getState().auth.token
       const response = await api.put(`/admin/students/update/${studentId}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      console.log("API Response:", response)
       return "Updated successfully"
     } catch (error) {
       console.error("Error updating student detail:", error)

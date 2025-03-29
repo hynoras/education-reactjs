@@ -76,7 +76,6 @@ const StudentDetailEditPage: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: (updatedStudentDetail: StudentDetailForm) => {
-      console.log("Mutation triggered with:", updatedStudentDetail)
       return studentService.putStudentDetail(studentId, updatedStudentDetail)
     },
     onSuccess: () => {
@@ -85,7 +84,6 @@ const StudentDetailEditPage: React.FC = () => {
   })
 
   const onSubmitHandler = (payload: StudentDetailForm) => {
-    console.log("Submitting:", payload)
     mutation.mutate(payload)
   }
 

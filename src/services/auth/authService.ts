@@ -14,7 +14,7 @@ class AuthService {
       })
       return response.data
     } catch (error: any) {
-      console.log("Failed to check auth: ", error)
+      console.error("Failed to check auth: ", error)
       return null
     }
   }
