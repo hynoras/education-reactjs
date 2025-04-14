@@ -3,6 +3,7 @@ import { Student } from "models/domains/student"
 import { api } from "utils/api"
 import { store } from "utils/store"
 import { PaginatedStudentList } from "models/dtos/student/studentList"
+import { BEARER } from "constants/api"
 
 class StudentService {
   async getAllStudent(options?: {
@@ -28,7 +29,7 @@ class StudentService {
           department: options?.department,
           search: options?.searchQuery ?? ""
         },
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `${BEARER} ${token}` }
       })
       return response
     } catch (error) {
@@ -41,7 +42,7 @@ class StudentService {
     try {
       const token = store.getState().auth.token
       const response = await api.get<StudentDetail>(`/admin/students/${options?.pathParams}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `${BEARER} ${token}` }
       })
       const studentDetail = response.data
       return Student.fromDTO(studentDetail)
@@ -55,7 +56,7 @@ class StudentService {
     try {
       const token = store.getState().auth.token
       const response = await api.put(`/admin/students/update/${studentId}`, payload, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `${BEARER} ${token}` }
       })
       return "Updated successfully"
     } catch (error) {

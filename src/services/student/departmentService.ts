@@ -1,3 +1,4 @@
+import { BEARER } from "constants/api"
 import { DepartmentNameList } from "models/dtos/student/department"
 import { api } from "utils/api"
 import { store } from "utils/store"
@@ -7,7 +8,7 @@ class DepartmentService {
     try {
       const token = store.getState().auth.token
       const response = await api.get("admin/departments", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `${BEARER} ${token}` }
       })
       return response.data
     } catch (error) {

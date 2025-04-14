@@ -1,3 +1,4 @@
+import { BEARER } from "constants/api"
 import { LoginRequest, UserResponse } from "models/dtos/auth/authModel"
 import { api } from "utils/api"
 
@@ -10,7 +11,7 @@ class AuthService {
   async checkAuth(token: string): Promise<UserResponse | any> {
     try {
       const response = await api.get("/auth/get-user", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `${BEARER} ${token}` }
       })
       return response.data
     } catch (error: any) {

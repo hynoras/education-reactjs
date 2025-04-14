@@ -10,7 +10,8 @@ $item-margin: 12px 0 12px 0;
   .student-detail-form {
     @include flex-column;
     padding: 0;
-    .ant-picker, .student-detail-item-input {
+    .ant-picker,
+    .student-detail-item-input {
       background: #eee;
       margin: 12px 0 12px 0;
       &:focus-within {

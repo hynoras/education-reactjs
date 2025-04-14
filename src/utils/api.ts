@@ -1,15 +1,15 @@
 import axios from "axios"
-import { store } from "utils/store"
+import { BEARER, DEVELOPMENT, PRODUCTION_KOYEB, PRODUCTION_RAILWAY } from "constants/api"
 
-const DEVELOPMENT_API = "http://localhost:8080/api"
-const PRODUCTION_RAILWAY = "https://education-spring-boot-production.up.railway.app/api"
 
 const changeURL = (stage: string): string | undefined => {
   switch (stage) {
     case "development":
-      return DEVELOPMENT_API
+      return DEVELOPMENT
     case "production_railway":
       return PRODUCTION_RAILWAY
+    case "production_koyeb":
+        return PRODUCTION_KOYEB
   }
 }
 
@@ -19,7 +19,7 @@ export const api = axios.create({
 
 export const setAuthToken = (token: string | null) => {
   if (token) {
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`
+    api.defaults.headers.common["Authorization"] = `${BEARER} ${token}`
   } else {
     delete api.defaults.headers.common["Authorization"]
   }
