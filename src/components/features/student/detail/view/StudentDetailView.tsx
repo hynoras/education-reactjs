@@ -11,6 +11,7 @@ import { ReactNode, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "utils/store"
 import { Student } from "models/domains/student"
+import ImageDisplay from "components/shared/image/ImageDisplay"
 
 const className: string[] = ["student-detail-banner", "student-info"]
 
@@ -49,9 +50,7 @@ const StudentDetailPage: React.FC = () => {
             <div className={className[0]}>
               <div className={`${className[0]}-upper`}></div>
               <div className={`${className[0]}-lower`}>
-                <i className={`${className[0]}-user-icon`}>
-                  <FontAwesomeIcon icon={faUser} />
-                </i>
+                <ImageDisplay src={studentDetail?.avatar} classNames={`${className[0]}-user-icon`} />
                 <div className={`${className[0]}-lower-general`}>
                   <p className={`${className[0]}-full-name`}>{studentDetail?.full_name}</p>
                   <p className={`${className[0]}-identity`}>{studentDetail?.identity}</p>

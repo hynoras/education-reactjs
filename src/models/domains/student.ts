@@ -12,6 +12,7 @@ export class Student {
     public ethnic_group: string,
     public religion: string,
     public citizen_id: string,
+    public avatar: string,
     public parent_information: Array<ParentInformation>
   ) {}
 
@@ -26,6 +27,7 @@ export class Student {
       dto.personal_information.ethnic_group,
       dto.personal_information.religion,
       dto.personal_information.citizen_id,
+      dto.personal_information.avatar,
       dto.parent_information
     )
   }

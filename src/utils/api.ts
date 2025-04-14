@@ -1,7 +1,6 @@
 import axios from "axios"
 import { BEARER, DEVELOPMENT, PRODUCTION_KOYEB, PRODUCTION_RAILWAY } from "constants/api"
 
-
 const changeURL = (stage: string): string | undefined => {
   switch (stage) {
     case "development":
@@ -9,7 +8,7 @@ const changeURL = (stage: string): string | undefined => {
     case "production_railway":
       return PRODUCTION_RAILWAY
     case "production_koyeb":
-        return PRODUCTION_KOYEB
+      return PRODUCTION_KOYEB
   }
 }
 

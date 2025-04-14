@@ -41,7 +41,7 @@ class StudentService {
   async getStudentDetail(options?: { pathParams?: any }): Promise<Student | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get<StudentDetail>(`/admin/students/${options?.pathParams}`, {
+      const response = await api.get<StudentDetail>(`/admin/student/${options?.pathParams}`, {
         headers: { Authorization: `${BEARER} ${token}` }
       })
       const studentDetail = response.data
