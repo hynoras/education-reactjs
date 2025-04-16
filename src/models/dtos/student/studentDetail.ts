@@ -1,6 +1,7 @@
 import { Gender } from "enums/gender"
 
 export interface ParentInfo {
+  id: number
   full_name: string
   date_of_birth: string
   nationality: string

@@ -4,7 +4,7 @@ import studentService from "services/student/studentService"
 import useFetch from "hook/useFetch"
 import { Row, Col, Card, Divider } from "antd"
 import { Content } from "antd/es/layout/layout"
-import { faPenToSquare, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { IconButton } from "@mui/material"
 import { ReactNode, useEffect, useState } from "react"
@@ -87,14 +87,14 @@ const StudentDetailPage: React.FC = () => {
                 title="Parent information"
                 extra={extra}
               >
-                {studentDetail?.parent_information.map((parent_info, index) => (
+                {studentDetail?.parent_info.map((parent_info, index) => (
                   <div key={index}>
                     <RowInfo label="Full name: " value={parent_info.full_name} />
                     <RowInfo label="Date of birth: " value={parent_info.date_of_birth} />
                     <RowInfo label="Nationality: " value={parent_info.nationality} />
                     <RowInfo label="Permanent Address: " value={parent_info.permanent_address} />
                     <RowInfo label="Relationship: " value={parent_info.relationship} />
-                    {index !== studentDetail.parent_information.length - 1 && <Divider />}
+                    {index !== studentDetail.parent_info.length - 1 && <Divider />}
                   </div>
                 ))}
               </Card>
