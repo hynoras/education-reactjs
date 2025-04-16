@@ -1,5 +1,5 @@
 import { Gender } from "enums/gender"
-import { ParentInformation, StudentDetail } from "models/dtos/student/studentDetail"
+import { ParentInfo, StudentDetail } from "models/dtos/student/studentDetail"
 
 export class Student {
   constructor(
@@ -13,22 +13,22 @@ export class Student {
     public religion: string,
     public citizen_id: string,
     public avatar: string,
-    public parent_information: Array<ParentInformation>
+    public parent_info: Array<ParentInfo>
   ) {}
 
   static fromDTO(dto: StudentDetail): Student {
     return new Student(
-      dto.personal_information.identity,
-      dto.personal_information.full_name,
-      dto.personal_information.date_of_birth,
-      dto.personal_information.gender,
-      dto.personal_information.permanent_address,
-      dto.personal_information.temporary_address,
-      dto.personal_information.ethnic_group,
-      dto.personal_information.religion,
-      dto.personal_information.citizen_id,
-      dto.personal_information.avatar,
-      dto.parent_information
+      dto.personal_info.identity,
+      dto.personal_info.full_name,
+      dto.personal_info.date_of_birth,
+      dto.personal_info.gender,
+      dto.personal_info.permanent_address,
+      dto.personal_info.temporary_address,
+      dto.personal_info.ethnic_group,
+      dto.personal_info.religion,
+      dto.personal_info.citizen_id,
+      dto.personal_info.avatar,
+      dto.parent_info
     )
   }
 }

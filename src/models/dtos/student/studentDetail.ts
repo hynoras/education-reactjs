@@ -1,6 +1,6 @@
 import { Gender } from "enums/gender"
 
-export interface ParentInformation {
+export interface ParentInfo {
   full_name: string
   date_of_birth: string
   nationality: string
@@ -8,7 +8,7 @@ export interface ParentInformation {
   relationship: string
 }
 
-export interface PersonalInformation {
+export interface PersonalInfo {
   identity: string
   full_name: string
   date_of_birth: Date
@@ -22,8 +22,8 @@ export interface PersonalInformation {
 }
 
 export interface StudentDetail {
-  personal_information: PersonalInformation
-  parent_information: Array<ParentInformation>
+  personal_info: PersonalInfo
+  parent_info: Array<ParentInfo>
 }
 
 export interface StudentDetailForm {
