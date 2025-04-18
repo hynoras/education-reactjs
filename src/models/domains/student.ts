@@ -5,7 +5,7 @@ export class Student {
   constructor(
     public identity: string,
     public full_name: string,
-    public date_of_birth: Date,
+    public birth_date: Date,
     public gender: Gender,
     public permanent_address: string,
     public temporary_address: string | undefined,
@@ -20,7 +20,7 @@ export class Student {
     return new Student(
       dto.personal_info.identity,
       dto.personal_info.full_name,
-      dto.personal_info.date_of_birth,
+      dto.personal_info.birth_date,
       dto.personal_info.gender,
       dto.personal_info.permanent_address,
       dto.personal_info.temporary_address,

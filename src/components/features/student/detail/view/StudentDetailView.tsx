@@ -68,7 +68,7 @@ const StudentDetailPage: React.FC = () => {
                 extra={extra}
               >
                 <RowInfo label="Full name: " value={studentDetail?.full_name} />
-                <RowInfo label="Date of Birth: " value={studentDetail?.date_of_birth} />
+                <RowInfo label="Date of Birth: " value={studentDetail?.birth_date} />
                 <RowInfo label="Gender: " value={studentDetail?.gender} />
                 <RowInfo label="Permanent Address: " value={studentDetail?.permanent_address} />
                 <RowInfo label="Temporary Address: " value={studentDetail?.temporary_address} />
@@ -90,7 +90,7 @@ const StudentDetailPage: React.FC = () => {
                 {studentDetail?.parent_info.map((parent_info, index) => (
                   <div key={index}>
                     <RowInfo label="Full name: " value={parent_info.full_name} />
-                    <RowInfo label="Date of birth: " value={parent_info.date_of_birth} />
+                    <RowInfo label="Date of birth: " value={parent_info.birth_date} />
                     <RowInfo label="Nationality: " value={parent_info.nationality} />
                     <RowInfo label="Permanent Address: " value={parent_info.permanent_address} />
                     <RowInfo label="Relationship: " value={parent_info.relationship} />

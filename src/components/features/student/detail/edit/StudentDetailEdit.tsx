@@ -64,7 +64,7 @@ const StudentDetailEditPage: React.FC = () => {
   useEffect(() => {
     if (studentDetail) {
       setValue("full_name", studentDetail.full_name)
-      setValue("birth_date", new Date(studentDetail.date_of_birth))
+      setValue("birth_date", new Date(studentDetail.birth_date))
       setValue("gender", studentDetail.gender)
       setValue("permanent_address", studentDetail.permanent_address)
       setValue("temporary_address", studentDetail.temporary_address)
@@ -100,7 +100,7 @@ const StudentDetailEditPage: React.FC = () => {
             <form className={"student-detail-form"} onSubmit={handleSubmit(onSubmitHandler)}>
               {controllerName.map((item, index) => (
                 <>
-                  {isValidItem(["date_of_birth"], item) && (
+                  {isValidItem(["birth_date"], item) && (
                     <DatePickerRow
                       className={["student-detail-item-label"]}
                       control={control}
