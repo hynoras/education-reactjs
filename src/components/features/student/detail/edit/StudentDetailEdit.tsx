@@ -2,15 +2,13 @@ import "./style.scss"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Button, Card, Skeleton, Typography } from "antd"
 import { Content } from "antd/es/layout/layout"
-import useFetch from "hook/useFetch"
-import { Student } from "models/domains/student"
 import { StudentDetailForm } from "models/dtos/student/studentDetail"
 import { studentDetailSchema } from "models/validation/student/studentDetailSchema"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router"
 import studentService from "services/student/studentService"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { Gender } from "enums/gender"
 import RadioGroup from "components/shared/radio/RadioGroup"
 import InputRow from "components/shared/input/InputRow"
@@ -20,7 +18,6 @@ import { formatString } from "utils/stringUtils"
 const { Title } = Typography
 
 const StudentDetailEditPage: React.FC = () => {
-  const [studentDetail, setStudentDetail] = useState<Student>()
   let { studentId } = useParams()
 
   const genderMap = Object.values(Gender).map((value) => ({
@@ -28,19 +25,12 @@ const StudentDetailEditPage: React.FC = () => {
     value: value
   }))
 
-  const { data: students } = useFetch<Student>(studentService.getStudentDetail, {
-    pathParams: studentId
+  const { isLoading: loading, data: studentDetail } = useQuery({
+    queryKey: ["student-detail"],
+    queryFn: () => studentService.getStudentDetail(studentId)
   })
 
-  useEffect(() => {
-    if (Array.isArray(students)) {
-      setStudentDetail(students[0])
-    } else {
-      setStudentDetail(students)
-    }
-  }, [students])
-
-  const controllerName: string[] = Object.keys(students)
+  const controllerName = useMemo(() => (studentDetail ? Object.keys(studentDetail) : []), [studentDetail])
 
   const {
     control,
@@ -94,9 +84,9 @@ const StudentDetailEditPage: React.FC = () => {
   return (
     <>
       <Content className="student-detail-container">
-        <Title level={2}> Edit student</Title>
+        <Title level={2}> Edit personal information</Title>
         {(studentDetail && (
-          <Card className={"student-detail-card"}>
+          <Card className={"student-detail-card"} loading={loading}>
             <form className={"student-detail-form"} onSubmit={handleSubmit(onSubmitHandler)}>
               {controllerName.map((item, index) => (
                 <>

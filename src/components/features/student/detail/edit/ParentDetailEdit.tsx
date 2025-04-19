@@ -25,8 +25,9 @@ const ParentInfoEditPage: React.FC = () => {
   }))
 
   const { data: parents } = useQuery({
-    queryKey: ["parents"],
-    queryFn: () => studentService.getStudentDetail({ pathParams: studentId })
+    queryKey: ["parents", studentId],
+    queryFn: () => studentService.getStudentDetail(studentId),
+    enabled: !!studentId
   })
 
   const {
@@ -48,6 +49,7 @@ const ParentInfoEditPage: React.FC = () => {
       reset({
         parent_info: parents.parent_info.map((p) => ({
           ...p,
+          id: p.id,
           birth_date: new Date(p.birth_date)
         }))
       })
@@ -70,7 +72,7 @@ const ParentInfoEditPage: React.FC = () => {
   return (
     <>
       <Content className="student-detail-container">
-        <Title level={2}> Edit student</Title>
+        <Title level={2}> Edit parent information</Title>
         {(parents && (
           <Card className={"student-detail-card"}>
             <form className={"student-detail-form"} onSubmit={handleSubmit(onSubmitHandler)}>
@@ -80,7 +82,7 @@ const ParentInfoEditPage: React.FC = () => {
                     className={["student-detail-item-label", "student-detail-item-input"]}
                     control={control}
                     name={`parent_info.${index}.full_name`}
-                    label={`Full Name:`}
+                    label={"Full Name:"}
                   />
                   <DatePickerRow
                     className={["student-detail-item-label"]}
@@ -93,13 +95,13 @@ const ParentInfoEditPage: React.FC = () => {
                     className={["student-detail-item-label", "student-detail-item-input"]}
                     control={control}
                     name={`parent_info.${index}.permanent_address`}
-                    label={`Permanent Address:`}
+                    label={"Permanent Address:"}
                   />
                   <InputRow
                     className={["student-detail-item-label", "student-detail-item-input"]}
                     control={control}
                     name={`parent_info.${index}.nationality`}
-                    label={`Nationality:`}
+                    label={"Nationality:"}
                   />
                   <RadioGroup
                     className={["student-detail-item-label", "student-detail-item-radio"]}

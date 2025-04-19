@@ -1,42 +1,41 @@
 import "./style.scss"
 import { useNavigate, useParams } from "react-router-dom"
 import studentService from "services/student/studentService"
-import useFetch from "hook/useFetch"
 import { Row, Col, Card, Divider } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { IconButton } from "@mui/material"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode } from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "utils/store"
-import { Student } from "models/domains/student"
 import ImageDisplay from "components/shared/image/ImageDisplay"
+import { useQuery } from "@tanstack/react-query"
 
 const className: string[] = ["student-detail-banner", "student-info"]
 
 const StudentDetailPage: React.FC = () => {
-  const [studentDetail, setStudentDetail] = useState<Student>()
   const role = useSelector((state: RootState) => state.auth.user?.role)
   let { studentId } = useParams()
   const navigate = useNavigate()
-  const { data: students, loading } = useFetch<Student>(studentService.getStudentDetail, {
-    pathParams: studentId
+
+  const { isLoading: loading, data: studentDetail } = useQuery({
+    queryKey: ["student-detail"],
+    queryFn: () => studentService.getStudentDetail(studentId)
   })
 
-  useEffect(() => {
-    if (Array.isArray(students)) {
-      setStudentDetail(students[0])
-    } else {
-      setStudentDetail(students)
-    }
-  }, [students])
-
   const handleEdit = () => {
-    navigate(`/admin/student/${studentId}/edit`)
+    if (editPersonalInfo) navigate(`/admin/student/${studentId}/edit`)
+    if (editParentInfo) navigate(`/admin/student/parent/${studentId}/edit`)
   }
 
-  const extra: ReactNode = role === "ADMIN" && (
+  const editPersonalInfo: ReactNode = role === "ADMIN" && (
+    <IconButton aria-label="edit" size="small" sx={{ fontSize: "20px", color: "#7494ec" }} onClick={handleEdit}>
+      <FontAwesomeIcon icon={faPenToSquare} />
+    </IconButton>
+  )
+
+  const editParentInfo: ReactNode = role === "ADMIN" && (
     <IconButton aria-label="edit" size="small" sx={{ fontSize: "20px", color: "#7494ec" }} onClick={handleEdit}>
       <FontAwesomeIcon icon={faPenToSquare} />
     </IconButton>
@@ -65,7 +64,7 @@ const StudentDetailPage: React.FC = () => {
                 className={`${className[1]}-card-wrapper`}
                 loading={loading}
                 title="Personal Information"
-                extra={extra}
+                extra={editPersonalInfo}
               >
                 <RowInfo label="Full name: " value={studentDetail?.full_name} />
                 <RowInfo label="Date of Birth: " value={studentDetail?.birth_date} />
@@ -85,7 +84,7 @@ const StudentDetailPage: React.FC = () => {
                 loading={loading}
                 className={`${className[1]}-card-wrapper`}
                 title="Parent information"
-                extra={extra}
+                extra={editParentInfo}
               >
                 {studentDetail?.parent_info.map((parent_info, index) => (
                   <div key={index}>

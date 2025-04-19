@@ -16,19 +16,29 @@ export class Student {
     public parent_info: Array<ParentInfo>
   ) {}
 
-  static fromDTO(dto: StudentDetail): Student {
-    return new Student(
-      dto.personal_info.identity,
-      dto.personal_info.full_name,
-      dto.personal_info.birth_date,
-      dto.personal_info.gender,
-      dto.personal_info.permanent_address,
-      dto.personal_info.temporary_address,
-      dto.personal_info.ethnic_group,
-      dto.personal_info.religion,
-      dto.personal_info.citizen_id,
-      dto.personal_info.avatar,
-      dto.parent_info
-    )
+  static fromDTO(dto: any): Student {
+    const personal = dto.personal_information || {}
+    const parentList = dto.parent_information || []
+
+    return {
+      identity: personal.identity,
+      full_name: personal.full_name,
+      birth_date: personal.birth_date,
+      gender: personal.gender,
+      permanent_address: personal.permanent_address,
+      temporary_address: personal.temporary_address,
+      ethnic_group: personal.ethnic_group,
+      religion: personal.religion,
+      citizen_id: personal.citizen_id,
+      avatar: personal.avatar,
+      parent_info: parentList.map((p: any) => ({
+        id: p.id,
+        full_name: p.full_name,
+        birth_date: p.birth_date,
+        nationality: p.nationality,
+        permanent_address: p.permanent_address,
+        relationship: p.relationship
+      }))
+    }
   }
 }
