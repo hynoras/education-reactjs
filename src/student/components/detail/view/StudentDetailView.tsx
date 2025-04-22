@@ -24,19 +24,32 @@ const StudentDetailPage: React.FC = () => {
     queryFn: () => studentService.getStudentDetail(studentId)
   })
 
-  const handleEdit = () => {
-    if (editPersonalInfo) navigate(`/admin/student/${studentId}/edit`)
-    if (editParentInfo) navigate(`/admin/student/parent/${studentId}/edit`)
+  const handleEditPersonalInfo = () => {
+    navigate(`/admin/student/${studentId}/edit`)
+  }
+
+  const handleEditParentInfo = () => {
+    navigate(`/admin/student/parent/${studentId}/edit`)
   }
 
   const editPersonalInfo: ReactNode = role === "ADMIN" && (
-    <IconButton aria-label="edit" size="small" sx={{ fontSize: "20px", color: "#7494ec" }} onClick={handleEdit}>
+    <IconButton
+      aria-label="edit"
+      size="small"
+      sx={{ fontSize: "20px", color: "#7494ec" }}
+      onClick={handleEditPersonalInfo}
+    >
       <FontAwesomeIcon icon={faPenToSquare} />
     </IconButton>
   )
 
   const editParentInfo: ReactNode = role === "ADMIN" && (
-    <IconButton aria-label="edit" size="small" sx={{ fontSize: "20px", color: "#7494ec" }} onClick={handleEdit}>
+    <IconButton
+      aria-label="edit"
+      size="small"
+      sx={{ fontSize: "20px", color: "#7494ec" }}
+      onClick={handleEditParentInfo}
+    >
       <FontAwesomeIcon icon={faPenToSquare} />
     </IconButton>
   )

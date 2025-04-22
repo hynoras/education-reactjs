@@ -1,5 +1,3 @@
-import "./style.scss"
-import { yupResolver } from "@hookform/resolvers/yup"
 import { Button, Card, Divider, Skeleton, Typography } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { useEffect } from "react"

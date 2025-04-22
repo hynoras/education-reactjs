@@ -9,19 +9,16 @@ const InputRow: React.FC<{
   name: string
   label: string
   placeholder?: string
-  disabled?: boolean
-}> = ({ className = [], control, name, label, placeholder, disabled }) => {
+}> = ({ className = [], control, name, label, placeholder }) => {
   return (
     <>
-      <Text className={className[0] || ""} strong disabled={disabled}>
+      <Text className={className[0] || ""} strong>
         {label}
       </Text>
       <Controller
         name={name}
         control={control}
-        render={({ field }) => (
-          <Input className={className[1] || ""} {...field} placeholder={placeholder} disabled={disabled} />
-        )}
+        render={({ field }) => <Input className={className[1] || ""} {...field} placeholder={placeholder} />}
       />
     </>
   )
