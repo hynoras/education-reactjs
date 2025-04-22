@@ -4,6 +4,7 @@ import { api } from "shared/utils/api"
 import { store } from "shared/utils/store"
 import { PaginatedStudentList } from "student/models/dtos/student/studentList"
 import { BEARER } from "shared/constants/api"
+import { DefaultResponse } from "student/models/dtos/defaultResponse"
 
 class StudentService {
   async getAllStudent(options?: {
@@ -61,6 +62,22 @@ class StudentService {
       return "Updated successfully"
     } catch (error) {
       console.error("Error updating student detail:", error)
+      return
+    }
+  }
+
+  async uploadStudentAvatar(studentId: string | undefined, avatar: FormData): Promise<DefaultResponse | undefined> {
+    try {
+      const token = store.getState().auth.token
+      const response = await api.put(`/admin/student/avatar/${studentId}`, avatar, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `${BEARER} ${token}`
+        }
+      })
+      return response.data
+    } catch (error) {
+      console.error("Error updating student avatar:", error)
       return
     }
   }

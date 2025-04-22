@@ -1,23 +1,31 @@
 import "./style.scss"
 import React from "react"
 import { Select } from "antd"
+import AvatarUpload from "../input/AvatarUpload"
 
-const AvatarOption: React.FC<{ preview?: boolean | undefined }> = ({ preview }) => {
+const AvatarOption: React.FC<{ studentId: string | undefined; preview?: boolean | undefined }> = ({
+  studentId,
+  preview
+}) => {
   const handleChange = (value: string) => {
     if (value === "preview") {
       preview = true
     }
   }
   return (
-    <Select
-      className={"avatar-option"}
-      style={{ width: 120 }}
-      onChange={handleChange}
-      options={[
-        { value: "preview", label: "Preview avatar" },
-        { value: "edit", label: "Change avatar" }
-      ]}
-    />
+    <>
+      <Select
+        className={"avatar-option"}
+        style={{ width: 200 }}
+        onChange={handleChange}
+        dropdownRender={() => (
+          <>
+            <p>Placeholder</p>
+            <AvatarUpload studentId={studentId} />
+          </>
+        )}
+      />
+    </>
   )
 }
 

@@ -18,6 +18,7 @@ const StudentDetailPage: React.FC = () => {
   const role = useSelector((state: RootState) => state.auth.user?.role)
   let { studentId } = useParams()
   const navigate = useNavigate()
+  let turnOffAvatarOption: boolean
 
   const { isLoading: loading, data: studentDetail } = useQuery({
     queryKey: ["student-detail"],
@@ -62,7 +63,11 @@ const StudentDetailPage: React.FC = () => {
             <div className={className[0]}>
               <div className={`${className[0]}-upper`}></div>
               <div className={`${className[0]}-lower`}>
-                <ImageDisplay src={studentDetail?.avatar} classNames={`${className[0]}-user-icon`} />
+                <ImageDisplay
+                  studentId={studentId}
+                  src={studentDetail?.avatar}
+                  classNames={`${className[0]}-user-icon`}
+                />
                 <div className={`${className[0]}-lower-general`}>
                   <p className={`${className[0]}-full-name`}>{studentDetail?.full_name}</p>
                   <p className={`${className[0]}-identity`}>{studentDetail?.identity}</p>
