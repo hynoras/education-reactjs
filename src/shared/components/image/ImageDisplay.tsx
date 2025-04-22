@@ -11,7 +11,8 @@ const ImageDisplay: React.FC<{
   return (
     <div
       className={"avatar-wrapper"}
-      onClick={() => (!displayOption ? setDisplayOption(true) : setDisplayOption(false))}
+      onMouseEnter={() => setDisplayOption(true)}
+      onClick={() => setDisplayOption(false)}
     >
       <Image
         className={classNames}

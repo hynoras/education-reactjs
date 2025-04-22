@@ -66,7 +66,7 @@ class StudentService {
     }
   }
 
-  async uploadStudentAvatar(studentId: string | undefined, avatar: FormData): Promise<DefaultResponse | undefined> {
+  async updateStudentAvatar(studentId: string | undefined, avatar: FormData): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
       const response = await api.put(`/admin/student/avatar/${studentId}`, avatar, {

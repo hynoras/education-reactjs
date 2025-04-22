@@ -8,11 +8,11 @@ const AvatarUpload: React.FC<{ studentId: string | undefined }> = ({ studentId }
     mutationFn: (file: File) => {
       const avatar = new FormData()
       avatar.append("avatar", file)
-      return studentService.uploadStudentAvatar(studentId, avatar)
+      return studentService.updateStudentAvatar(studentId, avatar)
     }
   })
 
-  const handleUpload: UploadProps["customRequest"] = ({ file, onSuccess, onError }) => {
+  const handleUpload: UploadProps["customRequest"] = ({ file, onSuccess }) => {
     if (!(file instanceof File)) {
       message.error("Invalid file")
       return
@@ -21,10 +21,6 @@ const AvatarUpload: React.FC<{ studentId: string | undefined }> = ({ studentId }
       onSuccess: () => {
         message.success("Image updated successfully!")
         onSuccess?.({}, new XMLHttpRequest())
-      },
-      onError: (error) => {
-        message.error("Upload failed")
-        onError?.(error as any)
       }
     })
   }
