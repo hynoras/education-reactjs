@@ -14,7 +14,7 @@ export interface PersonalInfo {
   identity: string
   full_name: string
   birth_date: Date
-  gender: Gender
+  gender: Gender | undefined
   permanent_address: string
   temporary_address?: string
   ethnic_group: string
