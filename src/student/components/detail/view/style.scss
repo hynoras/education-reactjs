@@ -1,0 +1,102 @@
+@import "/src/shared/themes/mixin.scss";
+$main-color: #7494ec;
+$main-color-light: rgb(160, 176, 211);
+$main-color-dark: #5a78cc;
+@mixin banner-student-info($full-name) {
+  position: relative;
+  z-index: 10;
+  margin: 0 0 0 10px;
+  bottom: 0;
+  @if $full-name {
+    font-size: 24px;
+    font-weight: bold;
+  } @else {
+    font-size: 16px;
+  }
+}
+
+.student-detail-container {
+  padding: 24px;
+  margin: 16px;
+  min-height: 280px;
+  background: rgb(235, 235, 235);
+  border-radius: 20px;
+  .student-detail-banner {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    height: 20vh;
+    .student-detail-banner-upper {
+      position: absolute;
+      background: rgb(108, 146, 108);
+      width: 100%;
+      height: 60%;
+      border-radius: 8px 8px 0 0;
+      z-index: 1;
+    }
+    .student-detail-banner-lower {
+      display: flex;
+      flex-direction: row;
+      position: absolute;
+      width: 100%;
+      height: 70%;
+      background: white;
+      bottom: 0;
+      border-radius: 0 0 8px 8px;
+      .student-detail-banner-user-icon {
+        position: relative;
+        font-size: 64px;
+        color: white;
+        background: rgb(221, 221, 221);
+        width: 128px;
+        height: 128px;
+        border-radius: 50%;
+        margin: 0 0 10px 10px;
+        bottom: 0;
+        z-index: 2;
+        @include flex-center;
+      }
+      .ant-image-mask {
+        z-index: 3;
+        width: 128px;
+        height: 128px;
+        border-radius: 50%;
+        margin: 0 0 10px 10px;
+        bottom: 0;
+      }
+      .student-detail-banner-lower-general {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+        .student-detail-banner-full-name {
+          @include banner-student-info(true);
+        }
+        .student-detail-banner-identity {
+          @include banner-student-info(false);
+        }
+      }
+    }
+  }
+  .student-info-card {
+    position: relative;
+    .student-info-card-decorator {
+      position: absolute;
+      background: $main-color;
+      border-radius: 8px 8px 0 0;
+      width: 100%;
+      height: 10px;
+      z-index: 1;
+    }
+    .student-info-card-wrapper:has(.ant-card-head) .ant-card-head {
+      padding: 12px 12px 0 24px !important;
+    }
+    .student-info-content {
+      margin-top: 0;
+      .student-info-label {
+        font-weight: bold;
+      }
+    }
+  }
+}

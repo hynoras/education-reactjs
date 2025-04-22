@@ -1,0 +1,89 @@
+@import "/src/shared/themes/mixin.scss";
+$main-color: #7494ec;
+$main-color-light: rgb(133, 157, 212);
+$main-color-dark: #5a78cc;
+
+.border {
+  border: none;
+  border-radius: 16px;
+}
+
+.student-container {
+  @include flex-column;
+  width: 83%;
+  height: 97vh;
+  margin: auto;
+  background: white;
+  border-radius: 12px;
+  .student-wrapper {
+    padding: 2%;
+    .ant-table {
+      height: 65vh;
+      .ant-table-thead th {
+        background: $main-color;
+        color: white !important;
+        padding: 12px !important;
+        .anticon {
+          color: white;
+        }
+      }
+      .ant-table-tbody {
+        td {
+          padding: 12px !important;
+        }
+        .student-table-action-container {
+          @include flex-space-around;
+          i {
+            cursor: pointer;
+          }
+        }
+        td:hover {
+          cursor: pointer;
+          color: $main-color;
+          text-decoration: underline;
+        }
+      }
+    }
+    .student-filter-search-container {
+      @include flex-space-between;
+      margin: 20px 0 20px 0;
+      .student-search-bar {
+        right: 0;
+        width: 30%;
+        input {
+          border: 1px solid rgb(153, 153, 153);
+          border-radius: 10px 0 0 10px;
+          &:focus {
+            border: 1px solid $main-color;
+          }
+          &::placeholder {
+            color: rgb(177, 177, 177);
+          }
+        }
+        button {
+          background: $main-color;
+          border-radius: 0 10px 10px 0;
+          &:hover {
+            background: $main-color;
+          }
+        }
+      }
+    }
+    .student-table-pagination {
+      .ant-pagination-item:hover {
+        background: rgb(226, 226, 226);
+        @extend .border;
+      }
+      .ant-pagination-item-active,
+      .ant-pagination-item-active:hover {
+        background: $main-color;
+        box-shadow: 2px 2px 4px 1px $main-color-light;
+        font-weight: bold;
+        @extend .border;
+        a {
+          color: white;
+        }
+      }
+    }
+  }
+}
