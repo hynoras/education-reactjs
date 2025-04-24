@@ -53,13 +53,13 @@ class StudentService {
     }
   }
 
-  async putStudentDetail(studentId: any, payload: StudentDetailForm): Promise<string | undefined> {
+  async putStudentDetail(studentId: any, payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
       const response = await api.put(`/admin/student/${studentId}`, payload, {
         headers: { Authorization: `${BEARER} ${token}` }
       })
-      return "Updated successfully"
+      return response.data
     } catch (error) {
       console.error("Error updating student detail:", error)
       return
