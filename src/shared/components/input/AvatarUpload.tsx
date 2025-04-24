@@ -3,7 +3,6 @@ import { UploadOutlined } from "@ant-design/icons"
 import { useMutation } from "@tanstack/react-query"
 import studentService from "student/services/student/studentService"
 import { DefaultResponse } from "student/models/dtos/defaultResponse"
-import { data } from "react-router"
 
 const AvatarUpload: React.FC<{ studentId: string | undefined }> = ({ studentId }) => {
   const [messageApi, contextHolder] = message.useMessage()

@@ -18,7 +18,6 @@ const StudentDetailPage: React.FC = () => {
   const role = useSelector((state: RootState) => state.auth.user?.role)
   let { studentId } = useParams()
   const navigate = useNavigate()
-  let turnOffAvatarOption: boolean
 
   const { isLoading: loading, data: studentDetail } = useQuery({
     queryKey: ["student-detail"],

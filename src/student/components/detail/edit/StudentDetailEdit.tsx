@@ -9,7 +9,7 @@ const StudentDetailEditPage: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: (updatedStudentDetail: StudentDetailForm) => {
-      return studentService.putStudentDetail(studentId, updatedStudentDetail)
+      return studentService.updateStudentPersonalInfo(studentId, updatedStudentDetail)
     },
     onSuccess: () => {
       alert("Student updated successfully!")

@@ -53,7 +53,7 @@ class StudentService {
     }
   }
 
-  async putStudentDetail(studentId: any, payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
+  async updateStudentPersonalInfo(studentId: any, payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
       const response = await api.put(`/admin/student/${studentId}`, payload, {
