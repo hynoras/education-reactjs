@@ -32,7 +32,7 @@ class StudentService {
         },
         headers: { Authorization: `${BEARER} ${token}` }
       })
-      return response
+      return response.data
     } catch (error) {
       console.error("Error fetching students:", error)
       return { data: { content: [], totalElements: 0 } }
@@ -49,6 +49,19 @@ class StudentService {
       return Student.fromDTO(studentDetail)
     } catch (error) {
       console.error("Error fetching student detail:", error)
+      return
+    }
+  }
+
+  async deleteStudentPersonalInfo(identity: string | undefined): Promise<DefaultResponse | undefined> {
+    try {
+      const token = store.getState().auth.token
+      const response = await api.delete(`/admin/student/${identity}`, {
+        headers: { Authorization: `${BEARER} ${token}` }
+      })
+      return response.data
+    } catch (error) {
+      console.error("Error deleting student detail:", error)
       return
     }
   }
