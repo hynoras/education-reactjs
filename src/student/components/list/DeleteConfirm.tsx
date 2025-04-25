@@ -1,5 +1,7 @@
-import { useMutation } from "@tanstack/react-query"
-import { message, Modal } from "antd"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { message } from "antd"
+import { data } from "react-router"
+import Popup from "shared/components/feedback/modal/Popup"
 import { DefaultResponse } from "student/models/dtos/defaultResponse"
 import studentService from "student/services/student/studentService"
 
@@ -30,18 +32,18 @@ const DeleteConfirm: React.FC<DeleteConfirmProps> = ({ isOpen, setIsOpen, identi
 
   const handleOk = () => {
     mutation.mutate(identity)
-  }
-
-  const handleCancel = () => {
     setIsOpen(false)
   }
 
   return (
     <>
       {contextHolder}
-      <Modal title="Confirm" open={isOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>Are you sure about deleting student {identity}? This action can not be undone</p>
-      </Modal>
+      <Popup
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        content={`Are you sure about deleting student ${identity}?`}
+        onOk={handleOk}
+      ></Popup>
     </>
   )
 }

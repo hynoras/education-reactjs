@@ -4,7 +4,7 @@ import { IconButton } from "@mui/material"
 import { Tooltip } from "antd"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import DeleteConfirm from "shared/components/feedback/modal/DeleteConfirm"
+import DeleteConfirm from "./DeleteConfirm"
 
 type ActionButtonListProps = {
   identity: string | undefined

@@ -1,5 +1,5 @@
 import { TableProps, TableColumnsType, Table } from "antd"
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 import { Gender } from "shared/enums/gender"
 import useFetch from "student/hook/useFetch"
@@ -60,9 +60,12 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
     }))
   }
 
-  const onClick = (record: any) => {
-    navigate(`/admin/student/${record.identity}/view`)
-  }
+  const onClick = useCallback(
+    (record: StudentList) => {
+      navigate(`/admin/student/${record.identity}/view`)
+    },
+    [navigate]
+  )
 
   const genderFilter = Object.values(Gender).map((value) => ({
     text: value,
@@ -79,21 +82,19 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
     value: String(value.major_name)
   }))
 
-  const style = {
-    cursor: "pointer",
-    color: "#7494ec",
-    textDecoration: "underline"
-  }
-
   const columns: TableColumnsType<StudentList> = useMemo(
     () => [
       {
         title: "Student ID",
         dataIndex: "identity",
         key: "identity",
-        onCell: (record) => ({
+        onCell: (record: StudentList) => ({
           onClick: () => onClick(record),
-          style: style
+          style: {
+            cursor: "pointer",
+            color: "#7494ec",
+            textDecoration: "underline"
+          }
         }),
         sorter: true
       },
@@ -101,9 +102,13 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
         title: "Full Name",
         dataIndex: "full_name",
         key: "fullName",
-        onCell: (record) => ({
+        onCell: (record: StudentList) => ({
           onClick: () => onClick(record),
-          style: style
+          style: {
+            cursor: "pointer",
+            color: "#7494ec",
+            textDecoration: "underline"
+          }
         }),
         sorter: true
       },
@@ -118,7 +123,7 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
         align: "center"
       }
     ],
-    [departmentFilter, genderFilter, majorFilter, onClick, style]
+    [departmentFilter, genderFilter, majorFilter, onClick]
   )
 
   return (
