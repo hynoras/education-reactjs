@@ -5,6 +5,7 @@ import { Tooltip } from "antd"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import DeleteConfirm from "./DeleteConfirm"
+import studentService from "student/services/student/studentService"
 
 type ActionButtonListProps = {
   identity: string | undefined
@@ -15,6 +16,10 @@ const ActionButtonList: React.FC<ActionButtonListProps> = ({ identity }) => {
   const navigate = useNavigate()
   const handleEdit = () => {
     navigate(`/admin/student/${identity}/edit`)
+  }
+
+  const deleteStudentMutation = (identity: string | undefined) => {
+    return studentService.deleteStudentPersonalInfo(identity)
   }
 
   const handleDelete = () => {
@@ -32,7 +37,13 @@ const ActionButtonList: React.FC<ActionButtonListProps> = ({ identity }) => {
           <FontAwesomeIcon icon={faTrash} />
         </IconButton>
       </Tooltip>
-      <DeleteConfirm isOpen={open} setIsOpen={setOpen} identity={identity} />
+      <DeleteConfirm
+        isOpen={open}
+        setIsOpen={setOpen}
+        mutationFn={deleteStudentMutation}
+        variables={identity}
+        content={`Are you sure about deleting student ${identity}?`}
+      />
     </div>
   )
 }

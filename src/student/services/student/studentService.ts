@@ -1,4 +1,4 @@
-import { StudentDetail, StudentDetailForm } from "student/models/dtos/student/studentDetail"
+import { IdentityMap, StudentDetail, StudentDetailForm } from "student/models/dtos/student/studentDetail"
 import { Student } from "student/models/domains/student"
 import { api } from "shared/utils/api"
 import { store } from "shared/utils/store"
@@ -58,6 +58,24 @@ class StudentService {
       const token = store.getState().auth.token
       const response = await api.delete(`/admin/student/${identity}`, {
         headers: { Authorization: `${BEARER} ${token}` }
+      })
+      return response.data
+    } catch (error) {
+      console.error("Error deleting student detail:", error)
+      return
+    }
+  }
+
+  async deleteManyStudentPersonalInfo(payload: Array<IdentityMap>): Promise<DefaultResponse | undefined> {
+    try {
+      console.log("payload", payload)
+      const token = store.getState().auth.token
+      const response = await api.delete(`/admin/students`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${BEARER} ${token}`
+        },
+        data: payload
       })
       return response.data
     } catch (error) {

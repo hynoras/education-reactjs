@@ -14,9 +14,10 @@ type StudentListTableProps = {
   students: StudentList[]
   loading: boolean
   setQueryOptions: React.Dispatch<React.SetStateAction<any>>
+  rowSelection: TableProps<StudentList>["rowSelection"]
 }
 
-const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, setQueryOptions }) => {
+const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, setQueryOptions, rowSelection }) => {
   const navigate = useNavigate()
 
   const { data: departments } = useFetch<DepartmentNameList>(departmentService.getAllDepartmentName)
@@ -131,6 +132,7 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
       columns={columns}
       dataSource={students}
       pagination={false}
+      rowSelection={{ type: "checkbox", ...rowSelection }}
       loading={loading}
       rowKey="identity"
       onChange={onChangeTable}

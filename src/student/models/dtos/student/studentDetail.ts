@@ -47,3 +47,7 @@ export interface ParentInfoForm {
   permanent_address?: string
   relationship?: Relationship
 }
+
+export interface IdentityMap {
+  identity: string
+}

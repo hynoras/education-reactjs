@@ -1,25 +1,28 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { message } from "antd"
-import { data } from "react-router"
 import Popup from "shared/components/feedback/modal/Popup"
 import { DefaultResponse } from "student/models/dtos/defaultResponse"
-import studentService from "student/services/student/studentService"
 
 type DeleteConfirmProps = {
   isOpen: boolean
   setIsOpen: (value: React.SetStateAction<boolean>) => void
-  identity: string | undefined
+  mutationFn?: any
+  variables: any
+  content: string
 }
 
-const DeleteConfirm: React.FC<DeleteConfirmProps> = ({ isOpen, setIsOpen, identity }) => {
+const DeleteConfirm: React.FC<DeleteConfirmProps> = ({ isOpen, setIsOpen, mutationFn, content, variables }) => {
   const [messageApi, contextHolder] = message.useMessage()
+  const queryClient = useQueryClient()
 
   const mutation = useMutation({
-    mutationFn: (identity: string | undefined) => {
-      return studentService.deleteStudentPersonalInfo(identity)
-    },
-    onSuccess: (data) => {
+    mutationFn: mutationFn,
+    onSuccess: (data: DefaultResponse) => {
       successMessage(data)
+      queryClient.invalidateQueries({ queryKey: ["students"] })
+    },
+    onError: (data: DefaultResponse) => {
+      errorMessage(data)
     }
   })
 
@@ -30,20 +33,22 @@ const DeleteConfirm: React.FC<DeleteConfirmProps> = ({ isOpen, setIsOpen, identi
     })
   }
 
+  const errorMessage = (data: DefaultResponse | undefined) => {
+    messageApi.open({
+      type: "error",
+      content: data?.message
+    })
+  }
+
   const handleOk = () => {
-    mutation.mutate(identity)
+    mutation.mutate(variables)
     setIsOpen(false)
   }
 
   return (
     <>
       {contextHolder}
-      <Popup
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        content={`Are you sure about deleting student ${identity}?`}
-        onOk={handleOk}
-      ></Popup>
+      <Popup isOpen={isOpen} setIsOpen={setIsOpen} content={content} onOk={handleOk}></Popup>
     </>
   )
 }

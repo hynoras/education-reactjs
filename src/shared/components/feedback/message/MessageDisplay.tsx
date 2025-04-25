@@ -9,7 +9,6 @@ const MessageDisplay: React.FC = () => {
       content: "This is a success message"
     })
   }
-
   return <>{contextHolder}</>
 }
 
