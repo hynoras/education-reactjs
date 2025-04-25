@@ -1,15 +1,20 @@
-import Login from "components/auth/login/Login"
-import AdminMainPage from "components/admin/main/AdminMain"
-import StudentPage from "components/admin/content/student/Student"
-import CoursePage from "components/admin/content/course/Course"
+import Login from "auth/components/login/Login"
+import AdminMainPage from "shared/main/admin/AdminMain"
+import StudentPage from "student/components/list/StudentList"
+import CoursePage from "course/Course"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import ProtectedRoute from "components/auth/ProtectedRoute"
+import ProtectedRoute from "auth/components/ProtectedRoute"
 import { useDispatch, useSelector } from "react-redux"
-import { loadUser } from "contexts/loginReducer"
+import { loadUser } from "auth/contexts/loginReducer"
 import { useEffect } from "react"
-import { AppDispatch, RootState } from "utils/store"
+import { AppDispatch, RootState } from "shared/utils/store"
+import StudentDetailPage from "student/components/detail/view/StudentDetailView"
+import StudentDetailEditPage from "student/components/detail/edit/StudentDetailEdit"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import ParentInfoEditPage from "student/components/detail/edit/ParentDetailEdit"
 
-const App = () => {
+const App: React.FC = () => {
+  const queryClient = new QueryClient()
   const dispatch = useDispatch<AppDispatch>()
   const token = useSelector((state: RootState) => state.auth.token)
   const rehydrated = useSelector((state: RootState) => state.auth._persist?.rehydrated)
@@ -22,23 +27,28 @@ const App = () => {
     }
   }, [rehydrated, token, dispatch])
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/admin/*"
-          element={
-            <ProtectedRoute requiredRole="ADMIN" redirectPath="/">
-              <AdminMainPage />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="student" element={<StudentPage />} />
-          <Route path="course" element={<CoursePage />} />
-        </Route>
-      </Routes>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="login" />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute requiredRole="ADMIN" redirectPath="/">
+                <AdminMainPage />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="student/" element={<StudentPage />} />
+            <Route path="student/:studentId/view" element={<StudentDetailPage />} />
+            <Route path="student/:studentId/edit" element={<StudentDetailEditPage />} />
+            <Route path="student/parent/:studentId/edit" element={<ParentInfoEditPage />} />
+            <Route path="course" element={<CoursePage />} />
+          </Route>
+        </Routes>
+      </Router>
+    </QueryClientProvider>
   )
 }
 

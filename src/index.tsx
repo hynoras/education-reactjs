@@ -1,8 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import "./themes/global.scss"
+import "./shared/themes/global.scss"
 import App from "./App"
-import { store, persistor } from "./utils/store"
+import { store, persistor } from "./shared/utils/store"
 import { PersistGate } from "redux-persist/integration/react"
 import { Provider } from "react-redux"
 // import reportWebVitals from './reportWebVitals';
