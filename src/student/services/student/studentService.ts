@@ -68,7 +68,6 @@ class StudentService {
 
   async deleteManyStudentPersonalInfo(payload: Array<IdentityMap>): Promise<DefaultResponse | undefined> {
     try {
-      console.log("payload", payload)
       const token = store.getState().auth.token
       const response = await api.delete(`/admin/students`, {
         headers: {
