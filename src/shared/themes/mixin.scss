@@ -18,3 +18,11 @@
   display: flex;
   justify-content: space-around;
 }
+
+@mixin content {
+  padding: 24px;
+  margin: 16px;
+  min-height: 280px;
+  background: rgb(235, 235, 235);
+  border-radius: 20px;
+}
