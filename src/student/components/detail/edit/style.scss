@@ -8,6 +8,10 @@ $item-margin: 12px 0 12px 0;
   @include content;
 }
 
+.delete-parent-button {
+  margin-left: auto;
+}
+
 .student-detail-card {
   width: 50%;
   margin-inline: auto;
@@ -27,6 +31,7 @@ $item-margin: 12px 0 12px 0;
       margin: $item-margin;
     }
     .student-detail-form-button {
+      margin-top: 12px;
       background: $main-color !important;
       width: 72px;
       color: white;

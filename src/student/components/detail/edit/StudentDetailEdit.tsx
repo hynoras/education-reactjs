@@ -1,4 +1,3 @@
-import "./style.scss"
 import { StudentDetailForm } from "student/models/dtos/student/studentDetail"
 import { useParams } from "react-router"
 import studentService from "student/services/student/studentService"

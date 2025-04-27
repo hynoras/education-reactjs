@@ -1,6 +1,6 @@
 import { Button, Card, Divider, Skeleton, Typography } from "antd"
 import { CloseOutlined } from "@ant-design/icons"
-import { useEffect, useState } from "react"
+import { useEffect, useReducer } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import studentService from "student/services/student/studentService"
 import { useQuery } from "@tanstack/react-query"
@@ -9,6 +9,7 @@ import InputRow from "shared/components/input/InputRow"
 import DatePickerRow from "shared/components/datepicker/DatePickerRow"
 import { ParentInfoForm } from "student/models/dtos/student/studentDetail"
 import { Relationship } from "shared/enums/relationship"
+import { parentReducer } from "student/contexts/parentReducer"
 
 const { Title } = Typography
 
@@ -27,7 +28,7 @@ const StudentParentInfoForm: React.FC<StudentParentInfoFormProps> = ({
   isPending,
   onSubmitHandler
 }) => {
-  const [parentList, setParentList] = useState<Array<ParentInfoForm>>([])
+  const [parentList, dispatchParentList] = useReducer(parentReducer, [])
   const relationshipMap = Object.values(Relationship).map((value) => ({
     label: value,
     value: value
@@ -44,41 +45,39 @@ const StudentParentInfoForm: React.FC<StudentParentInfoFormProps> = ({
     defaultValues: { parent_info: [] }
   })
 
-  const { fields } = useFieldArray({
+  const { append, remove } = useFieldArray({
     control,
     name: "parent_info"
   })
 
   const addItem = () => {
-    const newParentItem = parentList.concat([
-      {
-        id: parentList.length,
-        full_name: "",
-        birth_date: new Date(),
-        nationality: "",
-        permanent_address: "",
-        relationship: Relationship.Guardian
-      }
-    ])
-    setParentList(newParentItem)
+    const newParent: ParentInfoForm = {
+      id: Date.now(),
+      full_name: "",
+      birth_date: new Date(),
+      nationality: "",
+      permanent_address: "",
+      relationship: Relationship.Guardian
+    }
+
+    dispatchParentList({ type: "ADD_PARENT", payload: newParent })
+    append(newParent)
+  }
+
+  const removeItem = (index: number) => {
+    dispatchParentList({ type: "REMOVE_PARENT", index })
+    remove(index)
   }
 
   useEffect(() => {
     if (parents && isEditing) {
-      reset({
-        parent_info: parents.parent_info.map((p) => ({
-          ...p,
-          id: p.id,
-          birth_date: new Date(p.birth_date)
-        }))
-      })
-      setParentList(
-        parents.parent_info.map((p) => ({
-          ...p,
-          id: p.id,
-          birth_date: new Date(p.birth_date)
-        }))
-      )
+      const mappedParents = parents.parent_info.map((p) => ({
+        ...p,
+        birth_date: new Date(p.birth_date)
+      }))
+
+      dispatchParentList({ type: "RESET_PARENTS", payload: mappedParents })
+      reset({ parent_info: mappedParents })
     }
   }, [isEditing, parents, reset])
 
@@ -90,7 +89,7 @@ const StudentParentInfoForm: React.FC<StudentParentInfoFormProps> = ({
           <form className={"student-detail-form"} onSubmit={handleSubmit(onSubmitHandler)}>
             {parentList.map((field, index) => (
               <div key={index}>
-                <CloseOutlined />
+                <CloseOutlined className={"delete-parent-button"} onClick={() => removeItem(index)} />
                 <InputRow
                   className={["student-detail-item-label", "student-detail-item-input"]}
                   control={control}
