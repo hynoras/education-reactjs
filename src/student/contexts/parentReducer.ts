@@ -1,4 +1,4 @@
-import { ParentInfoForm } from "student/models/dtos/student/studentDetail"
+import { ParentInfoForm } from "student/models/dtos/student/parent"
 
 export const parentReducer = (state: Array<ParentInfoForm>, action: any): Array<ParentInfoForm> => {
   switch (action.type) {
@@ -6,6 +6,7 @@ export const parentReducer = (state: Array<ParentInfoForm>, action: any): Array<
       return state.concat([
         {
           id: action.id,
+          student_id: action.identity,
           full_name: action.full_name,
           birth_date: action.birth_date,
           nationality: action.nationality,
