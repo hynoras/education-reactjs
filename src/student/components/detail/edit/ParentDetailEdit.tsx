@@ -1,51 +1,62 @@
 import "./style.scss"
 import { Content } from "antd/es/layout/layout"
 import { useParams } from "react-router"
-import parentService from "student/services/parent/parentService"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { ParentID, ParentInfoForm } from "student/models/dtos/student/parent"
 import StudentParentInfoForm from "shared/components/form/StudentParentInfoForm"
 import { message } from "antd"
 import { DefaultResponse } from "student/models/dtos/defaultResponse"
-import { useState } from "react"
+import { useRef } from "react"
+import studentService from "student/services/student/studentService"
+import parentService from "student/services/parent/parentService"
 
 const ParentInfoEditPage: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage()
-  let { studentId } = useParams()
-  const [upsertParents, setUpsertParents] = useState<Array<ParentInfoForm>>([])
-  const [deleteParents, setDeleteParents] = useState<Array<ParentID>>([])
+  const { studentId } = useParams()
+  const initialParentList = useRef<Array<ParentInfoForm>>([])
 
-  console.log("upsertParents: ", upsertParents)
-  console.log("deleteParents: ", deleteParents)
+  const { data: parents } = useQuery({
+    queryKey: ["parents", studentId],
+    queryFn: () => studentService.getStudentDetail(studentId),
+    enabled: !!studentId,
+    staleTime: Infinity
+  })
 
-  const successMessage = (data: DefaultResponse | undefined) => {
+  if (parents) {
+    initialParentList.current = parents.parent_info.map((p) => ({
+      ...p,
+      student_id: studentId,
+      birth_date: new Date(p.birth_date)
+    }))
+  }
+
+  const showSuccess = (data: DefaultResponse | undefined) => {
     messageApi.open({
       type: "success",
       content: data?.message
     })
   }
 
-  const upsertParentInfoMutation = useMutation({
-    mutationFn: (updatedParentInfo: Array<ParentInfoForm>) => {
-      return parentService.upsertParentInfo(updatedParentInfo)
+  const upsertMutation = useMutation({
+    mutationFn: (payload: { upserts: ParentInfoForm[]; deletes: ParentID[] }) => {
+      return Promise.all([
+        parentService.upsertParentInfo(payload.upserts),
+        parentService.deleteParentInfo(payload.deletes)
+      ])
     },
-    onSuccess: (data) => {
-      successMessage(data)
+    onSuccess: ([upsertRes, deleteRes]) => {
+      showSuccess(upsertRes)
+      showSuccess(deleteRes)
     }
   })
 
-  const deleteParentInfoMutation = useMutation({
-    mutationFn: (deletedParentInfo: Array<ParentID>) => {
-      return parentService.deleteParentInfo(deletedParentInfo)
-    },
-    onSuccess: (data) => {
-      successMessage(data)
-    }
-  })
+  const onSubmitHandler = (data: { parent_info: ParentInfoForm[] }) => {
+    const current = data.parent_info
+    const initial = initialParentList.current
 
-  const onSubmitHandler = () => {
-    upsertParentInfoMutation.mutate(upsertParents)
-    deleteParentInfoMutation.mutate(deleteParents)
+    const deleted: ParentID[] = initial.filter((p) => !current.some((cp) => cp.id === p.id)).map((p) => ({ id: p.id }))
+
+    upsertMutation.mutate({ upserts: current, deletes: deleted })
   }
 
   return (
@@ -54,12 +65,8 @@ const ParentInfoEditPage: React.FC = () => {
       <StudentParentInfoForm
         studentId={studentId}
         isEditing={true}
-        isPending={upsertParentInfoMutation.isPending}
+        isPending={upsertMutation.isPending}
         onSubmitHandler={onSubmitHandler}
-        upsertParents={upsertParents}
-        setUpsertParents={setUpsertParents}
-        deleteParents={deleteParents}
-        setDeleteParents={setDeleteParents}
       />
     </Content>
   )

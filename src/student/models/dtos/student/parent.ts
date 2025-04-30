@@ -11,7 +11,7 @@ export interface ParentInfo {
 
 export interface ParentInfoForm {
   id: number
-  student_id: string | undefined
+  student_id?: string | undefined
   full_name?: string
   birth_date?: Date
   nationality?: string
