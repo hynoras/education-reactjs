@@ -1,6 +1,4 @@
-import "./style.scss"
 import { Card, Button, Typography } from "antd"
-import { Content } from "antd/es/layout/layout"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Gender } from "shared/enums/gender"
 import { StudentDetailForm } from "student/models/dtos/student/studentDetail"
@@ -17,11 +15,11 @@ import studentService from "student/services/student/studentService"
 const { Title } = Typography
 
 const StudentPersonalInfoForm: React.FC<{
-  studentId: string | undefined
+  studentId?: string | undefined
   isEditing: boolean
   isLoading?: boolean | undefined
   isPending: boolean | undefined
-  onSubmitHandler: (payload: StudentDetailForm) => void
+  onSubmitHandler: (payload: StudentDetailForm) => void | undefined
 }> = ({ studentId, isEditing, isLoading, isPending, onSubmitHandler }) => {
   const genderMap = Object.values(Gender).map((value) => ({
     label: value,
@@ -48,12 +46,7 @@ const StudentPersonalInfoForm: React.FC<{
 
   const controllerName = Object.keys(personal_info)
 
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    formState: { errors }
-  } = useForm<StudentDetailForm>({
+  const { control, handleSubmit, setValue } = useForm<StudentDetailForm>({
     resolver: yupResolver(studentDetailSchema),
     defaultValues: {
       ...personal_info
@@ -79,50 +72,48 @@ const StudentPersonalInfoForm: React.FC<{
 
   return (
     <>
-      <Content className="student-detail-container">
-        <Title level={2}> Edit personal information</Title>
-        <Card className={"student-detail-card"} loading={isLoading}>
-          <form className={"student-detail-form"} onSubmit={handleSubmit(onSubmitHandler)}>
-            {controllerName.map((item, index) => (
-              <div key={item}>
-                {isValidItem(["birth_date"], item) && (
-                  <DatePickerRow
-                    className={["student-detail-item-label"]}
-                    control={control}
-                    name={"birth_date"}
-                    label={"Birth Date: "}
-                    format={""}
-                  />
-                )}
-                {isValidItem(["gender"], item) && (
-                  <RadioGroup
-                    className={["student-detail-item-label", "student-detail-item-radio"]}
-                    control={control}
-                    name={item}
-                    label={"Gender:"}
-                    value={studentDetail?.gender}
-                    options={genderMap}
-                  />
-                )}
-                {isValidItem(
-                  ["full_name", "permanent_address", "temporary_address", "ethnic_group", "religion", "citizen_id"],
-                  item
-                ) && (
-                  <InputRow
-                    className={["student-detail-item-label", "student-detail-item-input"]}
-                    control={control}
-                    name={item}
-                    label={`${formatString(controllerName[index])}:`}
-                  />
-                )}
-              </div>
-            ))}
-            <Button className={"student-detail-form-button"} htmlType="submit" disabled={isPending}>
-              {isPending ? "Saving..." : "Submit"}
-            </Button>
-          </form>
-        </Card>
-      </Content>
+      <Title level={2}> Edit personal information</Title>
+      <Card className={"student-detail-card"} loading={isLoading}>
+        <form className={"student-detail-form"} onSubmit={handleSubmit(onSubmitHandler)}>
+          {controllerName.map((item, index) => (
+            <div key={item}>
+              {isValidItem(["birth_date"], item) && (
+                <DatePickerRow
+                  className={["student-detail-item-label"]}
+                  control={control}
+                  name={"birth_date"}
+                  label={"Birth Date: "}
+                  format={""}
+                />
+              )}
+              {isValidItem(["gender"], item) && (
+                <RadioGroup
+                  className={["student-detail-item-label", "student-detail-item-radio"]}
+                  control={control}
+                  name={item}
+                  label={"Gender:"}
+                  value={studentDetail?.gender}
+                  options={genderMap}
+                />
+              )}
+              {isValidItem(
+                ["full_name", "permanent_address", "temporary_address", "ethnic_group", "religion", "citizen_id"],
+                item
+              ) && (
+                <InputRow
+                  className={["student-detail-item-label", "student-detail-item-input"]}
+                  control={control}
+                  name={item}
+                  label={`${formatString(controllerName[index])}:`}
+                />
+              )}
+            </div>
+          ))}
+          <Button className={"student-detail-form-button"} htmlType="submit" disabled={isPending}>
+            {isPending ? "Saving..." : "Submit"}
+          </Button>
+        </form>
+      </Card>
     </>
   )
 }

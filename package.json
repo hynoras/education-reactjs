@@ -24,7 +24,7 @@
     "@types/react-dom": "^18.3.1",
     "@types/redux-persist": "^4.3.1",
     "antd": "^5.23.4",
-    "axios": "^1.7.9",
+    "axios": "^1.8.2",
     "dayjs": "^1.11.13",
     "fast-safe-stringify": "^2.1.1",
     "font-awesome": "^4.7.0",

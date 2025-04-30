@@ -1,14 +1,5 @@
 import { Gender } from "shared/enums/gender"
-import { Relationship } from "shared/enums/relationship"
-
-export interface ParentInfo {
-  id: number
-  full_name: string
-  birth_date: string
-  nationality: string
-  permanent_address: string
-  relationship: Relationship
-}
+import { ParentInfo } from "./parent"
 
 export interface PersonalInfo {
   identity: string
@@ -37,15 +28,6 @@ export interface StudentDetailForm {
   ethnic_group?: string | undefined
   religion?: string | undefined
   citizen_id: string
-}
-
-export interface ParentInfoForm {
-  id: number
-  full_name?: string
-  birth_date?: Date
-  nationality?: string
-  permanent_address?: string
-  relationship?: Relationship
 }
 
 export interface IdentityMap {

@@ -34,6 +34,14 @@ const StudentPage: React.FC = () => {
     staleTime: Infinity
   })
 
+  const onSearch = (query: string) => {
+    setQueryOptions((prev) => ({
+      ...prev,
+      searchQuery: query,
+      currentPage: 1
+    }))
+  }
+
   const onChangePagination: PaginationProps["onChange"] = (page: number, size: number) => {
     setQueryOptions((prev) => ({ ...prev, currentPage: page, pageSize: size }))
   }
@@ -83,17 +91,7 @@ const StudentPage: React.FC = () => {
             </Button>
             {hasSelected ? `Selected ${selectedRowKeys.length} items` : null}
           </div>
-          <SearchBar
-            onSearch={(query) =>
-              setQueryOptions((prev) => ({
-                ...prev,
-                searchQuery: query,
-                currentPage: 1
-              }))
-            }
-            className="student-search-bar"
-            placeholder="Search identity or name..."
-          />
+          <SearchBar onSearch={onSearch} className="student-search-bar" placeholder="Search identity or name..." />
         </div>
         <StudentListTable
           students={students?.content || []}

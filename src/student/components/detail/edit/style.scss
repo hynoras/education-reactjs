@@ -3,6 +3,20 @@ $main-color: #7494ec;
 $main-color-light: rgb(178, 187, 208);
 $main-color-dark: #5a78cc;
 $item-margin: 12px 0 12px 0;
+@mixin disable {
+  cursor: not-allowed;
+  background: rgb(194, 194, 194);
+  color: rgb(61, 61, 61);
+  border: none;
+}
+
+.student-detail-container {
+  @include content;
+}
+
+.delete-parent-button {
+  margin-left: auto;
+}
 
 .student-detail-card {
   width: 50%;
@@ -22,7 +36,12 @@ $item-margin: 12px 0 12px 0;
     .student-detail-item-radio {
       margin: $item-margin;
     }
+    .button-wrapper {
+      display: flex;
+      flex-direction: row;
+    }
     .student-detail-form-button {
+      margin-top: 12px;
       background: $main-color !important;
       width: 72px;
       color: white;
@@ -33,6 +52,16 @@ $item-margin: 12px 0 12px 0;
       &:focus {
         background: $main-color-dark !important;
         color: #eee;
+      }
+    }
+    .disable {
+      margin-top: 12px;
+      @include disable;
+      &:hover {
+        @include disable;
+      }
+      &:focus {
+        @include disable;
       }
     }
   }

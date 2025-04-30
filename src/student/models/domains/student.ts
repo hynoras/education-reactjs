@@ -1,5 +1,5 @@
 import { Gender } from "shared/enums/gender"
-import { ParentInfo, StudentDetail } from "student/models/dtos/student/studentDetail"
+import { ParentInfo } from "student/models/dtos/student/parent"
 
 export class Student {
   constructor(

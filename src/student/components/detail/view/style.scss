@@ -16,11 +16,7 @@ $main-color-dark: #5a78cc;
 }
 
 .student-detail-container {
-  padding: 24px;
-  margin: 16px;
-  min-height: 280px;
-  background: rgb(235, 235, 235);
-  border-radius: 20px;
+  @include content;
   .student-detail-banner {
     position: relative;
     background: white;
