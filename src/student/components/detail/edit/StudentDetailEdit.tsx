@@ -33,6 +33,9 @@ const StudentDetailEditPage: React.FC = () => {
         isPending={mutation.isPending}
         onSubmitHandler={onSubmitHandler}
         isEditing={true}
+        setStudentId={function (value: any): void {
+          throw new Error("Function not implemented.")
+        }}
       />
     </Content>
   )

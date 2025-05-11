@@ -9,7 +9,7 @@ import StudentParentInfoForm from "shared/components/form/StudentParentInfoForm"
 import { ParentInfoForm } from "student/models/dtos/student/parent"
 import { DefaultResponse } from "student/models/dtos/defaultResponse"
 import parentService from "student/services/parent/parentService"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { SubmitFormRef } from "shared/hooks/useSubmitForm"
 import { isSame } from "shared/utils/generalUtils"
 
@@ -17,7 +17,7 @@ const { Title } = Typography
 
 const StudentInfoAdd: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage()
-  const studentId: string | undefined = ""
+  const [studentId, setStudentId] = useState<string | undefined>("")
   const initialParentInfo = useRef<Array<ParentInfoForm>>([])
   const modifiedParentInfo = useRef<Array<ParentInfoForm>>([])
   const personalInfoRef = useRef<SubmitFormRef>(null)
@@ -26,8 +26,10 @@ const StudentInfoAdd: React.FC = () => {
     mutationFn: (addPersonalInfo: StudentDetailForm) => {
       return studentService.addStudentPersonalInfo(addPersonalInfo)
     },
-    onSuccess: (data) => {
-      showSuccess(data)
+    onSuccess: () => {
+      if (!isSame(initialParentInfo, modifiedParentInfo)) {
+        onSubmitParentInfoHandler({ parent_info: modifiedParentInfo.current })
+      }
     }
   })
 
@@ -45,8 +47,11 @@ const StudentInfoAdd: React.FC = () => {
   }
 
   const onSubmitParentInfoHandler = (payload: { parent_info: ParentInfoForm[] }) => {
+    console.log("payload", payload)
     payload.parent_info.forEach((parentInfo) => {
       parentInfo.student_id = studentId
+      console.log("Student id", studentId)
+      console.log("Student id in parent: ", parentInfo.student_id)
     })
     parentInfoMutation.mutate(payload.parent_info)
   }
@@ -59,13 +64,7 @@ const StudentInfoAdd: React.FC = () => {
   }
 
   const onClick = () => {
-    modifiedParentInfo.current.forEach((parentInfo) => {
-      parentInfo.student_id = studentId
-    })
     personalInfoRef.current?.submitForm()
-    if (!isSame(initialParentInfo, modifiedParentInfo)) {
-      parentInfoRef.current?.submitForm()
-    }
   }
 
   const items: CollapseProps["items"] = [
@@ -80,6 +79,7 @@ const StudentInfoAdd: React.FC = () => {
         <StudentPersonalInfoForm
           ref={personalInfoRef}
           studentId={studentId}
+          setStudentId={setStudentId}
           isEditing={false}
           isPending={undefined}
           onSubmitHandler={onSubmitPersonalInfoHandler}

@@ -3,7 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { Gender } from "shared/enums/gender"
 import { StudentDetailForm } from "student/models/dtos/student/studentDetail"
 import { studentDetailSchema } from "student/models/validation/studentDetailSchema"
-import { forwardRef, useEffect } from "react"
+import { Dispatch, forwardRef, SetStateAction, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { formatString } from "shared/utils/stringUtils"
 import RadioGroup from "shared/components/radio/RadioGroup"
@@ -16,6 +16,7 @@ import DepartmentSelect from "../dropdown/department_select/DepartmentSelect"
 
 type StudentPersonalInfoFormProps = {
   studentId?: string | undefined
+  setStudentId: Dispatch<SetStateAction<any>>
   isEditing: boolean
   isLoading?: boolean | undefined
   isPending: boolean | undefined
@@ -23,7 +24,7 @@ type StudentPersonalInfoFormProps = {
 }
 
 const StudentPersonalInfoForm = forwardRef<SubmitFormRef, StudentPersonalInfoFormProps>(
-  ({ studentId, isEditing, isLoading, isPending, onSubmitHandler }, ref) => {
+  ({ studentId, setStudentId, isEditing, isLoading, isPending, onSubmitHandler }, ref) => {
     const genderMap = Object.values(Gender).map((value) => ({
       label: value,
       value: value
@@ -55,7 +56,9 @@ const StudentPersonalInfoForm = forwardRef<SubmitFormRef, StudentPersonalInfoFor
     })
 
     if (!isEditing) {
-      studentId = getValues("identity")
+      const identity = getValues("identity")
+      setStudentId(identity)
+      console.log("watched student id in personal:", identity)
     }
 
     useImperativeSubmitForm(ref, handleSubmit, onSubmitHandler)
