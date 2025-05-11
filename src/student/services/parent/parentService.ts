@@ -8,7 +8,7 @@ class ParentService {
   async upsertParentInfo(payload: Array<ParentInfoForm>): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.post(`/admin/parent`, payload, {
+      const response = await api.post(`/parent`, payload, {
         headers: { Authorization: `${BEARER} ${token}` }
       })
       return response.data
@@ -21,7 +21,7 @@ class ParentService {
   async deleteParentInfo(payload: Array<ParentID>): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.delete(`/admin/parent`, {
+      const response = await api.delete(`/parent`, {
         headers: { Authorization: `${BEARER} ${token}` },
         data: payload
       })

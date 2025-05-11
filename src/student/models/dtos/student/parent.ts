@@ -1,7 +1,7 @@
 import { Relationship } from "shared/enums/relationship"
 
 export interface ParentInfo {
-  id: number
+  parent_id: number
   full_name: string
   birth_date: string
   nationality: string
@@ -10,7 +10,7 @@ export interface ParentInfo {
 }
 
 export interface ParentInfoForm {
-  id: number
+  parent_id: number
   student_id?: string | undefined
   full_name?: string
   birth_date?: Date

@@ -9,6 +9,7 @@ import { StudentList } from "student/models/dtos/student/studentList"
 import departmentService from "student/services/student/departmentService"
 import majorService from "student/services/student/majorService"
 import ActionButtonList from "./ActionButtonList"
+import { useQuery } from "@tanstack/react-query"
 
 type StudentListTableProps = {
   students: StudentList[]
@@ -21,7 +22,11 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
   const navigate = useNavigate()
 
   const { data: departments } = useFetch<DepartmentNameList>(departmentService.getAllDepartmentName)
-  const { data: majors } = useFetch<MajorNameList>(majorService.getAllMajorName)
+  const { data: majorNames } = useQuery<Array<MajorNameList>>({
+    queryKey: ["major-names"],
+    queryFn: () => majorService.getAllMajorName(),
+    staleTime: Infinity
+  })
 
   const onChangeTable: TableProps<StudentList>["onChange"] = (_, filters, sorter) => {
     const filtersList = Object.entries(filters).filter(([_, value]) => value && value.length > 0)
@@ -78,7 +83,7 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
     value: String(value.department_name)
   }))
 
-  const majorFilter = majors.map((value) => ({
+  const majorFilter = majorNames?.map((value) => ({
     text: String(value.major_name),
     value: String(value.major_name)
   }))

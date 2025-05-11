@@ -10,7 +10,7 @@ class AuthService {
 
   async checkAuth(token: string): Promise<UserResponse | any> {
     try {
-      const response = await api.get("/auth/get-user", {
+      const response = await api.get("/auth/account", {
         headers: { Authorization: `${BEARER} ${token}` }
       })
       return response.data
