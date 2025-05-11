@@ -1,3 +1,4 @@
 export interface MajorNameList {
-  major_name: string[]
+  major_id: number
+  major_name: string
 }

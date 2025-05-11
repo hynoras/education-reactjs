@@ -7,7 +7,7 @@ class DepartmentService {
   async getAllDepartmentName(): Promise<DepartmentNameList | any> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get("admin/departments", {
+      const response = await api.get("/departments", {
         headers: { Authorization: `${BEARER} ${token}` }
       })
       return response.data

@@ -7,7 +7,7 @@ class MajorService {
   async getAllMajorName(): Promise<MajorNameList | any> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get("admin/majors", {
+      const response = await api.get("/majors", {
         headers: { Authorization: `${BEARER} ${token}` }
       })
       return response.data

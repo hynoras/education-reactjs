@@ -12,6 +12,7 @@ import StudentDetailPage from "student/components/detail/view/StudentDetailView"
 import StudentDetailEditPage from "student/components/detail/edit/StudentDetailEdit"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import ParentInfoEditPage from "student/components/detail/edit/ParentDetailEdit"
+import StudentInfoAdd from "student/components/detail/add/StudentInfoAdd"
 
 const App: React.FC = () => {
   const queryClient = new QueryClient()
@@ -41,6 +42,7 @@ const App: React.FC = () => {
             }
           >
             <Route path="student/" element={<StudentPage />} />
+            <Route path="student/add" element={<StudentInfoAdd />} />
             <Route path="student/:studentId/view" element={<StudentDetailPage />} />
             <Route path="student/:studentId/edit" element={<StudentDetailEditPage />} />
             <Route path="student/parent/:studentId/edit" element={<ParentInfoEditPage />} />
