@@ -61,7 +61,7 @@ const ParentInfoEditPage: React.FC = () => {
 
     const deleted: ParentID[] = initial
       .filter((p) => !current.some((cp) => cp.parent_id === p.parent_id))
-      .map((p) => ({ id: p.parent_id }))
+      .map((p) => ({ parent_id: p.parent_id }))
 
     upsertMutation.mutate({ upserts: current, deletes: deleted })
   }
