@@ -20,5 +20,5 @@ export interface ParentInfoForm {
 }
 
 export interface ParentID {
-  id: number | undefined
+  parent_id: number | undefined
 }

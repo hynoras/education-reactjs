@@ -13,7 +13,7 @@ const changeURL = (stage: string): string | undefined => {
 }
 
 export const api = axios.create({
-  baseURL: changeURL("production_koyeb")
+  baseURL: changeURL("development")
 })
 
 export const setAuthToken = (token: string | null) => {

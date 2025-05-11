@@ -32,7 +32,7 @@ export class Student {
       citizen_id: personal.citizen_id,
       avatar: personal.avatar,
       parent_info: parentList.map((p: any) => ({
-        id: p.id,
+        parent_id: p.parent_id,
         full_name: p.full_name,
         birth_date: p.birth_date,
         nationality: p.nationality,
