@@ -58,7 +58,6 @@ const StudentPersonalInfoForm = forwardRef<SubmitFormRef, StudentPersonalInfoFor
     if (!isEditing) {
       const identity = getValues("identity")
       setStudentId(identity)
-      console.log("watched student id in personal:", identity)
     }
 
     useImperativeSubmitForm(ref, handleSubmit, onSubmitHandler)

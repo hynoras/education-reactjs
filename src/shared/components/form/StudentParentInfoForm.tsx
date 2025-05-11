@@ -75,9 +75,6 @@ const StudentParentInfoForm = forwardRef<SubmitFormRef, StudentParentInfoFormPro
       initialParentInfo?.current?.push(emptyParentInfo)
     }
 
-    console.log("origin data:", initialParentInfo)
-    console.log("changed data: ", modifiedParentInfo)
-
     const removeItem = (index: number) => {
       remove(index)
       initialParentInfo.current = initialParentInfo.current.filter(

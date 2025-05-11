@@ -50,8 +50,6 @@ const StudentInfoAdd: React.FC = () => {
     console.log("payload", payload)
     payload.parent_info.forEach((parentInfo) => {
       parentInfo.student_id = studentId
-      console.log("Student id", studentId)
-      console.log("Student id in parent: ", parentInfo.student_id)
     })
     parentInfoMutation.mutate(payload.parent_info)
   }
