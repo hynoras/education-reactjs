@@ -9,6 +9,9 @@ This is the **frontend** of a full-stack Education Management System built using
 - admin:
 username: admin1
 password: admin123
+- student:
+username: student1
+password: admin123
 
 ---
 
