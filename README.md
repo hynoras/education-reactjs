@@ -1,7 +1,6 @@
 # 🏫 Education System - Frontend
 
-This is the **frontend** of a full-stack Education Management System built using **ReactJS** and **TypeScript**. It supports role-based access for **students**, **administrators**, and **finance officers**, and includes features like course registration, tuition tracking, and report generation.
-
+This is the **frontend** of a full-stack Education Management System built using **ReactJS** and **TypeScript**. It supports role-based access for **students**, **administrators**
 ---
 
 # Account for testing
