@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import studentService from "student/services/student/studentService"
+import studentService from "student/services/studentService"
 
 interface StudentState {
   identity: string | undefined
