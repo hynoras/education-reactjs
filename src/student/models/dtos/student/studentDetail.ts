@@ -20,14 +20,16 @@ export interface StudentDetail {
 }
 
 export interface StudentDetailForm {
+  identity?: string
   full_name: string
   birth_date: Date
   gender?: Gender | undefined
   permanent_address: string
-  temporary_address?: string | undefined
-  ethnic_group?: string | undefined
-  religion?: string | undefined
+  temporary_address?: any
+  ethnic_group?: any
+  religion?: any
   citizen_id: string
+  major?: number
 }
 
 export interface IdentityMap {

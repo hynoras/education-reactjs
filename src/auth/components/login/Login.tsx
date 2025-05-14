@@ -1,8 +1,8 @@
+import "./style.scss"
 import { Typography } from "@mui/material"
 import { Input } from "antd"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons"
-import "./style.scss"
 import { LoginButton } from "shared/themes/button/LoginButton"
 import Title from "shared/themes/text/Text"
 import { Link, useNavigate } from "react-router"
@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux"
 import { AppDispatch, store } from "shared/utils/store"
 import { loadUser, loginUser } from "auth/contexts/loginReducer"
 import { LoginRequest } from "auth/models/dtos/authModel"
+import { loadIdentity } from "student/contexts/studentReducer"
 
 const loginSchema = yup.object({
   username: yup
@@ -46,6 +47,12 @@ const Login: React.FC = () => {
     await dispatch(loadUser(token as string))
     const role = store.getState().auth.user?.role
     if (loginUser.fulfilled.match(result)) {
+      const username = store.getState().auth.user?.username
+      if (role === "STUDENT") {
+        await dispatch(loadIdentity(username as string))
+        const identity = store.getState().student.identity
+        navigate(`/student/${identity}/view`)
+      }
       if (role === "ADMIN") navigate("/admin/student")
     }
   }

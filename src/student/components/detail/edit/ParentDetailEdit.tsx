@@ -4,15 +4,19 @@ import { useParams } from "react-router"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { ParentID, ParentInfoForm } from "student/models/dtos/student/parent"
 import StudentParentInfoForm from "shared/components/form/StudentParentInfoForm"
-import { message } from "antd"
+import { message, Typography } from "antd"
 import { DefaultResponse } from "student/models/dtos/defaultResponse"
 import { useRef } from "react"
 import studentService from "student/services/student/studentService"
 import parentService from "student/services/parent/parentService"
 
+const { Title } = Typography
+
 const ParentInfoEditPage: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage()
   const { studentId } = useParams()
+  const initialParentInfo = useRef<Array<ParentInfoForm>>([])
+  const modifiedParentInfo = useRef<Array<ParentInfoForm>>([])
   const initialParentList = useRef<Array<ParentInfoForm>>([])
 
   const { data: parents } = useQuery({
@@ -25,6 +29,7 @@ const ParentInfoEditPage: React.FC = () => {
   if (parents) {
     initialParentList.current = parents.parent_info.map((p) => ({
       ...p,
+      parent_id: p.parent_id,
       student_id: studentId,
       birth_date: new Date(p.birth_date)
     }))
@@ -54,7 +59,9 @@ const ParentInfoEditPage: React.FC = () => {
     const current = data.parent_info
     const initial = initialParentList.current
 
-    const deleted: ParentID[] = initial.filter((p) => !current.some((cp) => cp.id === p.id)).map((p) => ({ id: p.id }))
+    const deleted: ParentID[] = initial
+      .filter((p) => !current.some((cp) => cp.parent_id === p.parent_id))
+      .map((p) => ({ id: p.parent_id }))
 
     upsertMutation.mutate({ upserts: current, deletes: deleted })
   }
@@ -62,11 +69,14 @@ const ParentInfoEditPage: React.FC = () => {
   return (
     <Content className="student-detail-container">
       {contextHolder}
+      <Title level={2}>Edit parent information</Title>
       <StudentParentInfoForm
         studentId={studentId}
         isEditing={true}
         isPending={upsertMutation.isPending}
         onSubmitHandler={onSubmitHandler}
+        initialParentInfo={initialParentInfo}
+        modifiedParentInfo={modifiedParentInfo}
       />
     </Content>
   )

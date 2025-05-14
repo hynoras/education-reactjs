@@ -10,6 +10,7 @@ import { StudentList } from "student/models/dtos/student/studentList"
 import { IdentityMap } from "student/models/dtos/student/studentDetail"
 import StudentListPagination from "./StudentListPagination"
 import DeleteConfirm from "./DeleteConfirm"
+import { useNavigate } from "react-router"
 
 type TableRowSelection<T extends object = object> = TableProps<T>["rowSelection"]
 
@@ -17,6 +18,7 @@ const StudentPage: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false)
   const [identityList, setIdentityList] = useState<Array<IdentityMap>>([])
+  const navigate = useNavigate()
   let initialIdentityList: Array<IdentityMap> = []
   const [queryOptions, setQueryOptions] = useState({
     currentPage: 1,
@@ -54,6 +56,10 @@ const StudentPage: React.FC = () => {
     setOpenDeleteConfirm(true)
   }
 
+  const handleAddManually = () => {
+    navigate("add")
+  }
+
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys)
     newSelectedRowKeys.forEach((identity) => {
@@ -83,6 +89,9 @@ const StudentPage: React.FC = () => {
           <Title variant="h4" sx={{ color: "black" }}>
             Student List
           </Title>
+          <Button className={"add-student-manually-button"} type="primary" onClick={handleAddManually}>
+            Add Manually
+          </Button>
         </div>
         <div className="student-filter-search-container">
           <div>

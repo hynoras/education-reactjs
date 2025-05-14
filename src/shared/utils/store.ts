@@ -2,17 +2,25 @@ import { configureStore } from "@reduxjs/toolkit"
 import authReducer from "auth/contexts/loginReducer"
 import storage from "redux-persist/lib/storage"
 import { persistReducer, persistStore } from "redux-persist"
+import studentReducer from "student/contexts/studentReducer"
 
-const persistConfig = {
+const authPersistConfig = {
   key: "auth",
   storage
 }
 
-const persistAuthReducer = persistReducer(persistConfig, authReducer)
+const studentPersistConfig = {
+  key: "student",
+  storage
+}
+
+const persistAuthReducer = persistReducer(authPersistConfig, authReducer)
+const persistStudentReducer = persistReducer(studentPersistConfig, studentReducer)
 
 export const store = configureStore({
   reducer: {
-    auth: persistAuthReducer
+    auth: persistAuthReducer,
+    student: persistStudentReducer
   }
 })
 

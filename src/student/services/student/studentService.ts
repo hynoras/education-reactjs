@@ -19,7 +19,7 @@ class StudentService {
   }): Promise<PaginatedStudentList | any> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get("/admin/students", {
+      const response = await api.get("/students", {
         params: {
           currentPage: options?.currentPage ? options.currentPage - 1 : 0,
           pageSize: options?.pageSize ?? 10,
@@ -42,7 +42,7 @@ class StudentService {
   async getStudentDetail(identity: string | undefined): Promise<Student | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get<StudentDetail>(`/admin/student/${identity}`, {
+      const response = await api.get<StudentDetail>(`/student/${identity}`, {
         headers: { Authorization: `${BEARER} ${token}` }
       })
       const studentDetail = response.data
@@ -53,10 +53,33 @@ class StudentService {
     }
   }
 
+  async getIdentityByUsername(username: string): Promise<string | undefined> {
+    try {
+      const response = await api.get<string>(`/student/identity/${username}`)
+      return response.data
+    } catch (error) {
+      console.error("Error fetching student detail:", error)
+      return
+    }
+  }
+
+  async addStudentPersonalInfo(payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
+    try {
+      const token = store.getState().auth.token
+      const response = await api.post(`/student`, payload, {
+        headers: { Authorization: `${BEARER} ${token}` }
+      })
+      return response.data
+    } catch (error) {
+      console.error("Error deleting student detail:", error)
+      return
+    }
+  }
+
   async deleteStudentPersonalInfo(identity: string | undefined): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.delete(`/admin/student/${identity}`, {
+      const response = await api.delete(`/student/${identity}`, {
         headers: { Authorization: `${BEARER} ${token}` }
       })
       return response.data
@@ -69,7 +92,7 @@ class StudentService {
   async deleteManyStudentPersonalInfo(payload: Array<IdentityMap>): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.delete(`/admin/students`, {
+      const response = await api.delete(`/students`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `${BEARER} ${token}`
@@ -86,7 +109,7 @@ class StudentService {
   async updateStudentPersonalInfo(studentId: any, payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.put(`/admin/student/${studentId}`, payload, {
+      const response = await api.put(`/student/${studentId}`, payload, {
         headers: { Authorization: `${BEARER} ${token}` }
       })
       return response.data
@@ -99,7 +122,7 @@ class StudentService {
   async updateStudentAvatar(studentId: string | undefined, avatar: FormData): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.put(`/admin/student/avatar/${studentId}`, avatar, {
+      const response = await api.put(`/student/avatar/${studentId}`, avatar, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `${BEARER} ${token}`

@@ -17,6 +17,13 @@ $main-color-dark: #5a78cc;
   border-radius: 12px;
   .student-wrapper {
     padding: 2%;
+    .student-title {
+      @include flex-space-between;
+      .add-student-manually-button {
+        @include button-general;
+        align-self: center;
+      }
+    }
     .ant-table {
       height: 65vh;
       .ant-table-thead th {
