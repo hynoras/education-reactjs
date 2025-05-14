@@ -53,6 +53,16 @@ class StudentService {
     }
   }
 
+  async getIdentityByUsername(username: string): Promise<string | undefined> {
+    try {
+      const response = await api.get<string>(`/student/identity/${username}`)
+      return response.data
+    } catch (error) {
+      console.error("Error fetching student detail:", error)
+      return
+    }
+  }
+
   async addStudentPersonalInfo(payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token

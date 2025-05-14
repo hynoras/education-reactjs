@@ -33,6 +33,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Navigate to="login" />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/student/:studentId/view" element={<StudentDetailPage />} />
           <Route
             path="/admin/*"
             element={
@@ -43,7 +44,6 @@ const App: React.FC = () => {
           >
             <Route path="student/" element={<StudentPage />} />
             <Route path="student/add" element={<StudentInfoAdd />} />
-            <Route path="student/:studentId/view" element={<StudentDetailPage />} />
             <Route path="student/:studentId/edit" element={<StudentDetailEditPage />} />
             <Route path="student/parent/:studentId/edit" element={<ParentInfoEditPage />} />
             <Route path="course" element={<CoursePage />} />

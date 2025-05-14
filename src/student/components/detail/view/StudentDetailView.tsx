@@ -117,7 +117,7 @@ const StudentDetailPage: React.FC = () => {
             </div>
           </Col>
           <Col span={8}>
-            <Card title="Card title">Card content</Card>
+            <Card title="Card title">To be added</Card>
           </Col>
         </Row>
       </Content>
