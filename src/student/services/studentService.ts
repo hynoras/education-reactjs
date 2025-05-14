@@ -3,8 +3,17 @@ import { Student } from "student/models/domains/student"
 import { api } from "shared/utils/api"
 import { store } from "shared/utils/store"
 import { PaginatedStudentList } from "student/models/dtos/studentList"
-import { BEARER } from "shared/constants/api"
+import {
+  AUTHORIZATION,
+  CONTENT_TYPE_APP_JSON_AUTH,
+  CONTENT_TYPE_FORM_DATA_AUTH,
+  DEFAULT_CURRENT_PAGE,
+  DEFAULT_PAGE_SIZE
+} from "shared/constants/apiConstants"
 import { DefaultResponse } from "shared/models/dtos/defaultResponse"
+import { AVATAR_BY_ID, BASE, BASE_PLURAL, BY_ID, ID_BY_USERNAME } from "student/constants/studentMappings"
+import { IDENTITY } from "shared/constants/studentColumns"
+import { EMPTY_ARRAY, EMPTY_STRING } from "shared/constants/genericValues"
 
 class StudentService {
   async getAllStudent(options?: {
@@ -19,31 +28,31 @@ class StudentService {
   }): Promise<PaginatedStudentList | any> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get("/students", {
+      const response = await api.get(BASE_PLURAL, {
         params: {
-          currentPage: options?.currentPage ? options.currentPage - 1 : 0,
-          pageSize: options?.pageSize ?? 10,
-          sortBy: options?.sortBy ?? "identity",
+          currentPage: options?.currentPage ? options.currentPage - 1 : DEFAULT_CURRENT_PAGE,
+          pageSize: options?.pageSize ?? DEFAULT_PAGE_SIZE,
+          sortBy: options?.sortBy ?? IDENTITY,
           sortOrder: options?.sortOrder,
           gender: options?.gender,
           major: options?.major,
           department: options?.department,
-          search: options?.searchQuery ?? ""
+          search: options?.searchQuery ?? EMPTY_STRING
         },
-        headers: { Authorization: `${BEARER} ${token}` }
+        headers: AUTHORIZATION(token)
       })
       return response.data
     } catch (error) {
       console.error("Error fetching students:", error)
-      return { data: { content: [], totalElements: 0 } }
+      return { data: { content: EMPTY_ARRAY, totalElements: 0 } }
     }
   }
 
   async getStudentDetail(identity: string | undefined): Promise<Student | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get<StudentDetail>(`/student/${identity}`, {
-        headers: { Authorization: `${BEARER} ${token}` }
+      const response = await api.get<StudentDetail>(BASE + BY_ID(identity), {
+        headers: AUTHORIZATION(token)
       })
       const studentDetail = response.data
       return Student.fromDTO(studentDetail)
@@ -55,7 +64,7 @@ class StudentService {
 
   async getIdentityByUsername(username: string): Promise<string | undefined> {
     try {
-      const response = await api.get<string>(`/student/identity/${username}`)
+      const response = await api.get<string>(BASE + ID_BY_USERNAME(username))
       return response.data
     } catch (error) {
       console.error("Error fetching student detail:", error)
@@ -66,8 +75,8 @@ class StudentService {
   async addStudentPersonalInfo(payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.post(`/student`, payload, {
-        headers: { Authorization: `${BEARER} ${token}` }
+      const response = await api.post(BASE, payload, {
+        headers: AUTHORIZATION(token)
       })
       return response.data
     } catch (error) {
@@ -79,8 +88,8 @@ class StudentService {
   async deleteStudentPersonalInfo(identity: string | undefined): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.delete(`/student/${identity}`, {
-        headers: { Authorization: `${BEARER} ${token}` }
+      const response = await api.delete(BASE + BY_ID(identity), {
+        headers: AUTHORIZATION(token)
       })
       return response.data
     } catch (error) {
@@ -92,11 +101,8 @@ class StudentService {
   async deleteManyStudentPersonalInfo(payload: Array<IdentityMap>): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.delete(`/students`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${BEARER} ${token}`
-        },
+      const response = await api.delete(BASE_PLURAL, {
+        headers: CONTENT_TYPE_APP_JSON_AUTH(token),
         data: payload
       })
       return response.data
@@ -109,8 +115,8 @@ class StudentService {
   async updateStudentPersonalInfo(studentId: any, payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.put(`/student/${studentId}`, payload, {
-        headers: { Authorization: `${BEARER} ${token}` }
+      const response = await api.put(BASE + BY_ID(studentId), payload, {
+        headers: AUTHORIZATION(token)
       })
       return response.data
     } catch (error) {
@@ -122,11 +128,8 @@ class StudentService {
   async updateStudentAvatar(studentId: string | undefined, avatar: FormData): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.put(`/student/avatar/${studentId}`, avatar, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `${BEARER} ${token}`
-        }
+      const response = await api.put(BASE + AVATAR_BY_ID(studentId), avatar, {
+        headers: CONTENT_TYPE_FORM_DATA_AUTH(token)
       })
       return response.data
     } catch (error) {

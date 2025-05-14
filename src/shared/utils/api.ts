@@ -1,5 +1,5 @@
 import axios from "axios"
-import { BEARER, DEVELOPMENT, PRODUCTION_KOYEB, PRODUCTION_RAILWAY } from "shared/constants/api"
+import { BEARER, DEVELOPMENT, PRODUCTION_KOYEB, PRODUCTION_RAILWAY } from "shared/constants/apiConstants"
 
 const changeURL = (stage: string): string | undefined => {
   switch (stage) {

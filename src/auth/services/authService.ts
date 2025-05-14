@@ -1,4 +1,4 @@
-import { BEARER } from "shared/constants/api"
+import { BEARER } from "shared/constants/apiConstants"
 import { LoginRequest, UserResponse } from "auth/models/dtos/authModel"
 import { api } from "shared/utils/api"
 

@@ -1,4 +1,4 @@
-import { BEARER } from "shared/constants/api"
+import { BEARER } from "shared/constants/apiConstants"
 import { MajorNameList } from "major/models/dtos/major"
 import { api } from "shared/utils/api"
 import { store } from "shared/utils/store"

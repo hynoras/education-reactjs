@@ -1,7 +1,7 @@
 import { ParentID, ParentInfoForm } from "parent/models/dtos/parent"
 import { api } from "shared/utils/api"
 import { store } from "shared/utils/store"
-import { BEARER } from "shared/constants/api"
+import { BEARER } from "shared/constants/apiConstants"
 import { DefaultResponse } from "shared/models/dtos/defaultResponse"
 
 class ParentService {
