@@ -12,7 +12,7 @@ import {
 } from "shared/constants/apiConstants"
 import { DefaultResponse } from "shared/models/dtos/defaultResponse"
 import { AVATAR_BY_ID, BASE, BASE_PLURAL, BY_ID, ID_BY_USERNAME } from "student/constants/studentMappings"
-import { IDENTITY } from "shared/constants/studentColumns"
+import { IDENTITY } from "student/constants/studentColumns"
 import { EMPTY_ARRAY, EMPTY_STRING } from "shared/constants/genericValues"
 
 class StudentService {

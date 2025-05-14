@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { STUDENT } from "student/constants/studentColumns"
+import { BASE, ID } from "student/constants/studentMappings"
 import studentService from "student/services/studentService"
 
 interface StudentState {
@@ -11,7 +13,7 @@ const initialState: StudentState = {
   loading: false
 }
 
-export const loadIdentity = createAsyncThunk("student/identity", async (username: string, { rejectWithValue }) => {
+export const loadIdentity = createAsyncThunk(BASE + ID, async (username: string, { rejectWithValue }) => {
   try {
     return await studentService.getIdentityByUsername(username)
   } catch (error) {
@@ -20,7 +22,7 @@ export const loadIdentity = createAsyncThunk("student/identity", async (username
 })
 
 const studentSlice = createSlice({
-  name: "student",
+  name: STUDENT,
   initialState,
   reducers: {},
   extraReducers: (builder) => {
