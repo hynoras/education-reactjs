@@ -6,7 +6,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import DeleteConfirm from "./DeleteConfirm"
 import studentService from "student/services/studentService"
-import { EDIT_STUDENT_PERSONAL_INFO_ROUTE } from "student/constants/studentRoutes"
+import { STUDENT } from "student/constants/studentRoutes"
 
 type ActionButtonListProps = {
   identity: string | undefined
@@ -16,7 +16,7 @@ const ActionButtonList: React.FC<ActionButtonListProps> = ({ identity }) => {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
   const handleEdit = () => {
-    navigate(EDIT_STUDENT_PERSONAL_INFO_ROUTE(identity))
+    navigate(STUDENT.ROUTES.NAVIGATION.EDIT_STUDENT_PERSONAL_INFO(identity))
   }
 
   const deleteStudentMutation = (identity: string | undefined) => {

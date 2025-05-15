@@ -15,7 +15,7 @@ import { MAJOR_NAME, MAJOR_NAME_PLURAL } from "major/constants/majorKeys"
 import { ACTION_KEY, BIRTH_DATE_KEY, EMPTY_STRING, FULL_NAME_KEY, GENDER_KEY } from "shared/constants/genericValues"
 import { DEPARTMENT_NAME } from "department/constants/departmentKeys"
 import { IDENTITY } from "student/constants/studentKeys"
-import { VIEW_STUDENT_DETAIL_ROUTE } from "student/constants/studentRoutes"
+import { STUDENT } from "student/constants/studentRoutes"
 
 type StudentListTableProps = {
   students: StudentList[]
@@ -74,7 +74,7 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
 
   const onClick = useCallback(
     (record: StudentList) => {
-      navigate(VIEW_STUDENT_DETAIL_ROUTE(record.identity))
+      navigate(STUDENT.ROUTES.NAVIGATION.VIEW_STUDENT_DETAIL(record.identity))
     },
     [navigate]
   )

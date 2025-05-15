@@ -11,7 +11,7 @@ import {
   DEFAULT_PAGE_SIZE
 } from "shared/constants/apiConstants"
 import { DefaultResponse } from "shared/models/dtos/defaultResponse"
-import { AVATAR_BY_ID, BASE, BASE_PLURAL, BY_ID, ID_BY_USERNAME } from "student/constants/studentRoutes"
+import { STUDENT } from "student/constants/studentRoutes"
 import { IDENTITY } from "student/constants/studentKeys"
 import { EMPTY_ARRAY, EMPTY_STRING } from "shared/constants/genericValues"
 
@@ -28,7 +28,7 @@ class StudentService {
   }): Promise<PaginatedStudentList | any> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get(BASE_PLURAL, {
+      const response = await api.get(STUDENT.ROUTES.API.BASE_PLURAL, {
         params: {
           currentPage: options?.currentPage ? options.currentPage - 1 : DEFAULT_CURRENT_PAGE,
           pageSize: options?.pageSize ?? DEFAULT_PAGE_SIZE,
@@ -51,7 +51,7 @@ class StudentService {
   async getStudentDetail(identity: string | undefined): Promise<Student | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get<StudentDetail>(BASE + BY_ID(identity), {
+      const response = await api.get<StudentDetail>(STUDENT.ROUTES.API.BASE + STUDENT.ROUTES.API.BY_ID(identity), {
         headers: AUTHORIZATION(token)
       })
       const studentDetail = response.data
@@ -64,7 +64,7 @@ class StudentService {
 
   async getIdentityByUsername(username: string): Promise<string | undefined> {
     try {
-      const response = await api.get<string>(BASE + ID_BY_USERNAME(username))
+      const response = await api.get<string>(STUDENT.ROUTES.API.BASE + STUDENT.ROUTES.API.ID_BY_USERNAME(username))
       return response.data
     } catch (error) {
       console.error("Error fetching student detail:", error)
@@ -75,7 +75,7 @@ class StudentService {
   async addStudentPersonalInfo(payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.post(BASE, payload, {
+      const response = await api.post(STUDENT.ROUTES.API.BASE, payload, {
         headers: AUTHORIZATION(token)
       })
       return response.data
@@ -88,7 +88,7 @@ class StudentService {
   async deleteStudentPersonalInfo(identity: string | undefined): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.delete(BASE + BY_ID(identity), {
+      const response = await api.delete(STUDENT.ROUTES.API.BASE + STUDENT.ROUTES.API.BY_ID(identity), {
         headers: AUTHORIZATION(token)
       })
       return response.data
@@ -101,7 +101,7 @@ class StudentService {
   async deleteManyStudentPersonalInfo(payload: Array<IdentityMap>): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.delete(BASE_PLURAL, {
+      const response = await api.delete(STUDENT.ROUTES.API.BASE_PLURAL, {
         headers: CONTENT_TYPE_APP_JSON_AUTH(token),
         data: payload
       })
@@ -115,7 +115,7 @@ class StudentService {
   async updateStudentPersonalInfo(studentId: any, payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.put(BASE + BY_ID(studentId), payload, {
+      const response = await api.put(STUDENT.ROUTES.API.BASE + STUDENT.ROUTES.API.BY_ID(studentId), payload, {
         headers: AUTHORIZATION(token)
       })
       return response.data
@@ -128,7 +128,7 @@ class StudentService {
   async updateStudentAvatar(studentId: string | undefined, avatar: FormData): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.put(BASE + AVATAR_BY_ID(studentId), avatar, {
+      const response = await api.put(STUDENT.ROUTES.API.BASE + STUDENT.ROUTES.API.AVATAR_BY_ID(studentId), avatar, {
         headers: CONTENT_TYPE_FORM_DATA_AUTH(token)
       })
       return response.data
