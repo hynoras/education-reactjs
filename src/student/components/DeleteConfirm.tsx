@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { message } from "antd"
 import Popup from "shared/components/feedback/modal/Popup"
 import { DefaultResponse } from "shared/models/dtos/defaultResponse"
+import { STUDENT_PLURAL } from "student/constants/studentKeys"
 
 type DeleteConfirmProps = {
   isOpen: boolean
@@ -19,7 +20,7 @@ const DeleteConfirm: React.FC<DeleteConfirmProps> = ({ isOpen, setIsOpen, mutati
     mutationFn: mutationFn,
     onSuccess: (data: DefaultResponse) => {
       successMessage(data)
-      queryClient.invalidateQueries({ queryKey: ["students"] })
+      queryClient.invalidateQueries({ queryKey: [STUDENT_PLURAL] })
     },
     onError: (data: DefaultResponse) => {
       errorMessage(data)

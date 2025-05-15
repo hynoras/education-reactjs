@@ -10,6 +10,12 @@ import departmentService from "department/services/departmentService"
 import majorService from "major/services/majorService"
 import ActionButtonList from "./ActionButtonList"
 import { useQuery } from "@tanstack/react-query"
+import { SORT_ORDER_ASC, SORT_ORDER_DESC } from "shared/constants/apiConstants"
+import { MAJOR_NAME, MAJOR_NAME_PLURAL } from "major/constants/majorKeys"
+import { ACTION_KEY, BIRTH_DATE_KEY, EMPTY_STRING, FULL_NAME_KEY, GENDER_KEY } from "shared/constants/genericValues"
+import { DEPARTMENT_NAME } from "department/constants/departmentKeys"
+import { IDENTITY } from "student/constants/studentKeys"
+import { VIEW_STUDENT_DETAIL_ROUTE } from "student/constants/studentRoutes"
 
 type StudentListTableProps = {
   students: StudentList[]
@@ -23,7 +29,7 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
 
   const { data: departments } = useFetch<DepartmentNameList>(departmentService.getAllDepartmentName)
   const { data: majorNames } = useQuery<Array<MajorNameList>>({
-    queryKey: ["major-names"],
+    queryKey: [MAJOR_NAME_PLURAL],
     queryFn: () => majorService.getAllMajorName(),
     staleTime: Infinity
   })
@@ -38,37 +44,37 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
     setQueryOptions((prev: any) => ({
       ...prev,
       sortBy: singleSorter.columnKey as string,
-      sortOrder: singleSorter.order === "ascend" ? "asc" : "desc"
+      sortOrder: singleSorter.order === "ascend" ? SORT_ORDER_ASC : SORT_ORDER_DESC
     }))
   }
 
   const updateFilter = (filtersList: Array<any>, key: string) => {
     const filter = filtersList.find(([filterKey]) => filterKey.includes(key))
-    return filter ? filter[1]?.join(",") : ""
+    return filter ? filter[1]?.join(",") : EMPTY_STRING
   }
 
   const handleFilter = (filtersList: Array<any>) => {
     if (filtersList.length === 0) {
       setQueryOptions((prev: any) => ({
         ...prev,
-        gender: "",
-        major: "",
-        department: ""
+        gender: EMPTY_STRING,
+        major: EMPTY_STRING,
+        department: EMPTY_STRING
       }))
       return
     }
 
     setQueryOptions((prev: any) => ({
       ...prev,
-      gender: updateFilter(filtersList, "gender"),
-      major: updateFilter(filtersList, "major_name"),
-      department: updateFilter(filtersList, "department_name")
+      gender: updateFilter(filtersList, GENDER_KEY),
+      major: updateFilter(filtersList, MAJOR_NAME),
+      department: updateFilter(filtersList, DEPARTMENT_NAME)
     }))
   }
 
   const onClick = useCallback(
     (record: StudentList) => {
-      navigate(`/admin/student/${record.identity}/view`)
+      navigate(VIEW_STUDENT_DETAIL_ROUTE(record.identity))
     },
     [navigate]
   )
@@ -92,8 +98,8 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
     () => [
       {
         title: "Student ID",
-        dataIndex: "identity",
-        key: "identity",
+        dataIndex: IDENTITY,
+        key: IDENTITY,
         onCell: (record: StudentList) => ({
           onClick: () => onClick(record),
           style: {
@@ -106,8 +112,8 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
       },
       {
         title: "Full Name",
-        dataIndex: "full_name",
-        key: "fullName",
+        dataIndex: FULL_NAME_KEY,
+        key: FULL_NAME_KEY,
         onCell: (record: StudentList) => ({
           onClick: () => onClick(record),
           style: {
@@ -118,14 +124,14 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
         }),
         sorter: true
       },
-      { title: "Date of Birth", dataIndex: "birth_date", key: "birth_date" },
-      { title: "Gender", dataIndex: "gender", key: "gender", filters: genderFilter },
-      { title: "Major", dataIndex: "major_name", key: "major_name", filters: majorFilter },
-      { title: "Department", dataIndex: "department_name", key: "department_name", filters: departmentFilter },
+      { title: "Birth Date", dataIndex: BIRTH_DATE_KEY, key: BIRTH_DATE_KEY },
+      { title: "Gender", dataIndex: GENDER_KEY, key: GENDER_KEY, filters: genderFilter },
+      { title: "Major", dataIndex: MAJOR_NAME, key: MAJOR_NAME, filters: majorFilter },
+      { title: "Department", dataIndex: DEPARTMENT_NAME, key: DEPARTMENT_NAME, filters: departmentFilter },
       {
         title: "Action",
-        key: "action",
-        render: (_text: any, record: StudentList) => <ActionButtonList identity={record?.identity.toString()} />,
+        key: ACTION_KEY,
+        render: (_text: any, record: StudentList) => <ActionButtonList identity={record?.identity} />,
         align: "center"
       }
     ],
@@ -139,7 +145,7 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
       pagination={false}
       rowSelection={{ type: "checkbox", ...rowSelection }}
       loading={loading}
-      rowKey="identity"
+      rowKey={IDENTITY}
       onChange={onChangeTable}
     />
   )

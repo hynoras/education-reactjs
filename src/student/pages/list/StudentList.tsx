@@ -11,6 +11,9 @@ import DeleteConfirm from "student/components/DeleteConfirm"
 import StudentListPagination from "student/components/StudentListPagination"
 import StudentListTable from "student/components/StudentListTable"
 import { IdentityMap } from "student/models/dtos/studentDetail"
+import { DEFAULT_CURRENT_PAGE_ANTD, DEFAULT_PAGE_SIZE, SORT_ORDER_DESC } from "shared/constants/apiConstants"
+import { IDENTITY, STUDENT_PLURAL } from "student/constants/studentKeys"
+import { EMPTY_STRING } from "shared/constants/genericValues"
 
 type TableRowSelection<T extends object = object> = TableProps<T>["rowSelection"]
 
@@ -21,17 +24,17 @@ const StudentPage: React.FC = () => {
   const navigate = useNavigate()
   let initialIdentityList: Array<IdentityMap> = []
   const [queryOptions, setQueryOptions] = useState({
-    currentPage: 1,
-    pageSize: 10,
-    sortBy: "identity",
-    sortOrder: "desc",
-    gender: "",
-    major: "",
-    department: ""
+    currentPage: DEFAULT_CURRENT_PAGE_ANTD,
+    pageSize: DEFAULT_PAGE_SIZE,
+    sortBy: IDENTITY,
+    sortOrder: SORT_ORDER_DESC,
+    gender: EMPTY_STRING,
+    major: EMPTY_STRING,
+    department: EMPTY_STRING
   })
 
   const { data: students, isLoading: loading } = useQuery({
-    queryKey: ["students", queryOptions],
+    queryKey: [STUDENT_PLURAL, queryOptions],
     queryFn: () => studentService.getAllStudent(queryOptions),
     staleTime: Infinity
   })
@@ -40,7 +43,7 @@ const StudentPage: React.FC = () => {
     setQueryOptions((prev) => ({
       ...prev,
       searchQuery: query,
-      currentPage: 1
+      currentPage: DEFAULT_CURRENT_PAGE_ANTD
     }))
   }
 

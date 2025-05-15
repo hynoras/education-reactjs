@@ -11,8 +11,8 @@ import {
   DEFAULT_PAGE_SIZE
 } from "shared/constants/apiConstants"
 import { DefaultResponse } from "shared/models/dtos/defaultResponse"
-import { AVATAR_BY_ID, BASE, BASE_PLURAL, BY_ID, ID_BY_USERNAME } from "student/constants/studentMappings"
-import { IDENTITY } from "student/constants/studentColumns"
+import { AVATAR_BY_ID, BASE, BASE_PLURAL, BY_ID, ID_BY_USERNAME } from "student/constants/studentRoutes"
+import { IDENTITY } from "student/constants/studentKeys"
 import { EMPTY_ARRAY, EMPTY_STRING } from "shared/constants/genericValues"
 
 class StudentService {

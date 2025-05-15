@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { STUDENT } from "student/constants/studentColumns"
-import { BASE, ID } from "student/constants/studentMappings"
+import { STUDENT } from "student/constants/studentKeys"
+import { BASE, ID } from "student/constants/studentRoutes"
 import studentService from "student/services/studentService"
 
 interface StudentState {

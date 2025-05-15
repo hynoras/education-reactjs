@@ -8,6 +8,9 @@ export const APPLICATION_JSON: string = "application/json"
 export const MULTIPART_FORM_DATA: string = "multipart/form-data"
 export const DEFAULT_PAGE_SIZE: number = 10
 export const DEFAULT_CURRENT_PAGE: number = 0
+export const DEFAULT_CURRENT_PAGE_ANTD: number = 1
+export const SORT_ORDER_ASC: string = "asc"
+export const SORT_ORDER_DESC: string = "desc"
 export const HEADER_WITH_AUTHORIZATION = (token: string | null) => {
   return { headers: { Authorization: `${BEARER} ${token}` } }
 }
