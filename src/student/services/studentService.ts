@@ -3,17 +3,10 @@ import { Student } from "student/models/domains/student"
 import { api } from "shared/utils/api"
 import { store } from "shared/utils/store"
 import { PaginatedStudentList } from "student/models/dtos/studentList"
-import {
-  AUTHORIZATION,
-  CONTENT_TYPE_APP_JSON_AUTH,
-  CONTENT_TYPE_FORM_DATA_AUTH,
-  DEFAULT_CURRENT_PAGE,
-  DEFAULT_PAGE_SIZE
-} from "shared/constants/apiConstants"
 import { DefaultResponse } from "shared/models/dtos/defaultResponse"
-import { STUDENT } from "student/constants/studentRoutes"
-import { IDENTITY } from "student/constants/studentKeys"
-import { EMPTY_ARRAY, EMPTY_STRING } from "shared/constants/genericValues"
+import { STUDENT } from "student/constants/studentConstants"
+import { API } from "shared/constants/apiConstants"
+import { GENERIC } from "shared/constants/genericValues"
 
 class StudentService {
   async getAllStudent(options?: {
@@ -28,31 +21,33 @@ class StudentService {
   }): Promise<PaginatedStudentList | any> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get(STUDENT.ROUTES.API.BASE_PLURAL, {
+      const response = await api.get(STUDENT.ROUTE.API.BASE_PLURAL, {
         params: {
-          currentPage: options?.currentPage ? options.currentPage - 1 : DEFAULT_CURRENT_PAGE,
-          pageSize: options?.pageSize ?? DEFAULT_PAGE_SIZE,
-          sortBy: options?.sortBy ?? IDENTITY,
+          currentPage: options?.currentPage
+            ? options.currentPage - API.PARAMS.PAGINATION.DEFAULT_CURRENT_PAGE_ANTD
+            : API.PARAMS.PAGINATION.DEFAULT_CURRENT_PAGE,
+          pageSize: options?.pageSize ?? API.PARAMS.PAGINATION.DEFAULT_PAGE_SIZE,
+          sortBy: options?.sortBy ?? STUDENT.KEY.IDENTITY,
           sortOrder: options?.sortOrder,
           gender: options?.gender,
           major: options?.major,
           department: options?.department,
-          search: options?.searchQuery ?? EMPTY_STRING
+          search: options?.searchQuery ?? GENERIC.EMPTY_VALUE.STRING
         },
-        headers: AUTHORIZATION(token)
+        headers: API.HEADER.AUTHORIZATION(token)
       })
       return response.data
     } catch (error) {
       console.error("Error fetching students:", error)
-      return { data: { content: EMPTY_ARRAY, totalElements: 0 } }
+      return { data: { content: GENERIC.EMPTY_VALUE.ARRAY, totalElements: GENERIC.EMPTY_VALUE.ZERO } }
     }
   }
 
   async getStudentDetail(identity: string | undefined): Promise<Student | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.get<StudentDetail>(STUDENT.ROUTES.API.BASE + STUDENT.ROUTES.API.BY_ID(identity), {
-        headers: AUTHORIZATION(token)
+      const response = await api.get<StudentDetail>(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(identity), {
+        headers: API.HEADER.AUTHORIZATION(token)
       })
       const studentDetail = response.data
       return Student.fromDTO(studentDetail)
@@ -64,7 +59,7 @@ class StudentService {
 
   async getIdentityByUsername(username: string): Promise<string | undefined> {
     try {
-      const response = await api.get<string>(STUDENT.ROUTES.API.BASE + STUDENT.ROUTES.API.ID_BY_USERNAME(username))
+      const response = await api.get<string>(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.ID_BY_USERNAME(username))
       return response.data
     } catch (error) {
       console.error("Error fetching student detail:", error)
@@ -75,8 +70,8 @@ class StudentService {
   async addStudentPersonalInfo(payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.post(STUDENT.ROUTES.API.BASE, payload, {
-        headers: AUTHORIZATION(token)
+      const response = await api.post(STUDENT.ROUTE.API.BASE, payload, {
+        headers: API.HEADER.AUTHORIZATION(token)
       })
       return response.data
     } catch (error) {
@@ -88,8 +83,8 @@ class StudentService {
   async deleteStudentPersonalInfo(identity: string | undefined): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.delete(STUDENT.ROUTES.API.BASE + STUDENT.ROUTES.API.BY_ID(identity), {
-        headers: AUTHORIZATION(token)
+      const response = await api.delete(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(identity), {
+        headers: API.HEADER.AUTHORIZATION(token)
       })
       return response.data
     } catch (error) {
@@ -101,8 +96,8 @@ class StudentService {
   async deleteManyStudentPersonalInfo(payload: Array<IdentityMap>): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.delete(STUDENT.ROUTES.API.BASE_PLURAL, {
-        headers: CONTENT_TYPE_APP_JSON_AUTH(token),
+      const response = await api.delete(STUDENT.ROUTE.API.BASE_PLURAL, {
+        headers: API.HEADER.APP_JSON_AUTH(token),
         data: payload
       })
       return response.data
@@ -115,8 +110,8 @@ class StudentService {
   async updateStudentPersonalInfo(studentId: any, payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.put(STUDENT.ROUTES.API.BASE + STUDENT.ROUTES.API.BY_ID(studentId), payload, {
-        headers: AUTHORIZATION(token)
+      const response = await api.put(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(studentId), payload, {
+        headers: API.HEADER.AUTHORIZATION(token)
       })
       return response.data
     } catch (error) {
@@ -128,8 +123,8 @@ class StudentService {
   async updateStudentAvatar(studentId: string | undefined, avatar: FormData): Promise<DefaultResponse | undefined> {
     try {
       const token = store.getState().auth.token
-      const response = await api.put(STUDENT.ROUTES.API.BASE + STUDENT.ROUTES.API.AVATAR_BY_ID(studentId), avatar, {
-        headers: CONTENT_TYPE_FORM_DATA_AUTH(token)
+      const response = await api.put(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.AVATAR_BY_ID(studentId), avatar, {
+        headers: API.HEADER.FORM_DATA_AUTH(token)
       })
       return response.data
     } catch (error) {

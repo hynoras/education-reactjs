@@ -11,9 +11,9 @@ import DeleteConfirm from "student/components/DeleteConfirm"
 import StudentListPagination from "student/components/StudentListPagination"
 import StudentListTable from "student/components/StudentListTable"
 import { IdentityMap } from "student/models/dtos/studentDetail"
-import { DEFAULT_CURRENT_PAGE_ANTD, DEFAULT_PAGE_SIZE, SORT_ORDER_DESC } from "shared/constants/apiConstants"
-import { IDENTITY, STUDENT_PLURAL } from "student/constants/studentKeys"
-import { EMPTY_STRING } from "shared/constants/genericValues"
+import { API } from "shared/constants/apiConstants"
+import { STUDENT } from "student/constants/studentConstants"
+import { GENERIC } from "shared/constants/genericValues"
 
 type TableRowSelection<T extends object = object> = TableProps<T>["rowSelection"]
 
@@ -24,17 +24,17 @@ const StudentPage: React.FC = () => {
   const navigate = useNavigate()
   let initialIdentityList: Array<IdentityMap> = []
   const [queryOptions, setQueryOptions] = useState({
-    currentPage: DEFAULT_CURRENT_PAGE_ANTD,
-    pageSize: DEFAULT_PAGE_SIZE,
-    sortBy: IDENTITY,
-    sortOrder: SORT_ORDER_DESC,
-    gender: EMPTY_STRING,
-    major: EMPTY_STRING,
-    department: EMPTY_STRING
+    currentPage: API.PARAMS.PAGINATION.DEFAULT_CURRENT_PAGE_ANTD,
+    pageSize: API.PARAMS.PAGINATION.DEFAULT_PAGE_SIZE,
+    sortBy: STUDENT.KEY.IDENTITY,
+    sortOrder: API.PARAMS.SORT.ORDER_DESC,
+    gender: GENERIC.EMPTY_VALUE.STRING,
+    major: GENERIC.EMPTY_VALUE.STRING,
+    department: GENERIC.EMPTY_VALUE.STRING
   })
 
   const { data: students, isLoading: loading } = useQuery({
-    queryKey: [STUDENT_PLURAL, queryOptions],
+    queryKey: [STUDENT.KEY.STUDENT_PLURAL, queryOptions],
     queryFn: () => studentService.getAllStudent(queryOptions),
     staleTime: Infinity
   })
@@ -43,7 +43,7 @@ const StudentPage: React.FC = () => {
     setQueryOptions((prev) => ({
       ...prev,
       searchQuery: query,
-      currentPage: DEFAULT_CURRENT_PAGE_ANTD
+      currentPage: API.PARAMS.PAGINATION.DEFAULT_CURRENT_PAGE_ANTD
     }))
   }
 
@@ -101,18 +101,18 @@ const StudentPage: React.FC = () => {
             <Button type="primary" onClick={handleRowSelection} disabled={!hasSelected} loading={loading} danger>
               Delete
             </Button>
-            {hasSelected ? `Selected ${selectedRowKeys.length} items` : null}
+            {hasSelected ? `Selected ${selectedRowKeys.length} items` : GENERIC.EMPTY_VALUE.NULL}
           </div>
           <SearchBar onSearch={onSearch} className="student-search-bar" placeholder="Search identity or name..." />
         </div>
         <StudentListTable
-          students={students?.content || []}
+          students={students?.content || GENERIC.EMPTY_VALUE.ARRAY}
           loading={loading}
           setQueryOptions={setQueryOptions}
           rowSelection={rowSelection}
         />
         <StudentListPagination
-          total={students?.total_element || 0}
+          total={students?.total_element || GENERIC.EMPTY_VALUE.ZERO}
           queryOptions={queryOptions}
           onChangePagination={onChangePagination}
         />

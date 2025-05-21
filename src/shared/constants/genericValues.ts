@@ -1,10 +1,20 @@
-export const EMPTY_STRING: string = ""
-export const NONE_VALUE: string = "None"
-export const EMPTY_ARRAY: [] = []
-export const EMPTY_OBJECT: {} = {}
-
-//KEYS
-export const GENDER_KEY: string = "gender"
-export const BIRTH_DATE_KEY: string = "birth_date"
-export const FULL_NAME_KEY: string = "full_name"
-export const ACTION_KEY: string = "action"
+export const GENERIC = {
+  EMPTY_VALUE: {
+    STRING: "",
+    NONE: "None",
+    ARRAY: [],
+    OBJECT: {},
+    ZERO: 0,
+    NULL: null
+  },
+  KEY: {
+    GENDER: "gender",
+    BIRTH_DATE: "birth_date",
+    FULL_NAME: "full_name",
+    ACTION: "action",
+    ROLE: {
+      ADMIN: "ADMIN",
+      STUDENT: "STUDENT"
+    }
+  }
+}

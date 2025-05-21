@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { STUDENT } from "student/constants/studentKeys"
-import { BASE, ID } from "student/constants/studentRoutes"
+import { STUDENT } from "student/constants/studentConstants"
 import studentService from "student/services/studentService"
 
 interface StudentState {
@@ -13,16 +12,19 @@ const initialState: StudentState = {
   loading: false
 }
 
-export const loadIdentity = createAsyncThunk(BASE + ID, async (username: string, { rejectWithValue }) => {
-  try {
-    return await studentService.getIdentityByUsername(username)
-  } catch (error) {
-    return rejectWithValue("Unauthorized")
+export const loadIdentity = createAsyncThunk(
+  STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.ID,
+  async (username: string, { rejectWithValue }) => {
+    try {
+      return await studentService.getIdentityByUsername(username)
+    } catch (error) {
+      return rejectWithValue("Unauthorized")
+    }
   }
-})
+)
 
 const studentSlice = createSlice({
-  name: STUDENT,
+  name: STUDENT.KEY.STUDENT,
   initialState,
   reducers: {},
   extraReducers: (builder) => {

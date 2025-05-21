@@ -11,7 +11,9 @@ import { useSelector } from "react-redux"
 import { RootState } from "shared/utils/store"
 import ImageDisplay from "shared/components/data_entry/image/ImageDisplay"
 import { useQuery } from "@tanstack/react-query"
-import { NONE_VALUE } from "shared/constants/genericValues"
+import { GENERIC } from "shared/constants/genericValues"
+import { STUDENT } from "student/constants/studentConstants"
+import { PARENT } from "parent/constants/parentConstants"
 
 const StudentDetailPage: React.FC = () => {
   const role = useSelector((state: RootState) => state.auth.user?.role)
@@ -19,19 +21,19 @@ const StudentDetailPage: React.FC = () => {
   const navigate = useNavigate()
 
   const { isLoading: loading, data: studentDetail } = useQuery({
-    queryKey: ["student-detail"],
+    queryKey: [STUDENT.KEY.STUDENT_DETAIL],
     queryFn: () => studentService.getStudentDetail(studentId)
   })
 
   const handleEditPersonalInfo = () => {
-    navigate(`/admin/student/${studentId}/edit`)
+    navigate(STUDENT.ROUTE.NAVIGATION.EDIT_STUDENT_PERSONAL_INFO(studentId))
   }
 
   const handleEditParentInfo = () => {
-    navigate(`/admin/student/parent/${studentId}/edit`)
+    navigate(PARENT.ROUTE.NAVIGATION.EDIT_PARENT_INFO(studentId))
   }
 
-  const editPersonalInfo: ReactNode = role === "ADMIN" && (
+  const editPersonalInfo: ReactNode = role === GENERIC.KEY.ROLE.ADMIN && (
     <IconButton
       aria-label="edit"
       size="small"
@@ -42,7 +44,7 @@ const StudentDetailPage: React.FC = () => {
     </IconButton>
   )
 
-  const editParentInfo: ReactNode = role === "ADMIN" && (
+  const editParentInfo: ReactNode = role === GENERIC.KEY.ROLE.ADMIN && (
     <IconButton
       aria-label="edit"
       size="small"
@@ -128,7 +130,7 @@ const RowInfo: React.FC<{ label: string; value: any | undefined }> = ({ label, v
   return (
     <p className={"student-detail-banner-content"}>
       <span className={"student-detail-banner-label"}>{label}</span>
-      {value || NONE_VALUE}
+      {value || GENERIC.EMPTY_VALUE.NONE}
     </p>
   )
 }
