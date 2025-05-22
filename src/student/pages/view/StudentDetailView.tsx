@@ -11,8 +11,9 @@ import { useSelector } from "react-redux"
 import { RootState } from "shared/utils/store"
 import ImageDisplay from "shared/components/data_entry/image/ImageDisplay"
 import { useQuery } from "@tanstack/react-query"
-
-const className: string[] = ["student-detail-banner", "student-info"]
+import { GENERIC } from "shared/constants/genericValues"
+import { STUDENT } from "student/constants/studentConstants"
+import { PARENT } from "parent/constants/parentConstants"
 
 const StudentDetailPage: React.FC = () => {
   const role = useSelector((state: RootState) => state.auth.user?.role)
@@ -20,19 +21,19 @@ const StudentDetailPage: React.FC = () => {
   const navigate = useNavigate()
 
   const { isLoading: loading, data: studentDetail } = useQuery({
-    queryKey: ["student-detail"],
+    queryKey: [STUDENT.KEY.STUDENT_DETAIL],
     queryFn: () => studentService.getStudentDetail(studentId)
   })
 
   const handleEditPersonalInfo = () => {
-    navigate(`/admin/student/${studentId}/edit`)
+    navigate(STUDENT.ROUTE.NAVIGATION.EDIT_STUDENT_PERSONAL_INFO(studentId))
   }
 
   const handleEditParentInfo = () => {
-    navigate(`/admin/student/parent/${studentId}/edit`)
+    navigate(PARENT.ROUTE.NAVIGATION.EDIT_PARENT_INFO(studentId))
   }
 
-  const editPersonalInfo: ReactNode = role === "ADMIN" && (
+  const editPersonalInfo: ReactNode = role === GENERIC.KEY.ROLE.ADMIN && (
     <IconButton
       aria-label="edit"
       size="small"
@@ -43,7 +44,7 @@ const StudentDetailPage: React.FC = () => {
     </IconButton>
   )
 
-  const editParentInfo: ReactNode = role === "ADMIN" && (
+  const editParentInfo: ReactNode = role === GENERIC.KEY.ROLE.ADMIN && (
     <IconButton
       aria-label="edit"
       size="small"
@@ -59,26 +60,26 @@ const StudentDetailPage: React.FC = () => {
       <Content className="student-detail-container">
         <Row gutter={[16, 16]}>
           <Col span={24}>
-            <div className={className[0]}>
-              <div className={`${className[0]}-upper`}></div>
-              <div className={`${className[0]}-lower`}>
+            <div className={"student-detail-banner"}>
+              <div className={"student-detail-banner-upper"}></div>
+              <div className={"student-detail-banner-lower"}>
                 <ImageDisplay
                   studentId={studentId}
                   src={studentDetail?.avatar}
-                  classNames={`${className[0]}-user-icon`}
+                  classNames={"student-detail-banner-user-icon"}
                 />
-                <div className={`${className[0]}-lower-general`}>
-                  <p className={`${className[0]}-full-name`}>{studentDetail?.full_name}</p>
-                  <p className={`${className[0]}-identity`}>{studentDetail?.identity}</p>
+                <div className={"student-detail-banner-lower-general"}>
+                  <p className={"student-detail-banner-full-name"}>{studentDetail?.full_name}</p>
+                  <p className={"student-detail-banner-identity"}>{studentDetail?.identity}</p>
                 </div>
               </div>
             </div>
           </Col>
           <Col span={8}>
-            <div className={`${className[1]}-card`}>
-              <div className={`${className[1]}-card-decorator`}></div>
+            <div className={"student-detail-banner-card"}>
+              <div className={"student-detail-banner-card-decorator"}></div>
               <Card
-                className={`${className[1]}-card-wrapper`}
+                className={"student-detail-banner-card-wrapper"}
                 loading={loading}
                 title="Personal Information"
                 extra={editPersonalInfo}
@@ -95,11 +96,11 @@ const StudentDetailPage: React.FC = () => {
             </div>
           </Col>
           <Col span={8}>
-            <div className={`${className[1]}-card`}>
-              <div className={`${className[1]}-card-decorator`}></div>
+            <div className={"student-detail-banner-card"}>
+              <div className={"student-detail-banner-card-decorator"}></div>
               <Card
                 loading={loading}
-                className={`${className[1]}-card-wrapper`}
+                className={"student-detail-banner-card-wrapper"}
                 title="Parent information"
                 extra={editParentInfo}
               >
@@ -127,9 +128,9 @@ const StudentDetailPage: React.FC = () => {
 
 const RowInfo: React.FC<{ label: string; value: any | undefined }> = ({ label, value }) => {
   return (
-    <p className={`${className[1]}-content`}>
-      <span className={`${className[1]}-label`}>{label}</span>
-      {value || "None"}
+    <p className={"student-detail-banner-content"}>
+      <span className={"student-detail-banner-label"}>{label}</span>
+      {value || GENERIC.EMPTY_VALUE.NONE}
     </p>
   )
 }

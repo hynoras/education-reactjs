@@ -1,5 +1,6 @@
 import { Gender } from "shared/enums/gender"
 import { ParentInfo } from "parent/models/dtos/parent"
+import { GENERIC } from "shared/constants/genericValues"
 
 export class Student {
   constructor(
@@ -17,8 +18,8 @@ export class Student {
   ) {}
 
   static fromDTO(dto: any): Student {
-    const personal = dto.personal_information || {}
-    const parentList = dto.parent_information || []
+    const personal = dto.personal_information || GENERIC.EMPTY_VALUE.OBJECT
+    const parentList = dto.parent_information || GENERIC.EMPTY_VALUE.ARRAY
 
     return {
       identity: personal.identity,

@@ -1,14 +1,14 @@
 import axios from "axios"
-import { BEARER, DEVELOPMENT, PRODUCTION_KOYEB, PRODUCTION_RAILWAY } from "shared/constants/api"
+import { API } from "shared/constants/apiConstants"
 
 const changeURL = (stage: string): string | undefined => {
   switch (stage) {
     case "development":
-      return DEVELOPMENT
+      return API.PREFIX.DEV
     case "production_railway":
-      return PRODUCTION_RAILWAY
+      return API.PREFIX.PROD.RAILWAY
     case "production_koyeb":
-      return PRODUCTION_KOYEB
+      return API.PREFIX.PROD.KOYEB
   }
 }
 
@@ -18,7 +18,7 @@ export const api = axios.create({
 
 export const setAuthToken = (token: string | null) => {
   if (token) {
-    api.defaults.headers.common["Authorization"] = `${BEARER} ${token}`
+    api.defaults.headers.common["Authorization"] = `${API.HEADER.BEARER} ${token}`
   } else {
     delete api.defaults.headers.common["Authorization"]
   }

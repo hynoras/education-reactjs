@@ -2,7 +2,7 @@
 $main-color: #7494ec;
 $main-color-light: rgb(160, 176, 211);
 $main-color-dark: #5a78cc;
-@mixin banner-student-info($full-name) {
+@mixin banner-student-detail($full-name) {
   position: relative;
   z-index: 10;
   margin: 0 0 0 10px;
@@ -67,17 +67,17 @@ $main-color-dark: #5a78cc;
         justify-content: flex-end;
         margin-bottom: 10px;
         .student-detail-banner-full-name {
-          @include banner-student-info(true);
+          @include banner-student-detail(true);
         }
         .student-detail-banner-identity {
-          @include banner-student-info(false);
+          @include banner-student-detail(false);
         }
       }
     }
   }
-  .student-info-card {
+  .student-detail-card {
     position: relative;
-    .student-info-card-decorator {
+    .student-detail-card-decorator {
       position: absolute;
       background: $main-color;
       border-radius: 8px 8px 0 0;
@@ -85,12 +85,12 @@ $main-color-dark: #5a78cc;
       height: 10px;
       z-index: 1;
     }
-    .student-info-card-wrapper:has(.ant-card-head) .ant-card-head {
+    .student-detail-card-wrapper:has(.ant-card-head) .ant-card-head {
       padding: 12px 12px 0 24px !important;
     }
-    .student-info-content {
+    .student-detail-content {
       margin-top: 0;
-      .student-info-label {
+      .student-detail-label {
         font-weight: bold;
       }
     }

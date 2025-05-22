@@ -1,5 +1,5 @@
 export interface StudentList {
-  identity: number
+  identity: string | undefined
   full_name: string
   birth_date: string
   gender: string

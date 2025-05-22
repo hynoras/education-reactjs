@@ -1,5 +1,0 @@
-export const DEVELOPMENT: string = "http://localhost:8000/api"
-export const PRODUCTION_RAILWAY: string = "https://education-spring-boot-production.up.railway.app/api"
-export const PRODUCTION_KOYEB: string = "https://fierce-lin-quang-f03e4fce.koyeb.app/api"
-export const ADMIN: string = "/admin"
-export const BEARER: string = "Bearer"
