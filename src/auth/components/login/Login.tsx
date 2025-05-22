@@ -14,6 +14,8 @@ import { AppDispatch, store } from "shared/utils/store"
 import { loadUser, loginUser } from "auth/contexts/loginReducer"
 import { LoginRequest } from "auth/models/dtos/authModel"
 import { loadIdentity } from "student/contexts/studentReducer"
+import { GENERIC } from "shared/constants/genericValues"
+import { STUDENT } from "student/constants/studentConstants"
 
 const loginSchema = yup.object({
   username: yup
@@ -48,12 +50,12 @@ const Login: React.FC = () => {
     const role = store.getState().auth.user?.role
     if (loginUser.fulfilled.match(result)) {
       const username = store.getState().auth.user?.username
-      if (role === "STUDENT") {
+      if (role === GENERIC.KEY.ROLE.STUDENT) {
         await dispatch(loadIdentity(username as string))
         const identity = store.getState().student.identity
-        navigate(`/student/${identity}/view`)
+        navigate(STUDENT.ROUTE.NAVIGATION.VIEW_STUDENT_DETAIL(identity))
       }
-      if (role === "ADMIN") navigate("/admin/student")
+      if (role === GENERIC.KEY.ROLE.ADMIN) navigate(STUDENT.ROUTE.NAVIGATION.VIEW_STUDENT_LIST)
     }
   }
 

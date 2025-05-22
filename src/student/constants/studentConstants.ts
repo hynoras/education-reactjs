@@ -10,6 +10,7 @@ export const STUDENT = {
       ID_BY_USERNAME: (username: string) => `${STUDENT.ROUTE.API.ID}/${username}`
     },
     NAVIGATION: {
+      VIEW_STUDENT_LIST: "/admin/student",
       EDIT_STUDENT_PERSONAL_INFO: (identity: string | undefined) => `/admin/student/${identity}/edit`,
       VIEW_STUDENT_DETAIL: (identity: string | undefined) => `/admin/student/${identity}/view`
     }
