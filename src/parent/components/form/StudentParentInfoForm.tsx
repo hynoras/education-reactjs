@@ -2,14 +2,13 @@ import { Button, Card, Divider, Flex, Skeleton } from "antd"
 import { CloseOutlined } from "@ant-design/icons"
 import { forwardRef, useEffect, useRef } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
-import studentService from "student/services/studentService"
-import { useQuery } from "@tanstack/react-query"
 import RadioGroup from "shared/components/data_entry/radio/RadioGroup"
 import InputRow from "shared/components/data_entry/input/InputRow"
 import DatePickerRow from "shared/components/data_entry/datepicker/DatePickerRow"
 import { ParentInfoForm } from "parent/models/dtos/parent"
 import { Relationship } from "parent/enums/relationship"
 import { SubmitFormRef, useImperativeSubmitForm } from "shared/hooks/useSubmitForm"
+import useStudent from "student/hooks/useStudent"
 
 type StudentParentInfoFormProps = {
   studentId?: string
@@ -28,12 +27,7 @@ const StudentParentInfoForm = forwardRef<SubmitFormRef, StudentParentInfoFormPro
     }))
     const fetchedParentInfo = useRef<Array<ParentInfoForm>>([])
 
-    const { isLoading, data: parents } = useQuery({
-      queryKey: ["parents", studentId],
-      queryFn: () => studentService.getStudentDetail(studentId),
-      enabled: isEditing && !!studentId,
-      staleTime: Infinity
-    })
+    const { data: parents, isLoading } = useStudent.useFetchStudentDetail(studentId as string, true)
 
     const { control, handleSubmit, reset } = useForm<{ parent_info: ParentInfoForm[] }>({
       defaultValues: { parent_info: [] }
@@ -48,11 +42,11 @@ const StudentParentInfoForm = forwardRef<SubmitFormRef, StudentParentInfoFormPro
 
     useEffect(() => {
       if (parents && isEditing) {
-        const mappedParents = parents.parent_info.map((p) => ({
+        const mappedParents = parents.parent_info.map((p: ParentInfoForm) => ({
           ...p,
           parent_id: p.parent_id,
           student_id: studentId,
-          birth_date: new Date(p.birth_date)
+          birth_date: new Date(p.birth_date as Date)
         }))
         initialParentInfo.current = mappedParents
         fetchedParentInfo.current = mappedParents

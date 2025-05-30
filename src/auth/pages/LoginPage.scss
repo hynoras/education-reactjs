@@ -1,0 +1,115 @@
+@import "src/shared/themes/global.scss";
+
+.login-body {
+  @include flex-center;
+  margin: 0;
+}
+
+.login-container {
+  @include wrapper-style(850px, 530px, null, null, null, null, white, 30px, null);
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.form-box {
+  @include wrapper-style(50%, 100%, null, 0, null, null, null, null, 1);
+  position: absolute;
+  @include flex-center;
+  color: $input-text;
+  text-align: center;
+  .login-title {
+    margin: -15px 0 15px;
+  }
+  .error-message {
+    @include text-style(null, null, $error-color, 16px, 500);
+    text-align: start;
+  }
+  .error-input {
+    border: 2px solid $error-color;
+    border-radius: 8px;
+  }
+}
+
+form {
+  width: 100%;
+  padding: 40px;
+  @include flex-column;
+}
+
+.input-container {
+  position: relative;
+  margin: 30px 0 0;
+  .ant-input,
+  .ant-input-affix-wrapper {
+    @include wrapper-style(null, null, null, null, null, 13px 10px 13px 40px, $input-bg, 8px, null);
+    @include text-style(null, null, $input-text, 16px, 500);
+    border: none;
+    outline: none;
+    &::placeholder {
+      @include text-style(null, null, $placeholder-color, null, 400);
+    }
+    &:hover {
+      background: $input-bg;
+    }
+  }
+}
+
+.login-user-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: $placeholder-color;
+  z-index: 10;
+}
+
+.form-box a {
+  font-size: 14.5px;
+  color: $input-text;
+  text-decoration: none;
+}
+
+.login-btn {
+  @include wrapper-style(100%, 48px, null, null, 12px 0 0 0, null, $main-color, 8px);
+  @include text-style(null, null, white, 16px, 600);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: $main-color-dark !important;
+    color: white !important;
+  }
+}
+
+.toggle-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.toggle-box::before {
+  @include wrapper-style(300%, 100%, null, null, null, null, $main-color, 150px, 2);
+  content: "";
+  position: absolute;
+  left: -250%;
+}
+
+.toggle-panel {
+  @include wrapper-style(50%, 100%, null, null, null, null, null, null, 2);
+  position: absolute;
+  color: white;
+  @include flex-center;
+  flex-direction: column;
+  .login-text {
+    color: white;
+    font-weight: 500;
+  }
+  .title {
+    font-size: 36px;
+  }
+  .subtitle {
+    font-size: 18px;
+  }
+}

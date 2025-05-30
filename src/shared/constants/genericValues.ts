@@ -16,5 +16,8 @@ export const GENERIC = {
       ADMIN: "ADMIN",
       STUDENT: "STUDENT"
     }
+  },
+  DATETIME: {
+    ONE_HOUR_AS_MILISEC: 3600000
   }
 }

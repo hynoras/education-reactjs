@@ -1,20 +1,15 @@
 import { MajorNameList } from "major/models/dtos/major"
-import { api } from "shared/utils/api"
-import { store } from "shared/utils/store"
+import { api } from "shared/utils/axiosUtils"
 import { MAJOR } from "major/constants/majorConstants"
-import { API } from "shared/constants/apiConstants"
 
 class MajorService {
   async getAllMajorName(): Promise<MajorNameList | any> {
     try {
-      const token = store.getState().auth.token
-      const response = await api.get(MAJOR.ROUTE.API.BASE_PLURAL, {
-        headers: API.HEADER.AUTHORIZATION(token)
-      })
+      const response = await api.get(MAJOR.ROUTE.API.BASE_PLURAL)
       return response.data
     } catch (error) {
       console.error("Error fetching majors:", error)
-      return []
+      throw error
     }
   }
 }

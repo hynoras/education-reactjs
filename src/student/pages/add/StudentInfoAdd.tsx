@@ -1,64 +1,42 @@
 import "./style.scss"
-import { useMutation } from "@tanstack/react-query"
 import { Button, Collapse, CollapseProps, message, Typography } from "antd"
 import { Content } from "antd/es/layout/layout"
 import StudentPersonalInfoForm from "shared/components/data_entry/form/StudentPersonalInfoForm"
 import { StudentDetailForm } from "student/models/dtos/studentDetail"
-import studentService from "student/services/studentService"
 import StudentParentInfoForm from "parent/components/form/StudentParentInfoForm"
 import { ParentInfoForm } from "parent/models/dtos/parent"
-import { DefaultResponse } from "shared/models/dtos/defaultResponse"
-import parentService from "parent/services/parentService"
 import { useRef, useState } from "react"
 import { SubmitFormRef } from "shared/hooks/useSubmitForm"
 import { isSame } from "shared/utils/generalUtils"
+import useStudent from "student/hooks/useStudent"
+import useParent from "parent/hooks/useParent"
 
 const { Title } = Typography
 
 const StudentInfoAdd: React.FC = () => {
-  const [messageApi, contextHolder] = message.useMessage()
   const [studentId, setStudentId] = useState<string | undefined>("")
+  const [messageApi, contextHolder] = message.useMessage()
   const initialParentInfo = useRef<Array<ParentInfoForm>>([])
   const modifiedParentInfo = useRef<Array<ParentInfoForm>>([])
   const personalInfoRef = useRef<SubmitFormRef>(null)
   const parentInfoRef = useRef<SubmitFormRef>(null)
-  const personalInfoMutation = useMutation({
-    mutationFn: (addPersonalInfo: StudentDetailForm) => {
-      return studentService.addStudentPersonalInfo(addPersonalInfo)
-    },
-    onSuccess: () => {
-      if (!isSame(initialParentInfo, modifiedParentInfo)) {
-        onSubmitParentInfoHandler({ parent_info: modifiedParentInfo.current })
-      }
+  const handlePersonalInfoMutationSuccess = () => {
+    if (!isSame(initialParentInfo, modifiedParentInfo)) {
+      onSubmitParentInfoHandler({ parent_info: modifiedParentInfo.current })
     }
-  })
-
-  const parentInfoMutation = useMutation({
-    mutationFn: (addParentInfo: ParentInfoForm[]) => {
-      return parentService.upsertParentInfo(addParentInfo)
-    },
-    onSuccess: (data) => {
-      showSuccess(data)
-    }
-  })
+  }
+  const { mutate } = useStudent.useAddPersonalInfoMutation(handlePersonalInfoMutationSuccess)
+  const { mutate: mutateUpsertParentInfo } = useParent.useUpsertParentInfoMutation(messageApi)
 
   const onSubmitPersonalInfoHandler = (addPersonalInfo: StudentDetailForm) => {
-    personalInfoMutation.mutate(addPersonalInfo)
+    mutate(addPersonalInfo)
   }
 
   const onSubmitParentInfoHandler = (payload: { parent_info: ParentInfoForm[] }) => {
-    console.log("payload", payload)
     payload.parent_info.forEach((parentInfo) => {
       parentInfo.student_id = studentId
     })
-    parentInfoMutation.mutate(payload.parent_info)
-  }
-
-  const showSuccess = (data: DefaultResponse | undefined) => {
-    messageApi.open({
-      type: "success",
-      content: data?.message
-    })
+    mutateUpsertParentInfo(payload.parent_info)
   }
 
   const onClick = () => {

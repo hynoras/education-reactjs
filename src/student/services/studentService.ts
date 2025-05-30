@@ -1,7 +1,6 @@
 import { IdentityMap, StudentDetail, StudentDetailForm } from "student/models/dtos/studentDetail"
 import { Student } from "student/models/domains/student"
-import { api } from "shared/utils/api"
-import { store } from "shared/utils/store"
+import { api } from "shared/utils/axiosUtils"
 import { PaginatedStudentList } from "student/models/dtos/studentList"
 import { DefaultResponse } from "shared/models/dtos/defaultResponse"
 import { STUDENT } from "student/constants/studentConstants"
@@ -20,7 +19,6 @@ class StudentService {
     searchQuery?: string
   }): Promise<PaginatedStudentList | any> {
     try {
-      const token = store.getState().auth.token
       const response = await api.get(STUDENT.ROUTE.API.BASE_PLURAL, {
         params: {
           currentPage: options?.currentPage
@@ -33,27 +31,23 @@ class StudentService {
           major: options?.major,
           department: options?.department,
           search: options?.searchQuery ?? GENERIC.EMPTY_VALUE.STRING
-        },
-        headers: API.HEADER.AUTHORIZATION(token)
+        }
       })
       return response.data
     } catch (error) {
       console.error("Error fetching students:", error)
-      return { data: { content: GENERIC.EMPTY_VALUE.ARRAY, totalElements: GENERIC.EMPTY_VALUE.ZERO } }
+      throw error
     }
   }
 
   async getStudentDetail(identity: string | undefined): Promise<Student | undefined> {
     try {
-      const token = store.getState().auth.token
-      const response = await api.get<StudentDetail>(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(identity), {
-        headers: API.HEADER.AUTHORIZATION(token)
-      })
+      const response = await api.get<StudentDetail>(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(identity))
       const studentDetail = response.data
       return Student.fromDTO(studentDetail)
     } catch (error) {
       console.error("Error fetching student detail:", error)
-      return
+      throw error
     }
   }
 
@@ -63,73 +57,59 @@ class StudentService {
       return response.data
     } catch (error) {
       console.error("Error fetching student detail:", error)
-      return
+      throw error
     }
   }
 
   async addStudentPersonalInfo(payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
-      const token = store.getState().auth.token
-      const response = await api.post(STUDENT.ROUTE.API.BASE, payload, {
-        headers: API.HEADER.AUTHORIZATION(token)
-      })
+      const response = await api.post(STUDENT.ROUTE.API.BASE, payload)
       return response.data
     } catch (error) {
       console.error("Error deleting student detail:", error)
-      return
+      throw error
     }
   }
 
   async deleteStudentPersonalInfo(identity: string | undefined): Promise<DefaultResponse | undefined> {
     try {
-      const token = store.getState().auth.token
-      const response = await api.delete(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(identity), {
-        headers: API.HEADER.AUTHORIZATION(token)
-      })
+      const response = await api.delete(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(identity))
       return response.data
     } catch (error) {
       console.error("Error deleting student detail:", error)
-      return
+      throw error
     }
   }
 
   async deleteManyStudentPersonalInfo(payload: Array<IdentityMap>): Promise<DefaultResponse | undefined> {
     try {
-      const token = store.getState().auth.token
       const response = await api.delete(STUDENT.ROUTE.API.BASE_PLURAL, {
-        headers: API.HEADER.APP_JSON_AUTH(token),
         data: payload
       })
       return response.data
     } catch (error) {
       console.error("Error deleting student detail:", error)
-      return
+      throw error
     }
   }
 
   async updateStudentPersonalInfo(studentId: any, payload: StudentDetailForm): Promise<DefaultResponse | undefined> {
     try {
-      const token = store.getState().auth.token
-      const response = await api.put(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(studentId), payload, {
-        headers: API.HEADER.AUTHORIZATION(token)
-      })
+      const response = await api.put(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(studentId), payload)
       return response.data
     } catch (error) {
       console.error("Error updating student detail:", error)
-      return
+      throw error
     }
   }
 
   async updateStudentAvatar(studentId: string | undefined, avatar: FormData): Promise<DefaultResponse | undefined> {
     try {
-      const token = store.getState().auth.token
-      const response = await api.put(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.AVATAR_BY_ID(studentId), avatar, {
-        headers: API.HEADER.FORM_DATA_AUTH(token)
-      })
+      const response = await api.put(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.AVATAR_BY_ID(studentId), avatar)
       return response.data
     } catch (error) {
       console.error("Error updating student avatar:", error)
-      return
+      throw error
     }
   }
 }

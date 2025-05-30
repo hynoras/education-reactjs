@@ -1,8 +1,7 @@
-import { useQuery } from "@tanstack/react-query"
 import { Select, Typography } from "antd"
 import { Control, Controller } from "react-hook-form"
 import { MajorNameList } from "major/models/dtos/major"
-import majorService from "major/services/majorService"
+import useMajor from "major/hooks/useMajor"
 
 const { Text } = Typography
 
@@ -15,13 +14,9 @@ type DepartmentSelectProps = {
 }
 
 const DepartmentSelect: React.FC<DepartmentSelectProps> = ({ className = [], control, name, label, showLabel }) => {
-  const { data: majorNames } = useQuery<Array<MajorNameList>>({
-    queryKey: ["major-names"],
-    queryFn: () => majorService.getAllMajorName(),
-    staleTime: Infinity
-  })
+  const { data } = useMajor.useFetchMajorNames()
 
-  const majorOptions = majorNames?.map((value) => ({
+  const majorOptions = data?.map((value: MajorNameList) => ({
     label: String(value.major_name),
     value: value.major_id
   }))

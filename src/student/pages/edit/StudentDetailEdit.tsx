@@ -1,36 +1,29 @@
 import "./style.scss"
 import { StudentDetailForm } from "student/models/dtos/studentDetail"
 import { useParams } from "react-router"
-import studentService from "student/services/studentService"
-import { useMutation } from "@tanstack/react-query"
 import StudentPersonalInfoForm from "shared/components/data_entry/form/StudentPersonalInfoForm"
 import { Content } from "antd/es/layout/layout"
-import { Typography } from "antd"
+import { message, Typography } from "antd"
+import useStudent from "student/hooks/useStudent"
 
 const { Title } = Typography
 
 const StudentDetailEditPage: React.FC = () => {
   let { studentId } = useParams()
-
-  const mutation = useMutation({
-    mutationFn: (updatedStudentDetail: StudentDetailForm) => {
-      return studentService.updateStudentPersonalInfo(studentId, updatedStudentDetail)
-    },
-    onSuccess: () => {
-      alert("Student updated successfully!")
-    }
-  })
+  const [messageApi, contextHolder] = message.useMessage()
+  const { mutate, isPending } = useStudent.useUpdatePersonalInfoMutation(studentId as string, messageApi)
 
   const onSubmitHandler = (payload: StudentDetailForm) => {
-    mutation.mutate(payload)
+    mutate(payload)
   }
 
   return (
     <Content className="student-detail-container">
+      {contextHolder}
       <Title level={2}> Edit personal information</Title>
       <StudentPersonalInfoForm
         studentId={studentId}
-        isPending={mutation.isPending}
+        isPending={isPending}
         onSubmitHandler={onSubmitHandler}
         isEditing={true}
         setStudentId={function (value: any): void {

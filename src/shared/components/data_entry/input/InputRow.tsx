@@ -1,15 +1,37 @@
 import { Input, Typography } from "antd"
 import { Control, Controller } from "react-hook-form"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core"
 
 const { Text } = Typography
 
-const InputRow: React.FC<{
-  className?: Array<string>
-  control?: Control<any> | undefined
+type InputRowProps = {
+  control: Control<any>
   name: string
   label: string
   placeholder?: string
-}> = ({ className = [], control, name, label, placeholder }) => {
+  isPassword?: boolean
+  error?: string
+  showError?: boolean
+  icon?: IconDefinition
+  disabled?: boolean
+  className?: Array<string>
+}
+
+const InputRow: React.FC<InputRowProps> = ({
+  control,
+  name,
+  label,
+  placeholder,
+  isPassword = false,
+  error,
+  showError = true,
+  icon,
+  disabled = false,
+  className = ""
+}) => {
+  const InputComponent = isPassword ? Input.Password : Input
+
   return (
     <>
       <Text className={className[0] || ""} strong>
@@ -18,8 +40,21 @@ const InputRow: React.FC<{
       <Controller
         name={name}
         control={control}
-        render={({ field }) => <Input className={className[1] || ""} {...field} placeholder={placeholder} />}
+        render={({ field }) => (
+          <InputComponent
+            {...field}
+            prefix={icon ? <FontAwesomeIcon icon={icon} /> : null}
+            placeholder={placeholder}
+            disabled={disabled}
+            className={className[1] || ""}
+          />
+        )}
       />
+      {error && showError && (
+        <Typography.Text type="danger" className="error-message">
+          {error}
+        </Typography.Text>
+      )}
     </>
   )
 }

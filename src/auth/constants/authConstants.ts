@@ -5,5 +5,8 @@ export const AUTH = {
       LOGIN: "/login",
       ACCOUNT: "/account"
     }
+  },
+  KEY: {
+    ACCOUNT_DETAIL: "account-detail"
   }
 }

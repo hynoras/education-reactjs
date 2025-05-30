@@ -7,16 +7,17 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { IconButton } from "@mui/material"
 import { ReactNode } from "react"
-import { useSelector } from "react-redux"
-import { RootState } from "shared/utils/store"
 import ImageDisplay from "shared/components/data_entry/image/ImageDisplay"
-import { useQuery } from "@tanstack/react-query"
+import { QueryClient, useQuery } from "@tanstack/react-query"
 import { GENERIC } from "shared/constants/genericValues"
 import { STUDENT } from "student/constants/studentConstants"
 import { PARENT } from "parent/constants/parentConstants"
+import { AUTH } from "auth/constants/authConstants"
+import { UserResponse } from "auth/models/dtos/authModel"
 
 const StudentDetailPage: React.FC = () => {
-  const role = useSelector((state: RootState) => state.auth.user?.role)
+  const queryClient = new QueryClient()
+  const account = queryClient.getQueryData<UserResponse | undefined>([AUTH.KEY.ACCOUNT_DETAIL])
   let { studentId } = useParams()
   const navigate = useNavigate()
 
@@ -33,7 +34,7 @@ const StudentDetailPage: React.FC = () => {
     navigate(PARENT.ROUTE.NAVIGATION.EDIT_PARENT_INFO(studentId))
   }
 
-  const editPersonalInfo: ReactNode = role === GENERIC.KEY.ROLE.ADMIN && (
+  const editPersonalInfo: ReactNode = account?.role === GENERIC.KEY.ROLE.ADMIN && (
     <IconButton
       aria-label="edit"
       size="small"
@@ -44,7 +45,7 @@ const StudentDetailPage: React.FC = () => {
     </IconButton>
   )
 
-  const editParentInfo: ReactNode = role === GENERIC.KEY.ROLE.ADMIN && (
+  const editParentInfo: ReactNode = account?.role === GENERIC.KEY.ROLE.ADMIN && (
     <IconButton
       aria-label="edit"
       size="small"

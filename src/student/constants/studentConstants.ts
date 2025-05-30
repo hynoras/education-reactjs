@@ -12,7 +12,7 @@ export const STUDENT = {
     NAVIGATION: {
       VIEW_STUDENT_LIST: "/admin/student",
       EDIT_STUDENT_PERSONAL_INFO: (identity: string | undefined) => `/admin/student/${identity}/edit`,
-      VIEW_STUDENT_DETAIL: (identity: string | undefined) => `/admin/student/${identity}/view`
+      VIEW_STUDENT_DETAIL: (identity: string | undefined) => `/student/${identity}/view`
     }
   },
   KEY: {

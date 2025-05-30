@@ -2,19 +2,17 @@ import { TableProps, TableColumnsType, Table } from "antd"
 import { useCallback, useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 import { Gender } from "shared/enums/gender"
-import useFetch from "student/hooks/useFetch"
 import { DepartmentNameList } from "department/models/dtos/department"
 import { MajorNameList } from "major/models/dtos/major"
 import { StudentList } from "student/models/dtos/studentList"
-import departmentService from "department/services/departmentService"
-import majorService from "major/services/majorService"
 import ActionButtonList from "./ActionButtonList"
-import { useQuery } from "@tanstack/react-query"
 import { MAJOR } from "major/constants/majorConstants"
 import { API } from "shared/constants/apiConstants"
 import { GENERIC } from "shared/constants/genericValues"
 import { DEPARTMENT } from "department/constants/departmentConstants"
 import { STUDENT } from "student/constants/studentConstants"
+import useMajor from "major/hooks/useMajor"
+import useDepartment from "department/hooks/useDepartment"
 
 type StudentListTableProps = {
   students: StudentList[]
@@ -26,13 +24,8 @@ type StudentListTableProps = {
 const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, setQueryOptions, rowSelection }) => {
   const navigate = useNavigate()
 
-  const { data: departments } = useFetch<DepartmentNameList>(departmentService.getAllDepartmentName)
-  const { data: majorNames } = useQuery<Array<MajorNameList>>({
-    queryKey: [MAJOR.KEY.MAJOR_NAME_PLURAL],
-    queryFn: () => majorService.getAllMajorName(),
-    staleTime: Infinity
-  })
-
+  const { data: departmentNames } = useDepartment.useFetchDepartmentNames()
+  const { data: majorNames } = useMajor.useFetchMajorNames()
   const onChangeTable: TableProps<StudentList>["onChange"] = (_, filters, sorter) => {
     const filtersList = Object.entries(filters).filter(([_, value]) => value && value.length > 0)
     handleFilter(filtersList)
@@ -83,12 +76,12 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
     value: value
   }))
 
-  const departmentFilter = departments.map((value) => ({
+  const departmentFilter = departmentNames?.map((value: DepartmentNameList) => ({
     text: String(value.department_name),
     value: String(value.department_name)
   }))
 
-  const majorFilter = majorNames?.map((value) => ({
+  const majorFilter = majorNames?.map((value: MajorNameList) => ({
     text: String(value.major_name),
     value: String(value.major_name)
   }))

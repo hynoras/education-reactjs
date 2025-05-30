@@ -9,10 +9,9 @@ import { formatString } from "shared/utils/stringUtils"
 import RadioGroup from "shared/components/data_entry/radio/RadioGroup"
 import InputRow from "shared/components/data_entry/input/InputRow"
 import DatePickerRow from "shared/components/data_entry/datepicker/DatePickerRow"
-import { useQuery } from "@tanstack/react-query"
-import studentService from "student/services/studentService"
 import { SubmitFormRef, useImperativeSubmitForm } from "shared/hooks/useSubmitForm"
-import DepartmentSelect from "../../../../department/components/DepartmentSelect"
+import useStudent from "student/hooks/useStudent"
+import DepartmentSelect from "department/components/DepartmentSelect"
 
 type StudentPersonalInfoFormProps = {
   studentId?: string | undefined
@@ -30,12 +29,7 @@ const StudentPersonalInfoForm = forwardRef<SubmitFormRef, StudentPersonalInfoFor
       value: value
     }))
 
-    const { data: studentDetail } = useQuery({
-      enabled: isEditing && !!studentId,
-      queryKey: ["student-detail", studentId],
-      queryFn: () => studentService.getStudentDetail(studentId!),
-      staleTime: Infinity
-    })
+    const { data: studentDetail } = useStudent.useFetchStudentDetail(studentId as string, isEditing)
 
     const personal_info: StudentDetailForm = {
       full_name: "",
