@@ -48,3 +48,61 @@
   color: rgb(61, 61, 61);
   border: none;
 }
+
+@mixin text-style($padding: null, $margin: null, $color: null, $font-size: null, $font-weight: null) {
+  @if $font-size != null {
+    font-size: $font-size;
+  }
+  @if $color != null {
+    color: $color;
+  }
+  @if $font-weight != null {
+    font-weight: $font-weight;
+  }
+  @if $padding != null {
+    padding: $padding;
+  }
+  @if $margin != null {
+    margin: $margin;
+  }
+}
+
+@mixin wrapper-style(
+  $width: null,
+  $height: null,
+  $left: null,
+  $right: null,
+  $margin: null,
+  $padding: null,
+  $background: null,
+  $border-radius: null,
+  $z-index: null
+) {
+  @if $width != null {
+    width: $width;
+  }
+  @if $height != null {
+    height: $height;
+  }
+  @if $left != null {
+    left: $left;
+  }
+  @if $right != null {
+    right: $right;
+  }
+  @if $margin != null {
+    margin: $margin;
+  }
+  @if $padding != null {
+    padding: $padding;
+  }
+  @if $background != null {
+    background: $background;
+  }
+  @if $border-radius != null {
+    border-radius: $border-radius;
+  }
+  @if $z-index != null {
+    z-index: $z-index;
+  }
+}

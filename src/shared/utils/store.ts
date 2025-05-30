@@ -3,6 +3,7 @@ import authReducer from "auth/contexts/loginReducer"
 import storage from "redux-persist/lib/storage"
 import { persistReducer, persistStore } from "redux-persist"
 import studentReducer from "student/contexts/studentReducer"
+import routeReducer from "shared/contexts/routeReducer"
 
 const authPersistConfig = {
   key: "auth",
@@ -14,13 +15,20 @@ const studentPersistConfig = {
   storage
 }
 
+const routePersistConfig = {
+  key: "route",
+  storage
+}
+
 const persistAuthReducer = persistReducer(authPersistConfig, authReducer)
 const persistStudentReducer = persistReducer(studentPersistConfig, studentReducer)
+const persistRouteReducer = persistReducer(routePersistConfig, routeReducer)
 
 export const store = configureStore({
   reducer: {
     auth: persistAuthReducer,
-    student: persistStudentReducer
+    student: persistStudentReducer,
+    route: persistRouteReducer
   }
 })
 

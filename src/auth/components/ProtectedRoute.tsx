@@ -1,10 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { AppDispatch, RootState } from "shared/utils/store"
-import { loadUser } from "auth/contexts/loginReducer"
-import { useEffect } from "react"
-import { decodeToken, isTokenExpired } from "shared/utils/token"
-import { useNavigate } from "react-router-dom"
+import { RootState } from "shared/utils/store"
+import useAuth from "auth/hooks/useAuth"
+import { useSelector } from "react-redux"
 
 interface ProtectedRouteProps {
   requiredRole: string
@@ -13,28 +10,14 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ requiredRole, redirectPath = "/login", children }: ProtectedRouteProps) => {
-  const role = useSelector((state: RootState) => state.auth.user?.role)
-  const token = useSelector((state: RootState) => state.auth.token)
-  const dispatch = useDispatch<AppDispatch>()
-  const navigate = useNavigate()
-  const rehydrated = useSelector((state: RootState) => state.auth._persist?.rehydrated)
-  const decodedToken = decodeToken(token as string)
+  const { data: account, isLoading: loadingAccount } = useAuth.useGetAccountDetail()
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
 
-  useEffect(() => {
-    if (rehydrated) {
-      if (!token || isTokenExpired(decodedToken)) {
-        navigate("/login")
-      } else {
-        dispatch(loadUser(token))
-      }
-    }
-  }, [rehydrated, token, dispatch, navigate, decodedToken])
-
-  if (!token) {
-    return <Navigate to={redirectPath} replace />
+  if (loadingAccount) {
+    return <p>Loading...</p>
   }
 
-  if (role !== requiredRole) {
+  if (account?.role !== requiredRole || !isAuthenticated) {
     return <Navigate to={redirectPath} replace />
   }
 

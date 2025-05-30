@@ -4,8 +4,7 @@ import { Button, PaginationProps, TableProps } from "antd"
 import studentService from "student/services/studentService"
 import SearchBar from "shared/components/data_entry/search/SearchBar"
 import Title from "shared/themes/text/Text"
-import { useQuery } from "@tanstack/react-query"
-import { StudentList } from "student/models/dtos/studentList"
+import { StudentList, StudentListQueryOptions } from "student/models/dtos/studentList"
 import { useNavigate } from "react-router"
 import DeleteConfirm from "student/components/DeleteConfirm"
 import StudentListPagination from "student/components/StudentListPagination"
@@ -14,6 +13,7 @@ import { IdentityMap } from "student/models/dtos/studentDetail"
 import { API } from "shared/constants/apiConstants"
 import { STUDENT } from "student/constants/studentConstants"
 import { GENERIC } from "shared/constants/genericValues"
+import useStudent from "student/hooks/useStudent"
 
 type TableRowSelection<T extends object = object> = TableProps<T>["rowSelection"]
 
@@ -23,7 +23,7 @@ const StudentPage: React.FC = () => {
   const [identityList, setIdentityList] = useState<Array<IdentityMap>>([])
   const navigate = useNavigate()
   let initialIdentityList: Array<IdentityMap> = []
-  const [queryOptions, setQueryOptions] = useState({
+  const [queryOptions, setQueryOptions] = useState<StudentListQueryOptions>({
     currentPage: API.PARAMS.PAGINATION.DEFAULT_CURRENT_PAGE_ANTD,
     pageSize: API.PARAMS.PAGINATION.DEFAULT_PAGE_SIZE,
     sortBy: STUDENT.KEY.IDENTITY,
@@ -33,11 +33,7 @@ const StudentPage: React.FC = () => {
     department: GENERIC.EMPTY_VALUE.STRING
   })
 
-  const { data: students, isLoading: loading } = useQuery({
-    queryKey: [STUDENT.KEY.STUDENT_PLURAL, queryOptions],
-    queryFn: () => studentService.getAllStudent(queryOptions),
-    staleTime: Infinity
-  })
+  const { data: students, isLoading: loading } = useStudent.useFetchStudents(queryOptions)
 
   const onSearch = (query: string) => {
     setQueryOptions((prev) => ({
