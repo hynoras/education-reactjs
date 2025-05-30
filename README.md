@@ -1,56 +1,84 @@
 # 🏫 Education System - Frontend
 
-This is the **frontend** of a full-stack Education Management System built using **ReactJS** and **TypeScript**. It supports role-based access for **students**, **administrators**
+This is the **frontend** of a full-stack Education Management System built with **React 18** and **TypeScript**. It provides a clean interface for managing student records and supports role-based access control for **admin** and **student** users.
+
+> 🛠 Note: Features like course registration and tuition fee tracking are planned for future development.
+
 ---
 
-# Account for testing
+## 🧪 Testing Accounts
 
-- admin:
-username: admin1
-password: admin123
-- student:
-username: student1
-password: admin123
+Use the following test accounts to log in:
+
+### 👩‍💼 Admin
+- **Username:** `admin1`
+- **Password:** `admin123`
+
+### 👨‍🎓 Student
+- **Username:** `student1`
+- **Password:** `admin123`
 
 ---
 
 ## ⚙️ Technologies Used
 
-- **ReactJS** + **TypeScript**
+- **React 18** + **TypeScript**
+- **Redux Toolkit** (state management)
+- **TanStack Query** (data fetching and caching)
 - **React Router**
 - **Axios**
 - **Yup + React Hook Form**
-- **Ant Design**
-- **SASS** for styling
-- **JWT** authentication handling
+- **SASS**
+- **JWT (with cookie-based auth)**
+- **Jest** (for testing)
+- **ESLint + Prettier**
+- **Yarn** (package manager)
+- **Deployed on [Vercel](https://vercel.com/)**
 
 ---
 
-## 🚀 Features
-### Module
-#### Student
-- View student list (admin)
-- View student detail such as personal information, parent information (admin, student)
-- Add student's personal information (admin)
-- Update student's personal information partially (admin)
-- Delete student's personal information (admin)
-#### Parent
-- View parent information (admin, student)
-- Add parent information (admin)
-- Upsert parent information partially (admin)
-- Delete parent information (admin)
+## 🔐 Role-Based Access
+
+The system supports two roles:
+
+- **ADMIN**: Full access to manage student records.
+- **STUDENT**: Read-only access to view their own student details.
+
+Access is managed through protected routes and JWT stored in HTTP-only cookies.
 
 ---
 
-## 📦 Installation & Setup
+## 🚀 Current Features
+
+### 🧑 Admin
+- View paginated list of students
+- View student detail
+- Create new student records
+- Update student records
+- Delete student records
+
+### 👨‍🎓 Student
+- View their own student detail
+
+> 🔜 Future features: course registration, tuition fee management, curriculum tracking, and reporting
+
+---
+
+## 📦 Getting Started
+
+### ✅ Prerequisites
+- Node.js (v18+ recommended)
+- Yarn
+
+### 🛠 Setup
 
 ```bash
-# 1. Clone the repo
-git clone https://github.com/your-username/edu-system-frontend.git
-cd edu-system-frontend
+# Clone the repo
+git clone https://github.com/hynoras/education-reactjs.git
+cd education-reactjs
 
-# 2. Install dependencies
+# Install dependencies
 yarn install
 
-# 3. Run the app
+# Start the dev server
 yarn start
