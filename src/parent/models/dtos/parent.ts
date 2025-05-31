@@ -9,7 +9,7 @@ export interface ParentInfo {
   relationship: Relationship
 }
 
-export interface ParentInfoForm {
+export interface ParentInfoFormDto {
   parent_id: number
   student_id?: string | undefined
   full_name?: string

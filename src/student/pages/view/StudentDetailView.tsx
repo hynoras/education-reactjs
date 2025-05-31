@@ -1,4 +1,4 @@
-import "./style.scss"
+import "./StudentDetailView.scss"
 import { useNavigate, useParams } from "react-router-dom"
 import studentService from "student/services/studentService"
 import { Row, Col, Card, Divider } from "antd"
@@ -15,7 +15,7 @@ import { PARENT } from "parent/constants/parentConstants"
 import { AUTH } from "auth/constants/authConstants"
 import { UserResponse } from "auth/models/dtos/authModel"
 
-const StudentDetailPage: React.FC = () => {
+const StudentDetailViewPage: React.FC = () => {
   const queryClient = new QueryClient()
   const account = queryClient.getQueryData<UserResponse | undefined>([AUTH.KEY.ACCOUNT_DETAIL])
   let { studentId } = useParams()
@@ -136,4 +136,4 @@ const RowInfo: React.FC<{ label: string; value: any | undefined }> = ({ label, v
   )
 }
 
-export default StudentDetailPage
+export default StudentDetailViewPage

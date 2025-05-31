@@ -1,10 +1,10 @@
-import { ParentID, ParentInfoForm } from "parent/models/dtos/parent"
+import { ParentID, ParentInfoFormDto } from "parent/models/dtos/parent"
 import { api } from "shared/utils/axiosUtils"
 import { DefaultResponse } from "shared/models/dtos/defaultResponse"
 import { PARENT } from "parent/constants/parentConstants"
 
 class ParentService {
-  async upsertParentInfo(payload: Array<ParentInfoForm>): Promise<DefaultResponse | undefined> {
+  async upsertParentInfo(payload: Array<ParentInfoFormDto>): Promise<DefaultResponse | undefined> {
     try {
       const response = await api.post(PARENT.ROUTE.API.BASE, payload)
       return response.data

@@ -1,4 +1,4 @@
-import "./style.scss"
+import "./StudentListView.scss"
 import { useState } from "react"
 import { Button, PaginationProps, TableProps } from "antd"
 import studentService from "student/services/studentService"
@@ -17,7 +17,7 @@ import useStudent from "student/hooks/useStudent"
 
 type TableRowSelection<T extends object = object> = TableProps<T>["rowSelection"]
 
-const StudentPage: React.FC = () => {
+const StudentListViewPage: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false)
   const [identityList, setIdentityList] = useState<Array<IdentityMap>>([])
@@ -117,4 +117,4 @@ const StudentPage: React.FC = () => {
   )
 }
 
-export default StudentPage
+export default StudentListViewPage

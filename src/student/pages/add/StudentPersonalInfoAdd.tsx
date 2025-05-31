@@ -1,23 +1,21 @@
-import "./style.scss"
+import "../../themes/StudentDetailEdit.scss"
 import { Button, Collapse, CollapseProps, message, Typography } from "antd"
 import { Content } from "antd/es/layout/layout"
-import StudentPersonalInfoForm from "shared/components/data_entry/form/StudentPersonalInfoForm"
+import StudentPersonalInfoForm from "student/components/PersonalInfoForm"
 import { StudentDetailForm } from "student/models/dtos/studentDetail"
-import StudentParentInfoForm from "parent/components/form/StudentParentInfoForm"
-import { ParentInfoForm } from "parent/models/dtos/parent"
+import StudentParentInfoForm from "parent/components/ParentInfoForm"
+import { ParentInfoFormDto } from "parent/models/dtos/parent"
 import { useRef, useState } from "react"
 import { SubmitFormRef } from "shared/hooks/useSubmitForm"
 import { isSame } from "shared/utils/generalUtils"
 import useStudent from "student/hooks/useStudent"
 import useParent from "parent/hooks/useParent"
 
-const { Title } = Typography
-
-const StudentInfoAdd: React.FC = () => {
+const StudentPersonalInfoAddPage: React.FC = () => {
   const [studentId, setStudentId] = useState<string | undefined>("")
   const [messageApi, contextHolder] = message.useMessage()
-  const initialParentInfo = useRef<Array<ParentInfoForm>>([])
-  const modifiedParentInfo = useRef<Array<ParentInfoForm>>([])
+  const initialParentInfo = useRef<Array<ParentInfoFormDto>>([])
+  const modifiedParentInfo = useRef<Array<ParentInfoFormDto>>([])
   const personalInfoRef = useRef<SubmitFormRef>(null)
   const parentInfoRef = useRef<SubmitFormRef>(null)
   const handlePersonalInfoMutationSuccess = () => {
@@ -32,7 +30,7 @@ const StudentInfoAdd: React.FC = () => {
     mutate(addPersonalInfo)
   }
 
-  const onSubmitParentInfoHandler = (payload: { parent_info: ParentInfoForm[] }) => {
+  const onSubmitParentInfoHandler = (payload: { parent_info: Array<ParentInfoFormDto> }) => {
     payload.parent_info.forEach((parentInfo) => {
       parentInfo.student_id = studentId
     })
@@ -47,9 +45,9 @@ const StudentInfoAdd: React.FC = () => {
     {
       key: "1",
       label: (
-        <Title className={"student-detail-title"} level={3}>
+        <Typography.Title className={"student-detail-title"} level={3}>
           Personal information
-        </Title>
+        </Typography.Title>
       ),
       children: (
         <StudentPersonalInfoForm
@@ -65,9 +63,9 @@ const StudentInfoAdd: React.FC = () => {
     {
       key: "2",
       label: (
-        <Title className={"student-detail-title"} level={3}>
+        <Typography.Title className={"student-detail-title"} level={3}>
           Parent information
-        </Title>
+        </Typography.Title>
       ),
       children: (
         <StudentParentInfoForm
@@ -81,20 +79,17 @@ const StudentInfoAdd: React.FC = () => {
       )
     }
   ]
-  const onChange = (key: string | string[]) => {
-    console.log(key)
-  }
 
   return (
     <Content className="student-detail-container">
       {contextHolder}
       <div className={"student-detail-title-wrapper"}>
-        <Title level={2}> Add student information</Title>
+        <Typography.Title level={2}> Add student information</Typography.Title>
         <Button className={"student-detail-form-button-top"} htmlType="submit" onClick={onClick}>
           {"Save"}
         </Button>
       </div>
-      <Collapse size="small" items={items} defaultActiveKey={["1"]} bordered={false} onChange={onChange} />
+      <Collapse size="small" items={items} defaultActiveKey={["1"]} bordered={false} />
       <Button className={"student-detail-form-button-bottom"} htmlType="submit" onClick={onClick}>
         {"Save"}
       </Button>
@@ -102,4 +97,4 @@ const StudentInfoAdd: React.FC = () => {
   )
 }
 
-export default StudentInfoAdd
+export default StudentPersonalInfoAddPage

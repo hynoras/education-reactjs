@@ -5,31 +5,31 @@ import { useFieldArray, useForm } from "react-hook-form"
 import RadioGroup from "shared/components/data_entry/radio/RadioGroup"
 import InputRow from "shared/components/data_entry/input/InputRow"
 import DatePickerRow from "shared/components/data_entry/datepicker/DatePickerRow"
-import { ParentInfoForm } from "parent/models/dtos/parent"
+import { ParentInfoFormDto } from "parent/models/dtos/parent"
 import { Relationship } from "parent/enums/relationship"
 import { SubmitFormRef, useImperativeSubmitForm } from "shared/hooks/useSubmitForm"
 import useStudent from "student/hooks/useStudent"
 
-type StudentParentInfoFormProps = {
+type ParentInfoFormProps = {
   studentId?: string
   isEditing: boolean
   isPending: boolean | undefined
-  onSubmitHandler: (payload: { parent_info: Array<ParentInfoForm> }) => void
-  initialParentInfo: React.MutableRefObject<Array<ParentInfoForm>>
-  modifiedParentInfo: React.MutableRefObject<Array<ParentInfoForm>>
+  onSubmitHandler: (payload: { parent_info: Array<ParentInfoFormDto> }) => void
+  initialParentInfo: React.MutableRefObject<Array<ParentInfoFormDto>>
+  modifiedParentInfo: React.MutableRefObject<Array<ParentInfoFormDto>>
 }
 
-const StudentParentInfoForm = forwardRef<SubmitFormRef, StudentParentInfoFormProps>(
+const ParentInfoForm = forwardRef<SubmitFormRef, ParentInfoFormProps>(
   ({ studentId, isEditing, isPending, onSubmitHandler, initialParentInfo, modifiedParentInfo }, ref) => {
     const relationshipMap = Object.values(Relationship).map((value) => ({
       label: value,
       value: value
     }))
-    const fetchedParentInfo = useRef<Array<ParentInfoForm>>([])
+    const fetchedParentInfo = useRef<Array<ParentInfoFormDto>>([])
 
     const { data: parents, isLoading } = useStudent.useFetchStudentDetail(studentId as string, true)
 
-    const { control, handleSubmit, reset } = useForm<{ parent_info: ParentInfoForm[] }>({
+    const { control, handleSubmit, reset } = useForm<{ parent_info: Array<ParentInfoFormDto> }>({
       defaultValues: { parent_info: [] }
     })
 
@@ -42,7 +42,7 @@ const StudentParentInfoForm = forwardRef<SubmitFormRef, StudentParentInfoFormPro
 
     useEffect(() => {
       if (parents && isEditing) {
-        const mappedParents = parents.parent_info.map((p: ParentInfoForm) => ({
+        const mappedParents = parents.parent_info.map((p: ParentInfoFormDto) => ({
           ...p,
           parent_id: p.parent_id,
           student_id: studentId,
@@ -81,7 +81,7 @@ const StudentParentInfoForm = forwardRef<SubmitFormRef, StudentParentInfoFormPro
       reset({ parent_info: fetchedParentInfo.current })
     }
 
-    const handleFormSubmit = (data: { parent_info: ParentInfoForm[] }) => {
+    const handleFormSubmit = (data: { parent_info: Array<ParentInfoFormDto> }) => {
       onSubmitHandler(data)
     }
 
@@ -152,4 +152,4 @@ const StudentParentInfoForm = forwardRef<SubmitFormRef, StudentParentInfoFormPro
   }
 )
 
-export default StudentParentInfoForm
+export default ParentInfoForm

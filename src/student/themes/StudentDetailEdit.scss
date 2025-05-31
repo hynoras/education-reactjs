@@ -1,14 +1,4 @@
-@import "/src/shared/themes/mixin.scss";
-$main-color: #7494ec;
-$main-color-light: rgb(178, 187, 208);
-$main-color-dark: #5a78cc;
-$item-margin: 12px 0 12px 0;
-@mixin disable {
-  cursor: not-allowed;
-  background: rgb(194, 194, 194);
-  color: rgb(61, 61, 61);
-  border: none;
-}
+@import "/src/shared/themes/global.scss";
 
 .student-detail-container {
   @include content;
@@ -16,6 +6,40 @@ $item-margin: 12px 0 12px 0;
 
 .delete-parent-button {
   margin-left: auto;
+}
+
+.ant-collapse-expand-icon,
+.ant-collapse-header-text {
+  align-self: center;
+}
+
+.student-detail-title {
+  margin: 0 !important;
+}
+
+.student-detail-title-wrapper {
+  @include flex-space-between;
+}
+
+.student-detail-form-button-top,
+.student-detail-form-button-bottom {
+  @include button-general;
+  align-self: center;
+}
+
+.student-detail-form-button-bottom {
+  left: 100vh;
+}
+
+.disable {
+  margin-top: 12px;
+  @include disable;
+  &:hover {
+    @include disable;
+  }
+  &:focus {
+    @include disable;
+  }
 }
 
 .student-detail-card {
@@ -52,16 +76,6 @@ $item-margin: 12px 0 12px 0;
       &:focus {
         background: $main-color-dark !important;
         color: #eee;
-      }
-    }
-    .disable {
-      margin-top: 12px;
-      @include disable;
-      &:hover {
-        @include disable;
-      }
-      &:focus {
-        @include disable;
       }
     }
   }
