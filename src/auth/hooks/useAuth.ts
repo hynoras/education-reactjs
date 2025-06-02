@@ -31,7 +31,7 @@ class UseAuth {
         })
         if (account?.role === GENERIC.KEY.ROLE.STUDENT) {
           const studentId = await queryClient.fetchQuery({
-            queryKey: [STUDENT.KEY.IDENTITY, account.username],
+            queryKey: [STUDENT.KEY.REACT_QUERY.STUDENT_ID, account.username],
             queryFn: () => studentService.getIdentityByUsername(account.username)
           })
           navigate(STUDENT.ROUTE.NAVIGATION.VIEW_STUDENT_DETAIL(studentId as unknown as string))

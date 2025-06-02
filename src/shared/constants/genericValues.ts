@@ -15,6 +15,9 @@ export const GENERIC = {
     ROLE: {
       ADMIN: "ADMIN",
       STUDENT: "STUDENT"
+    },
+    ANTD_TABLE: {
+      FULL_NAME: "fullName"
     }
   },
   DATETIME: {

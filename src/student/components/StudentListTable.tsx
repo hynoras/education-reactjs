@@ -105,7 +105,7 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
       {
         title: "Full Name",
         dataIndex: GENERIC.KEY.FULL_NAME,
-        key: GENERIC.KEY.FULL_NAME,
+        key: GENERIC.KEY.ANTD_TABLE.FULL_NAME,
         onCell: (record: StudentList) => ({
           onClick: () => onClick(record),
           style: {

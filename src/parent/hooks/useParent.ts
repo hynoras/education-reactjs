@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query"
-import { ParentInfoForm, ParentID } from "parent/models/dtos/parent"
+import { ParentInfoFormDto, ParentID } from "parent/models/dtos/parent"
 import parentService from "parent/services/parentService"
 import { AxiosError } from "axios"
 import { useHandleException } from "shared/hooks/useHandleError"
@@ -10,7 +10,7 @@ class UseParent {
     const handleException = useHandleException()
 
     return useMutation({
-      mutationFn: async (payload: { upserts: ParentInfoForm[]; deletes: ParentID[] }) => {
+      mutationFn: async (payload: { upserts: Array<ParentInfoFormDto>; deletes: ParentID[] }) => {
         return Promise.all([
           parentService.upsertParentInfo(payload.upserts),
           parentService.deleteParentInfo(payload.deletes)
@@ -30,7 +30,7 @@ class UseParent {
     const handleException = useHandleException()
 
     const mutation = useMutation({
-      mutationFn: (addParentInfo: ParentInfoForm[]) => {
+      mutationFn: (addParentInfo: Array<ParentInfoFormDto>) => {
         return parentService.upsertParentInfo(addParentInfo)
       },
       onSuccess: (upsertRes) => {
