@@ -16,7 +16,7 @@ Use the following test accounts to log in:
 
 ### 👨‍🎓 Student
 - **Username:** `student1`
-- **Password:** `admin123`
+- **Password:** `student123`
 
 ---
 
