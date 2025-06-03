@@ -9,7 +9,7 @@ import { useNavigate } from "react-router"
 import DeleteConfirm from "student/components/DeleteConfirm"
 import StudentListPagination from "student/components/StudentListPagination"
 import StudentListTable from "student/components/StudentListTable"
-import { IdentityMap } from "student/models/dtos/studentDetail"
+import { StudentIdMap } from "student/models/dtos/studentDetail"
 import { API } from "shared/constants/apiConstants"
 import { STUDENT } from "student/constants/studentConstants"
 import { GENERIC } from "shared/constants/genericValues"
@@ -20,13 +20,13 @@ type TableRowSelection<T extends object = object> = TableProps<T>["rowSelection"
 const StudentListViewPage: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false)
-  const [identityList, setIdentityList] = useState<Array<IdentityMap>>([])
+  const [studentIdList, setStudentIdList] = useState<Array<StudentIdMap>>([])
   const navigate = useNavigate()
-  let initialIdentityList: Array<IdentityMap> = []
+  let initialStudentIdList: Array<StudentIdMap> = []
   const [queryOptions, setQueryOptions] = useState<StudentListQueryOptions>({
     currentPage: API.PARAMS.PAGINATION.DEFAULT_CURRENT_PAGE_ANTD,
     pageSize: API.PARAMS.PAGINATION.DEFAULT_PAGE_SIZE,
-    sortBy: STUDENT.KEY.IDENTITY,
+    sortBy: STUDENT.KEY.ANTD.STUDENT_ID,
     sortOrder: API.PARAMS.SORT.ORDER_DESC,
     gender: GENERIC.EMPTY_VALUE.STRING,
     major: GENERIC.EMPTY_VALUE.STRING,
@@ -47,8 +47,8 @@ const StudentListViewPage: React.FC = () => {
     setQueryOptions((prev) => ({ ...prev, currentPage: page, pageSize: size }))
   }
 
-  const deleteManyStudentMutation = (identityList: Array<IdentityMap>) => {
-    return studentService.deleteManyStudentPersonalInfo(identityList)
+  const deleteManyStudentMutation = (studentIdList: Array<StudentIdMap>) => {
+    return studentService.deleteManyStudentPersonalInfo(studentIdList)
   }
 
   const handleRowSelection = () => {
@@ -61,10 +61,10 @@ const StudentListViewPage: React.FC = () => {
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys)
-    newSelectedRowKeys.forEach((identity) => {
-      initialIdentityList.push({ identity: identity.toString() })
+    newSelectedRowKeys.forEach((studentId) => {
+      initialStudentIdList.push({ student_id: studentId.toString() })
     })
-    setIdentityList(initialIdentityList)
+    setStudentIdList(initialStudentIdList)
   }
 
   const rowSelection: TableRowSelection<StudentList> = {
@@ -81,7 +81,7 @@ const StudentListViewPage: React.FC = () => {
           isOpen={openDeleteConfirm}
           setIsOpen={setOpenDeleteConfirm}
           mutationFn={deleteManyStudentMutation}
-          variables={identityList}
+          variables={studentIdList}
           content={`Are you sure about deleting ${selectedRowKeys.length} students?`}
         />
         <div className="student-title">
@@ -99,7 +99,7 @@ const StudentListViewPage: React.FC = () => {
             </Button>
             {hasSelected ? `Selected ${selectedRowKeys.length} items` : GENERIC.EMPTY_VALUE.NULL}
           </div>
-          <SearchBar onSearch={onSearch} className="student-search-bar" placeholder="Search identity or name..." />
+          <SearchBar onSearch={onSearch} className="student-search-bar" placeholder="Search student ID or name..." />
         </div>
         <StudentListTable
           students={students?.content || GENERIC.EMPTY_VALUE.ARRAY}

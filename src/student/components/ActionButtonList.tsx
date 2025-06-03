@@ -9,18 +9,18 @@ import studentService from "student/services/studentService"
 import { STUDENT } from "student/constants/studentConstants"
 
 type ActionButtonListProps = {
-  identity: string | undefined
+  studentId: string | undefined
 }
 
-const ActionButtonList: React.FC<ActionButtonListProps> = ({ identity }) => {
+const ActionButtonList: React.FC<ActionButtonListProps> = ({ studentId }) => {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
   const handleEdit = () => {
-    navigate(STUDENT.ROUTE.NAVIGATION.EDIT_STUDENT_PERSONAL_INFO(identity))
+    navigate(STUDENT.ROUTE.NAVIGATION.EDIT_STUDENT_PERSONAL_INFO(studentId))
   }
 
-  const deleteStudentMutation = (identity: string | undefined) => {
-    return studentService.deleteStudentPersonalInfo(identity)
+  const deleteStudentMutation = (studentId: string | undefined) => {
+    return studentService.deleteStudentPersonalInfo(studentId)
   }
 
   const handleDelete = () => {
@@ -42,8 +42,8 @@ const ActionButtonList: React.FC<ActionButtonListProps> = ({ identity }) => {
         isOpen={open}
         setIsOpen={setOpen}
         mutationFn={deleteStudentMutation}
-        variables={identity}
-        content={`Are you sure about deleting student ${identity}?`}
+        variables={studentId}
+        content={`Are you sure about deleting student ${studentId}?`}
       />
     </div>
   )

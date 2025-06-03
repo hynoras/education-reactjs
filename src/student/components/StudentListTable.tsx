@@ -66,7 +66,7 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
 
   const onClick = useCallback(
     (record: StudentList) => {
-      navigate(STUDENT.ROUTE.NAVIGATION.VIEW_STUDENT_DETAIL(record.identity))
+      navigate(STUDENT.ROUTE.NAVIGATION.VIEW_STUDENT_DETAIL(record.student_id))
     },
     [navigate]
   )
@@ -90,8 +90,8 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
     () => [
       {
         title: "Student ID",
-        dataIndex: STUDENT.KEY.IDENTITY,
-        key: STUDENT.KEY.IDENTITY,
+        dataIndex: STUDENT.KEY.GENERIC.STUDENT_ID,
+        key: STUDENT.KEY.ANTD.STUDENT_ID,
         onCell: (record: StudentList) => ({
           onClick: () => onClick(record),
           style: {
@@ -128,7 +128,7 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
       {
         title: "Action",
         key: GENERIC.KEY.ACTION,
-        render: (_text: any, record: StudentList) => <ActionButtonList identity={record?.identity} />,
+        render: (_text: any, record: StudentList) => <ActionButtonList studentId={record?.student_id} />,
         align: "center"
       }
     ],
@@ -142,7 +142,7 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
       pagination={false}
       rowSelection={{ type: "checkbox", ...rowSelection }}
       loading={loading}
-      rowKey={STUDENT.KEY.IDENTITY}
+      rowKey={STUDENT.KEY.GENERIC.STUDENT_ID}
       onChange={onChangeTable}
     />
   )

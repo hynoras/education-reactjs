@@ -1,6 +1,6 @@
 import { Image, Popover } from "antd"
 import AvatarOption from "../dropdown/avatar_option/AvatarOption"
-import { QueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { AUTH } from "auth/constants/authConstants"
 import { UserResponse } from "auth/models/dtos/authModel"
 
@@ -11,7 +11,7 @@ type ImageDisplayProps = {
 }
 
 const ImageDisplay: React.FC<ImageDisplayProps> = ({ studentId, src, classNames }) => {
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
   const account = queryClient.getQueryData<UserResponse | undefined>([AUTH.KEY.ACCOUNT_DETAIL])
   return (
     <>

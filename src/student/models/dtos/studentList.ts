@@ -1,7 +1,7 @@
 import { ParamsOptions } from "shared/models/dtos/queryOptions"
 
 export interface StudentList {
-  identity: string | undefined
+  student_id: string | undefined
   full_name: string
   birth_date: string
   gender: string

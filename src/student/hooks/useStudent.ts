@@ -17,8 +17,8 @@ class UseStudent {
       error,
       isError
     } = useQuery({
-      queryKey: [STUDENT.KEY.IDENTITY, username],
-      queryFn: () => studentService.getIdentityByUsername(username),
+      queryKey: [STUDENT.KEY.REACT_QUERY.STUDENT_ID, username],
+      queryFn: () => studentService.getStudentIdByUsername(username),
       staleTime: GENERIC.DATETIME.ONE_HOUR_AS_MILISEC
     })
     useHandleTanStackQueryError(error as AxiosError, isError)
@@ -32,7 +32,7 @@ class UseStudent {
       error,
       isError
     } = useQuery({
-      queryKey: [STUDENT.KEY.STUDENT_PLURAL, queryOptions],
+      queryKey: [STUDENT.KEY.GENERIC.STUDENT_PLURAL, queryOptions],
       queryFn: () => studentService.getAllStudent(queryOptions),
       staleTime: GENERIC.DATETIME.ONE_HOUR_AS_MILISEC
     })
@@ -40,7 +40,7 @@ class UseStudent {
     return { data: students, isLoading: studentsLoading }
   }
 
-  useFetchStudentDetail = (studentId: string, isEditing: boolean): TanStackQueryOptions => {
+  useFetchStudentDetail = (studentId: string, isEditing?: boolean): TanStackQueryOptions => {
     const {
       data: studentDetail,
       isLoading: studentDetailLoading,
@@ -48,7 +48,7 @@ class UseStudent {
       isError
     } = useQuery({
       enabled: isEditing && !!studentId,
-      queryKey: [STUDENT.KEY.STUDENT_DETAIL, studentId],
+      queryKey: [STUDENT.KEY.REACT_QUERY.STUDENT_DETAIL, studentId],
       queryFn: () => studentService.getStudentDetail(studentId!),
       staleTime: GENERIC.DATETIME.ONE_HOUR_AS_MILISEC
     })

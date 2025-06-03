@@ -69,7 +69,7 @@ $main-color-dark: #5a78cc;
         .student-detail-banner-full-name {
           @include banner-student-detail(true);
         }
-        .student-detail-banner-identity {
+        .student-detail-banner-student-id {
           @include banner-student-detail(false);
         }
       }

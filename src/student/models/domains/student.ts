@@ -4,7 +4,7 @@ import { GENERIC } from "shared/constants/genericValues"
 
 export class Student {
   constructor(
-    public identity: string,
+    public student_id: string,
     public full_name: string,
     public birth_date: Date,
     public gender: Gender,
@@ -22,7 +22,7 @@ export class Student {
     const parentList = dto.parent_information || GENERIC.EMPTY_VALUE.ARRAY
 
     return {
-      identity: personal.identity,
+      student_id: personal.student_id,
       full_name: personal.full_name,
       birth_date: personal.birth_date,
       gender: personal.gender,

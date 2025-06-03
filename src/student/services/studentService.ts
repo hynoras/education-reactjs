@@ -1,4 +1,4 @@
-import { IdentityMap, StudentDetail, StudentDetailForm } from "student/models/dtos/studentDetail"
+import { StudentIdMap, StudentDetail, StudentDetailForm } from "student/models/dtos/studentDetail"
 import { Student } from "student/models/domains/student"
 import { api } from "shared/utils/axiosUtils"
 import { PaginatedStudentList } from "student/models/dtos/studentList"
@@ -25,7 +25,7 @@ class StudentService {
             ? options.currentPage - API.PARAMS.PAGINATION.DEFAULT_CURRENT_PAGE_ANTD
             : API.PARAMS.PAGINATION.DEFAULT_CURRENT_PAGE,
           pageSize: options?.pageSize ?? API.PARAMS.PAGINATION.DEFAULT_PAGE_SIZE,
-          sortBy: options?.sortBy ?? STUDENT.KEY.IDENTITY,
+          sortBy: options?.sortBy ?? STUDENT.KEY.ANTD.STUDENT_ID,
           sortOrder: options?.sortOrder,
           gender: options?.gender,
           major: options?.major,
@@ -40,9 +40,9 @@ class StudentService {
     }
   }
 
-  async getStudentDetail(identity: string | undefined): Promise<Student | undefined> {
+  async getStudentDetail(studentId: string | undefined): Promise<Student | undefined> {
     try {
-      const response = await api.get<StudentDetail>(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(identity))
+      const response = await api.get<StudentDetail>(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(studentId))
       const studentDetail = response.data
       return Student.fromDTO(studentDetail)
     } catch (error) {
@@ -51,7 +51,7 @@ class StudentService {
     }
   }
 
-  async getIdentityByUsername(username: string): Promise<string | undefined> {
+  async getStudentIdByUsername(username: string): Promise<string | undefined> {
     try {
       const response = await api.get<string>(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.ID_BY_USERNAME(username))
       return response.data
@@ -71,9 +71,9 @@ class StudentService {
     }
   }
 
-  async deleteStudentPersonalInfo(identity: string | undefined): Promise<DefaultResponse | undefined> {
+  async deleteStudentPersonalInfo(studentId: string | undefined): Promise<DefaultResponse | undefined> {
     try {
-      const response = await api.delete(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(identity))
+      const response = await api.delete(STUDENT.ROUTE.API.BASE + STUDENT.ROUTE.API.BY_ID(studentId))
       return response.data
     } catch (error) {
       console.error("Error deleting student detail:", error)
@@ -81,7 +81,7 @@ class StudentService {
     }
   }
 
-  async deleteManyStudentPersonalInfo(payload: Array<IdentityMap>): Promise<DefaultResponse | undefined> {
+  async deleteManyStudentPersonalInfo(payload: Array<StudentIdMap>): Promise<DefaultResponse | undefined> {
     try {
       const response = await api.delete(STUDENT.ROUTE.API.BASE_PLURAL, {
         data: payload

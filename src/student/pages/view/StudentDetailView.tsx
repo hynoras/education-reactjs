@@ -1,6 +1,5 @@
 import "./StudentDetailView.scss"
 import { useNavigate, useParams } from "react-router-dom"
-import studentService from "student/services/studentService"
 import { Row, Col, Card, Divider } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
@@ -8,23 +7,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { IconButton } from "@mui/material"
 import { ReactNode } from "react"
 import ImageDisplay from "shared/components/data_entry/image/ImageDisplay"
-import { QueryClient, useQuery } from "@tanstack/react-query"
 import { GENERIC } from "shared/constants/genericValues"
 import { STUDENT } from "student/constants/studentConstants"
 import { PARENT } from "parent/constants/parentConstants"
 import { AUTH } from "auth/constants/authConstants"
 import { UserResponse } from "auth/models/dtos/authModel"
+import useStudent from "student/hooks/useStudent"
+import { ParentInfo } from "parent/models/dtos/parent"
+import { useQueryClient } from "@tanstack/react-query"
 
 const StudentDetailViewPage: React.FC = () => {
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
   const account = queryClient.getQueryData<UserResponse | undefined>([AUTH.KEY.ACCOUNT_DETAIL])
   let { studentId } = useParams()
   const navigate = useNavigate()
 
-  const { isLoading: loading, data: studentDetail } = useQuery({
-    queryKey: [STUDENT.KEY.STUDENT_DETAIL],
-    queryFn: () => studentService.getStudentDetail(studentId)
-  })
+  const { data: studentDetail, isLoading: studentDetailLoading } = useStudent.useFetchStudentDetail(studentId as string)
 
   const handleEditPersonalInfo = () => {
     navigate(STUDENT.ROUTE.NAVIGATION.EDIT_STUDENT_PERSONAL_INFO(studentId))
@@ -71,7 +69,7 @@ const StudentDetailViewPage: React.FC = () => {
                 />
                 <div className={"student-detail-banner-lower-general"}>
                   <p className={"student-detail-banner-full-name"}>{studentDetail?.full_name}</p>
-                  <p className={"student-detail-banner-identity"}>{studentDetail?.identity}</p>
+                  <p className={"student-detail-banner-student-id"}>{studentDetail?.student_id}</p>
                 </div>
               </div>
             </div>
@@ -81,7 +79,7 @@ const StudentDetailViewPage: React.FC = () => {
               <div className={"student-detail-banner-card-decorator"}></div>
               <Card
                 className={"student-detail-banner-card-wrapper"}
-                loading={loading}
+                loading={studentDetailLoading}
                 title="Personal Information"
                 extra={editPersonalInfo}
               >
@@ -100,12 +98,12 @@ const StudentDetailViewPage: React.FC = () => {
             <div className={"student-detail-banner-card"}>
               <div className={"student-detail-banner-card-decorator"}></div>
               <Card
-                loading={loading}
+                loading={studentDetailLoading}
                 className={"student-detail-banner-card-wrapper"}
                 title="Parent information"
                 extra={editParentInfo}
               >
-                {studentDetail?.parent_info.map((parent_info, index) => (
+                {studentDetail?.parent_info.map((parent_info: ParentInfo, index: number) => (
                   <div key={index}>
                     <RowInfo label="Full name: " value={parent_info.full_name} />
                     <RowInfo label="Date of birth: " value={parent_info.birth_date} />

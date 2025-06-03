@@ -50,8 +50,8 @@ const StudentPersonalInfoForm = forwardRef<SubmitFormRef, StudentPersonalInfoFor
     })
 
     if (!isEditing) {
-      const identity = getValues("identity")
-      setStudentId(identity)
+      const studentId = getValues("student_id")
+      setStudentId(studentId)
     }
 
     useImperativeSubmitForm(ref, handleSubmit, onSubmitHandler)
@@ -81,7 +81,7 @@ const StudentPersonalInfoForm = forwardRef<SubmitFormRef, StudentPersonalInfoFor
               <InputRow
                 className={["student-detail-item-label", "student-detail-item-input"]}
                 control={control}
-                name={"identity"}
+                name={"student_id"}
                 label={"Student ID: "}
               />
             )}

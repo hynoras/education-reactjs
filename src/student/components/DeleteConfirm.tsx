@@ -20,7 +20,7 @@ const DeleteConfirm: React.FC<DeleteConfirmProps> = ({ isOpen, setIsOpen, mutati
     mutationFn: mutationFn,
     onSuccess: (data: DefaultResponse) => {
       successMessage(data)
-      queryClient.invalidateQueries({ queryKey: [STUDENT.KEY.STUDENT_PLURAL] })
+      queryClient.invalidateQueries({ queryKey: [STUDENT.KEY.GENERIC.STUDENT_PLURAL] })
     },
     onError: (data: DefaultResponse) => {
       errorMessage(data)
