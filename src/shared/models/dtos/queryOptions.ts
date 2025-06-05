@@ -1,3 +1,5 @@
+import { AxiosError } from "axios"
+
 export interface TanStackQueryOptions {
   data: any
   isLoading: boolean
@@ -9,4 +11,9 @@ export interface ParamsOptions {
   pageSize: number
   sortBy: string
   sortOrder: string
+}
+
+export interface TanStackQueryMutationOptions {
+  onSuccess?: () => void
+  onError?: (error: AxiosError) => void
 }

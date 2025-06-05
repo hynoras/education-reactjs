@@ -1,14 +1,12 @@
-import "./style.scss"
+import "../../themes/StudentDetailEdit.scss"
 import { StudentDetailForm } from "student/models/dtos/studentDetail"
 import { useParams } from "react-router"
-import StudentPersonalInfoForm from "shared/components/data_entry/form/StudentPersonalInfoForm"
+import StudentPersonalInfoForm from "student/components/PersonalInfoForm"
 import { Content } from "antd/es/layout/layout"
 import { message, Typography } from "antd"
 import useStudent from "student/hooks/useStudent"
 
-const { Title } = Typography
-
-const StudentDetailEditPage: React.FC = () => {
+const StudentPersonalInfoEditPage: React.FC = () => {
   let { studentId } = useParams()
   const [messageApi, contextHolder] = message.useMessage()
   const { mutate, isPending } = useStudent.useUpdatePersonalInfoMutation(studentId as string, messageApi)
@@ -20,7 +18,7 @@ const StudentDetailEditPage: React.FC = () => {
   return (
     <Content className="student-detail-container">
       {contextHolder}
-      <Title level={2}> Edit personal information</Title>
+      <Typography.Title level={2}> Edit personal information</Typography.Title>
       <StudentPersonalInfoForm
         studentId={studentId}
         isPending={isPending}
@@ -34,4 +32,4 @@ const StudentDetailEditPage: React.FC = () => {
   )
 }
 
-export default StudentDetailEditPage
+export default StudentPersonalInfoEditPage

@@ -1,7 +1,4 @@
-@import "/src/shared/themes/mixin.scss";
-$main-color: #7494ec;
-$main-color-light: rgb(160, 176, 211);
-$main-color-dark: #5a78cc;
+@import "/src/shared/themes/global.scss";
 @mixin banner-student-detail($full-name) {
   position: relative;
   z-index: 10;
@@ -69,7 +66,7 @@ $main-color-dark: #5a78cc;
         .student-detail-banner-full-name {
           @include banner-student-detail(true);
         }
-        .student-detail-banner-identity {
+        .student-detail-banner-student-id {
           @include banner-student-detail(false);
         }
       }

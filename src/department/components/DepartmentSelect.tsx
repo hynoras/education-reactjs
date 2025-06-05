@@ -1,40 +1,17 @@
-import { Select, Typography } from "antd"
-import { Control, Controller } from "react-hook-form"
-import { MajorNameList } from "major/models/dtos/major"
-import useMajor from "major/hooks/useMajor"
+import useDepartment from "department/hooks/useDepartment"
+import { DepartmentNameList } from "department/models/dtos/department"
+import FilterSelect from "shared/components/data_entry/dropdown/FilterSelect"
+import { BaseSelectProps } from "shared/models/dtos/dataDisplayandEntry"
 
-const { Text } = Typography
+const DepartmentSelect: React.FC<BaseSelectProps> = (props) => {
+  const { data } = useDepartment.useFetchDepartmentNames()
+  const options =
+    data?.map((value: DepartmentNameList) => ({
+      label: String(value.department_name),
+      value: props.isForm ? value.department_id : value.department_name
+    })) || []
 
-type DepartmentSelectProps = {
-  className?: Array<string>
-  control?: Control<any> | undefined
-  name: string
-  label: String
-  showLabel: boolean
-}
-
-const DepartmentSelect: React.FC<DepartmentSelectProps> = ({ className = [], control, name, label, showLabel }) => {
-  const { data } = useMajor.useFetchMajorNames()
-
-  const majorOptions = data?.map((value: MajorNameList) => ({
-    label: String(value.major_name),
-    value: value.major_id
-  }))
-
-  return (
-    <>
-      {showLabel && (
-        <Text className={className[0] || ""} strong>
-          {label}
-        </Text>
-      )}
-      <Controller
-        name={name}
-        control={control}
-        render={({ field }) => <Select {...field} className={className[1] || ""} options={majorOptions} />}
-      />
-    </>
-  )
+  return <FilterSelect {...props} options={options} placeholder="Department" />
 }
 
 export default DepartmentSelect

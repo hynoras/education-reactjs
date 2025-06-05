@@ -2,7 +2,7 @@ import { ParentInfo } from "parent/models/dtos/parent"
 import { Gender } from "shared/enums/gender"
 
 export interface PersonalInfo {
-  identity: string
+  student_id: string
   full_name: string
   birth_date: Date
   gender: Gender | undefined
@@ -20,7 +20,7 @@ export interface StudentDetail {
 }
 
 export interface StudentDetailForm {
-  identity?: string
+  student_id?: string
   full_name: string
   birth_date: Date
   gender?: Gender | undefined
@@ -32,6 +32,6 @@ export interface StudentDetailForm {
   major?: number
 }
 
-export interface IdentityMap {
-  identity: string
+export interface StudentIdMap {
+  student_id: string
 }

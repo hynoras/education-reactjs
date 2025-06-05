@@ -1,0 +1,9 @@
+.ant-select-selection-item,
+.ant-select-selection-overflow {
+  display: none !important;
+}
+
+.ant-select-dropdown {
+  width: 200px !important;
+  min-width: max-content !important;
+}
