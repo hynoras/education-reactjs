@@ -1,7 +1,4 @@
-@import "/src/shared/themes/mixin.scss";
-$main-color: #7494ec;
-$main-color-light: rgb(133, 157, 212);
-$main-color-dark: #5a78cc;
+@import "/src/shared/themes/global.scss";
 
 .border {
   border: none;
@@ -10,13 +7,13 @@ $main-color-dark: #5a78cc;
 
 .student-container {
   @include flex-column;
-  width: 83%;
-  height: 97vh;
+  width: 98%;
+  height: 90vh;
   margin: auto;
   background: white;
   border-radius: 12px;
   .student-wrapper {
-    padding: 2%;
+    padding: 32px;
     .student-title {
       @include flex-space-between;
       .add-student-manually-button {
@@ -25,7 +22,7 @@ $main-color-dark: #5a78cc;
       }
     }
     .ant-table {
-      height: 65vh;
+      margin-bottom: 16px;
       .ant-table-thead th {
         background: $main-color;
         color: white !important;
@@ -74,6 +71,12 @@ $main-color-dark: #5a78cc;
             background: $main-color;
           }
         }
+      }
+      .student-filter-list {
+        margin-left: 12px;
+      }
+      .student-filter-select {
+        width: 100px;
       }
     }
     .student-table-pagination {

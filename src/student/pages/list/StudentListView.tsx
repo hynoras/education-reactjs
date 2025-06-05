@@ -1,12 +1,10 @@
 import "./StudentListView.scss"
 import { useState } from "react"
-import { Button, PaginationProps, TableProps } from "antd"
-import studentService from "student/services/studentService"
+import { Button, message, PaginationProps, TableProps } from "antd"
 import SearchBar from "shared/components/data_entry/search/SearchBar"
 import Title from "shared/themes/text/Text"
 import { StudentList, StudentListQueryOptions } from "student/models/dtos/studentList"
 import { useNavigate } from "react-router"
-import DeleteConfirm from "student/components/DeleteConfirm"
 import StudentListPagination from "student/components/StudentListPagination"
 import StudentListTable from "student/components/StudentListTable"
 import { StudentIdMap } from "student/models/dtos/studentDetail"
@@ -14,6 +12,8 @@ import { API } from "shared/constants/apiConstants"
 import { STUDENT } from "student/constants/studentConstants"
 import { GENERIC } from "shared/constants/genericValues"
 import useStudent from "student/hooks/useStudent"
+import Popup from "shared/components/feedback/modal/Popup"
+import StudentFilterList from "student/components/StudentFilterList"
 
 type TableRowSelection<T extends object = object> = TableProps<T>["rowSelection"]
 
@@ -21,6 +21,10 @@ const StudentListViewPage: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false)
   const [studentIdList, setStudentIdList] = useState<Array<StudentIdMap>>([])
+  const [majorFilter, setMajorFilter] = useState<string[] | undefined>()
+  const [departmentFilter, setDepartmentFilter] = useState<string[] | undefined>()
+  const [genderFilter, setGenderFilter] = useState<string[] | undefined>()
+  const [messageApi, contextHolder] = message.useMessage()
   const navigate = useNavigate()
   let initialStudentIdList: Array<StudentIdMap> = []
   const [queryOptions, setQueryOptions] = useState<StudentListQueryOptions>({
@@ -34,6 +38,7 @@ const StudentListViewPage: React.FC = () => {
   })
 
   const { data: students, isLoading: loading } = useStudent.useFetchStudents(queryOptions)
+  const { mutate } = useStudent.useDeleteManyStudentsMutation(studentIdList, messageApi)
 
   const onSearch = (query: string) => {
     setQueryOptions((prev) => ({
@@ -47,8 +52,10 @@ const StudentListViewPage: React.FC = () => {
     setQueryOptions((prev) => ({ ...prev, currentPage: page, pageSize: size }))
   }
 
-  const deleteManyStudentMutation = (studentIdList: Array<StudentIdMap>) => {
-    return studentService.deleteManyStudentPersonalInfo(studentIdList)
+  const handleConfirmDelete = () => {
+    mutate()
+    setSelectedRowKeys([])
+    setOpenDeleteConfirm(false)
   }
 
   const handleRowSelection = () => {
@@ -77,12 +84,12 @@ const StudentListViewPage: React.FC = () => {
   return (
     <div className="student-container">
       <div className="student-wrapper">
-        <DeleteConfirm
+        {contextHolder}
+        <Popup
           isOpen={openDeleteConfirm}
           setIsOpen={setOpenDeleteConfirm}
-          mutationFn={deleteManyStudentMutation}
-          variables={studentIdList}
-          content={`Are you sure about deleting ${selectedRowKeys.length} students?`}
+          content={`Confirm deleting ${selectedRowKeys.length} students?`}
+          onOk={handleConfirmDelete}
         />
         <div className="student-title">
           <Title variant="h4" sx={{ color: "black" }}>
@@ -97,15 +104,26 @@ const StudentListViewPage: React.FC = () => {
             <Button type="primary" onClick={handleRowSelection} disabled={!hasSelected} loading={loading} danger>
               Delete
             </Button>
-            {hasSelected ? `Selected ${selectedRowKeys.length} items` : GENERIC.EMPTY_VALUE.NULL}
+            <StudentFilterList
+              className={["student-filter-list"]}
+              majorFilter={majorFilter}
+              setMajorFilter={setMajorFilter}
+              departmentFilter={departmentFilter}
+              setDepartmentFilter={setDepartmentFilter}
+              genderFilter={genderFilter}
+              setGenderFilter={setGenderFilter}
+              setQueryOptions={setQueryOptions}
+            />
           </div>
           <SearchBar onSearch={onSearch} className="student-search-bar" placeholder="Search student ID or name..." />
         </div>
+        {hasSelected ? `Selected ${selectedRowKeys.length} items` : GENERIC.EMPTY_VALUE.NULL}
         <StudentListTable
           students={students?.content || GENERIC.EMPTY_VALUE.ARRAY}
           loading={loading}
           setQueryOptions={setQueryOptions}
           rowSelection={rowSelection}
+          messageApi={messageApi}
         />
         <StudentListPagination
           total={students?.total_element || GENERIC.EMPTY_VALUE.ZERO}

@@ -1,31 +1,36 @@
 import { TableProps, TableColumnsType, Table } from "antd"
-import { useCallback, useMemo } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Gender } from "shared/enums/gender"
-import { DepartmentNameList } from "department/models/dtos/department"
-import { MajorNameList } from "major/models/dtos/major"
 import { StudentList } from "student/models/dtos/studentList"
-import ActionButtonList from "./ActionButtonList"
+import ActionButtonList from "../../shared/components/general/button/ActionButtonList"
 import { MAJOR } from "major/constants/majorConstants"
 import { API } from "shared/constants/apiConstants"
 import { GENERIC } from "shared/constants/genericValues"
 import { DEPARTMENT } from "department/constants/departmentConstants"
 import { STUDENT } from "student/constants/studentConstants"
-import useMajor from "major/hooks/useMajor"
-import useDepartment from "department/hooks/useDepartment"
+import useStudent from "student/hooks/useStudent"
+import { MessageInstance } from "antd/es/message/interface"
+import Popup from "shared/components/feedback/modal/Popup"
 
 type StudentListTableProps = {
   students: StudentList[]
   loading: boolean
   setQueryOptions: React.Dispatch<React.SetStateAction<any>>
   rowSelection: TableProps<StudentList>["rowSelection"]
+  messageApi: MessageInstance
 }
 
-const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, setQueryOptions, rowSelection }) => {
+const StudentListTable: React.FC<StudentListTableProps> = ({
+  students,
+  loading,
+  setQueryOptions,
+  rowSelection,
+  messageApi
+}) => {
   const navigate = useNavigate()
-
-  const { data: departmentNames } = useDepartment.useFetchDepartmentNames()
-  const { data: majorNames } = useMajor.useFetchMajorNames()
+  const [selectedStudentId, setSelectedStudentId] = useState<string>()
+  const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false)
+  const { mutate } = useStudent.useDeleteStudentPersonalInfoMutation(messageApi)
   const onChangeTable: TableProps<StudentList>["onChange"] = (_, filters, sorter) => {
     const filtersList = Object.entries(filters).filter(([_, value]) => value && value.length > 0)
     handleFilter(filtersList)
@@ -71,20 +76,11 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
     [navigate]
   )
 
-  const genderFilter = Object.values(Gender).map((value) => ({
-    text: value,
-    value: value
-  }))
-
-  const departmentFilter = departmentNames?.map((value: DepartmentNameList) => ({
-    text: String(value.department_name),
-    value: String(value.department_name)
-  }))
-
-  const majorFilter = majorNames?.map((value: MajorNameList) => ({
-    text: String(value.major_name),
-    value: String(value.major_name)
-  }))
+  const handleConfirmDelete = () => {
+    if (!selectedStudentId) return
+    mutate(selectedStudentId)
+    setIsDeleteConfirmVisible(false)
+  }
 
   const columns: TableColumnsType<StudentList> = useMemo(
     () => [
@@ -117,34 +113,52 @@ const StudentListTable: React.FC<StudentListTableProps> = ({ students, loading, 
         sorter: true
       },
       { title: "Birth Date", dataIndex: GENERIC.KEY.BIRTH_DATE, key: GENERIC.KEY.BIRTH_DATE },
-      { title: "Gender", dataIndex: GENERIC.KEY.GENDER, key: GENERIC.KEY.GENDER, filters: genderFilter },
-      { title: "Major", dataIndex: MAJOR.KEY.MAJOR_NAME, key: MAJOR.KEY.MAJOR_NAME, filters: majorFilter },
+      { title: "Gender", dataIndex: GENERIC.KEY.GENDER, key: GENERIC.KEY.GENDER },
+      { title: "Major", dataIndex: MAJOR.KEY.MAJOR_NAME, key: MAJOR.KEY.MAJOR_NAME },
       {
         title: "Department",
         dataIndex: DEPARTMENT.KEY.DEPARTMENT_NAME,
-        key: DEPARTMENT.KEY.DEPARTMENT_NAME,
-        filters: departmentFilter
+        key: DEPARTMENT.KEY.DEPARTMENT_NAME
       },
       {
         title: "Action",
         key: GENERIC.KEY.ACTION,
-        render: (_text: any, record: StudentList) => <ActionButtonList studentId={record?.student_id} />,
+        render: (_text: any, record: StudentList) => {
+          return (
+            <ActionButtonList
+              studentId={record.student_id}
+              setIsOpenDeleteConfirm={(id) => {
+                setSelectedStudentId(id as string)
+                setIsDeleteConfirmVisible(true)
+              }}
+              pageURL={STUDENT.ROUTE.NAVIGATION.EDIT_STUDENT_PERSONAL_INFO(record.student_id)}
+            />
+          )
+        },
         align: "center"
       }
     ],
-    [departmentFilter, genderFilter, majorFilter, onClick]
+    [onClick]
   )
 
   return (
-    <Table<StudentList>
-      columns={columns}
-      dataSource={students}
-      pagination={false}
-      rowSelection={{ type: "checkbox", ...rowSelection }}
-      loading={loading}
-      rowKey={STUDENT.KEY.GENERIC.STUDENT_ID}
-      onChange={onChangeTable}
-    />
+    <>
+      <Table<StudentList>
+        columns={columns}
+        dataSource={students}
+        pagination={false}
+        rowSelection={{ type: "checkbox", ...rowSelection }}
+        loading={loading}
+        rowKey={STUDENT.KEY.GENERIC.STUDENT_ID}
+        onChange={onChangeTable}
+      />
+      <Popup
+        isOpen={isDeleteConfirmVisible}
+        setIsOpen={(open) => setIsDeleteConfirmVisible(open)}
+        onOk={handleConfirmDelete}
+        content={`Confirm deleting student ${selectedStudentId}?`}
+      />
+    </>
   )
 }
 

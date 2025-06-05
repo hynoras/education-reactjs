@@ -11,7 +11,7 @@ import InputRow from "shared/components/data_entry/input/InputRow"
 import DatePickerRow from "shared/components/data_entry/datepicker/DatePickerRow"
 import { SubmitFormRef, useImperativeSubmitForm } from "shared/hooks/useSubmitForm"
 import useStudent from "student/hooks/useStudent"
-import DepartmentSelect from "department/components/DepartmentSelect"
+import MajorSelect from "major/components/MajorSelect"
 
 type StudentPersonalInfoFormProps = {
   studentId?: string | undefined
@@ -120,12 +120,13 @@ const StudentPersonalInfoForm = forwardRef<SubmitFormRef, StudentPersonalInfoFor
               </div>
             ))}
             {!isEditing && (
-              <DepartmentSelect
+              <MajorSelect
                 className={["student-detail-item-label", "student-detail-item-input"]}
                 control={control}
                 name={"major"}
                 label={"Major: "}
                 showLabel={true}
+                isForm={true}
               />
             )}
             {isEditing && (

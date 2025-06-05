@@ -5,7 +5,7 @@ import { GENERIC } from "shared/constants/genericValues"
 import { useHandleException, useHandleTanStackQueryError } from "shared/hooks/useHandleError"
 import { TanStackQueryOptions } from "shared/models/dtos/queryOptions"
 import { STUDENT } from "student/constants/studentConstants"
-import { StudentDetailForm } from "student/models/dtos/studentDetail"
+import { StudentDetailForm, StudentIdMap } from "student/models/dtos/studentDetail"
 import { StudentListQueryOptions } from "student/models/dtos/studentList"
 import studentService from "student/services/studentService"
 
@@ -78,13 +78,47 @@ class UseStudent {
     return { ...mutation }
   }
 
-  useAddPersonalInfoMutation = (handleSucces: () => void) => {
+  useAddPersonalInfoMutation = (handleSuccess: () => void) => {
     const handleException = useHandleException()
     const mutation = useMutation({
       mutationFn: (addPersonalInfo: StudentDetailForm) => {
         return studentService.addStudentPersonalInfo(addPersonalInfo)
       },
-      onSuccess: handleSucces,
+      onSuccess: handleSuccess,
+      onError: (error: AxiosError) => {
+        handleException(error?.response?.status ?? 500, error)
+      }
+    })
+    return { ...mutation }
+  }
+
+  useDeleteManyStudentsMutation = (studentIds: Array<StudentIdMap>, messageApi: MessageInstance) => {
+    const handleException = useHandleException()
+    const mutation = useMutation({
+      mutationFn: () => studentService.deleteManyStudentPersonalInfo(studentIds),
+      onSuccess: (response) => {
+        messageApi.open({
+          type: "success",
+          content: response?.message
+        })
+      },
+      onError: (error: AxiosError) => {
+        handleException(error?.response?.status ?? 500, error)
+      }
+    })
+    return { ...mutation }
+  }
+
+  useDeleteStudentPersonalInfoMutation = (messageApi: MessageInstance) => {
+    const handleException = useHandleException()
+    const mutation = useMutation({
+      mutationFn: (studentId: string) => studentService.deleteStudentPersonalInfo(studentId),
+      onSuccess: (response) => {
+        messageApi.open({
+          type: "success",
+          content: response?.message
+        })
+      },
       onError: (error: AxiosError) => {
         handleException(error?.response?.status ?? 500, error)
       }

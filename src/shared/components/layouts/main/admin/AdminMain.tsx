@@ -9,7 +9,9 @@ const AdminMainPage = () => {
       <Header />
       <div className="admin-main-container">
         <Sidebar />
-        <Outlet />
+        <div className="main-content">
+          <Outlet />
+        </div>
       </div>
     </div>
   )
