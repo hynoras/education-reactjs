@@ -1,4 +1,4 @@
-import "./style.scss"
+import "./Header.scss"
 import { AppBar, Toolbar, Typography } from "@mui/material"
 import { Layout } from "antd"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"

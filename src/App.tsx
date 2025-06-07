@@ -10,6 +10,8 @@ import ParentInfoEditPage from "parent/pages/edit/ParentDetailEdit"
 import StudentPersonalInfoAddPage from "student/pages/add/StudentPersonalInfoAdd"
 import StudentListViewPage from "student/pages/list/StudentListView"
 import NavigationProvider from "shared/components/navigation/NavigationProvider"
+import StudentMainPage from "shared/components/layouts/main/student/StudentMain"
+import ScheduleBuilderPage from "course/pages/schedule/ScheduleBuilder"
 
 const App: React.FC = () => {
   const queryClient = new QueryClient()
@@ -24,7 +26,7 @@ const App: React.FC = () => {
             <Route
               path="/admin/*"
               element={
-                <ProtectedRoute requiredRole="ADMIN" redirectPath="/">
+                <ProtectedRoute requiredRole={["ADMIN"]} redirectPath="/">
                   <AdminMainPage />
                 </ProtectedRoute>
               }
@@ -34,6 +36,16 @@ const App: React.FC = () => {
               <Route path="student/:studentId/edit" element={<StudentPersonalInfoEditPage />} />
               <Route path="student/parent/:studentId/edit" element={<ParentInfoEditPage />} />
               <Route path="course" element={<CoursePage />} />
+            </Route>
+            <Route
+              path="/course/*"
+              element={
+                <ProtectedRoute requiredRole={["STUDENT"]} redirectPath="/">
+                  <StudentMainPage />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="schedule/edit" element={<ScheduleBuilderPage />} />
             </Route>
           </Routes>
         </NavigationProvider>

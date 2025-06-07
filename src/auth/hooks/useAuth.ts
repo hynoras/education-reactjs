@@ -4,6 +4,7 @@ import { setAuthState } from "auth/contexts/loginReducer"
 import { LoginRequest, UserResponse } from "auth/models/dtos/authModel"
 import authService from "auth/services/authService"
 import { AxiosError } from "axios"
+import { COURSE } from "course/constants/courseConstants"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router"
 import { GENERIC } from "shared/constants/genericValues"
@@ -34,7 +35,7 @@ class UseAuth {
             queryKey: [STUDENT.KEY.REACT_QUERY.STUDENT_ID, account.username],
             queryFn: () => studentService.getStudentIdByUsername(account.username)
           })
-          navigate(STUDENT.ROUTE.NAVIGATION.VIEW_STUDENT_DETAIL(studentId as unknown as string))
+          navigate(COURSE.ROUTE.NAVIGATION.SCHEDULE_BUILDER)
         }
         if (account?.role === GENERIC.KEY.ROLE.ADMIN) navigate(STUDENT.ROUTE.NAVIGATION.VIEW_STUDENT_LIST)
         dispatch(setAuthState(true))
