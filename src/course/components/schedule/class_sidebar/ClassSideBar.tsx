@@ -7,7 +7,8 @@ type ClassSideBarProps = {
 
 const ClassCard: React.FC<{ classItem: ClassSession }> = ({ classItem }) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: classItem.courseClassId.toString()
+    id: classItem.courseClassId.toString(),
+    data: classItem
   })
 
   const style: React.CSSProperties = {

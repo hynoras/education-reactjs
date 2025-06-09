@@ -1,0 +1,22 @@
+@mixin cell-style {
+    border: 1px solid #ccc;
+    height: 56px;
+    text-align: center;
+    vertical-align: top;
+    position: relative;
+}
+
+.correct-cell {
+    background: green;
+    @include cell-style;
+}
+
+.error-cell {
+    background: red;
+    @include cell-style;
+}
+
+.schedule-cell {
+    background: transparent;
+    @include cell-style;
+}

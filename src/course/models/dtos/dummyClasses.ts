@@ -7,7 +7,7 @@ export const dummyClasses: ClassSession[] = [
     courseId: "MATH101",
     courseName: "Calculus I",
     dayOfWeek: DayOfWeek.Monday,
-    startAt: "07:30", // formatted as 24-hour time only
+    startAt: "07:30",
     endAt: "10:45",
     room: "A101",
     maxStudents: 30
