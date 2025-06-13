@@ -1,51 +1,41 @@
 import { useDroppable } from "@dnd-kit/core"
 import { ClassSession } from "course/models/dtos/classSession"
+import { getRowSpan, handleCanDropCheck } from "course/utils/schedule/scheduleUtils"
 import { DayOfWeek } from "shared/enums/dayOfWeek"
+import classNames from "classnames"
 
 type DroppableCellProps = {
-  className?: string
   day: DayOfWeek
   time: string
   placedClass: ClassSession | null
   rowSpan: number | undefined
+  placedClasses: Record<string, ClassSession>
 }
 
-const DroppableCell: React.FC<DroppableCellProps> = ({ className, day, time, placedClass, rowSpan }) => {
-  const { setNodeRef, isOver } = useDroppable({
-    id: `${day}-${time.split("-")[0]}`
+const DroppableCell: React.FC<DroppableCellProps> = ({ day, time, placedClass, rowSpan, placedClasses }) => {
+  const timeKey = time.split("-")[0]
+  const cellKey = `${day}-${timeKey}`
+  const { active, setNodeRef, isOver } = useDroppable({
+    id: cellKey
   })
 
-  // const cellStyle: React.CSSProperties = {
-  //   border: "1px solid #ccc",
-  //   height: "56px",
-  //   textAlign: "center",
-  //   verticalAlign: "top",
-  //   backgroundColor: isOver ? "green" : "transparent",
-  //   position: "relative"
-  // }
+  const dropCheck =
+    isOver && active?.data.current
+      ? handleCanDropCheck(active.data.current as ClassSession, day, time.split("-")[0], placedClasses)
+      : null
+
+  if (isOver && active?.data.current) {
+    rowSpan = getRowSpan(active.data.current.startAt, active.data.current.endAt)
+  }
+  const cellClass = classNames("droppable-cell", {
+    "correct-cell": dropCheck?.status,
+    "error-cell": dropCheck && !dropCheck.status
+  })
 
   return (
-    <td
-      data-testid={`cell-${day}-${time.split("-")[0]}`}
-      className={className || ""}
-      rowSpan={rowSpan}
-      ref={setNodeRef}
-      // style={cellStyle}
-    >
+    <td data-testid={`cell-${day}-${timeKey}`} className={cellClass} rowSpan={rowSpan} ref={setNodeRef}>
       {placedClass && (
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "#dbeafe",
-            borderRadius: "6px",
-            padding: "4px",
-            fontSize: "12px"
-          }}
-        >
+        <div>
           <div>{placedClass.courseName}</div>
           <div>
             {placedClass.startAt} - {placedClass.endAt}

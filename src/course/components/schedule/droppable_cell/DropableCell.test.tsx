@@ -2,10 +2,24 @@ import { render, screen } from "@testing-library/react"
 import DroppableCell from "./DroppableCell"
 import { DayOfWeek } from "shared/enums/dayOfWeek"
 import { useDroppable } from "@dnd-kit/core"
+import { ClassSession } from "course/models/dtos/classSession"
 
 jest.mock("@dnd-kit/core", () => ({
   useDroppable: jest.fn()
 }))
+
+const placedClasses: { [key: string]: ClassSession } = {
+  "Monday-08:15": {
+    courseClassId: 2,
+    courseId: "CS102",
+    courseName: "Intro to CS",
+    dayOfWeek: DayOfWeek.Monday,
+    startAt: "08:15",
+    endAt: "10:00",
+    room: "Lab 2",
+    maxStudents: 25
+  }
+}
 
 describe("DroppableCell", () => {
   beforeEach(() => {
@@ -20,7 +34,13 @@ describe("DroppableCell", () => {
       <table>
         <tbody>
           <tr>
-            <DroppableCell day={DayOfWeek.Monday} time="7:30" placedClass={null} rowSpan={1} />
+            <DroppableCell
+              day={DayOfWeek.Monday}
+              time="7:30"
+              placedClass={null}
+              rowSpan={1}
+              placedClasses={placedClasses}
+            />
           </tr>
         </tbody>
       </table>
@@ -47,6 +67,7 @@ describe("DroppableCell", () => {
                 room: "A101",
                 maxStudents: 30
               }}
+              placedClasses={placedClasses}
             />
           </tr>
         </tbody>
@@ -61,7 +82,13 @@ describe("DroppableCell", () => {
       <table>
         <tbody>
           <tr>
-            <DroppableCell day={DayOfWeek.Monday} time="7:30" placedClass={null} rowSpan={3} />
+            <DroppableCell
+              day={DayOfWeek.Monday}
+              time="7:30"
+              placedClass={null}
+              rowSpan={3}
+              placedClasses={placedClasses}
+            />
           </tr>
         </tbody>
       </table>
@@ -80,7 +107,13 @@ describe("DroppableCell", () => {
       <table>
         <tbody>
           <tr>
-            <DroppableCell day={DayOfWeek.Monday} time="7:30" placedClass={null} rowSpan={1} />
+            <DroppableCell
+              day={DayOfWeek.Monday}
+              time="7:30"
+              placedClass={null}
+              rowSpan={1}
+              placedClasses={placedClasses}
+            />
           </tr>
         </tbody>
       </table>

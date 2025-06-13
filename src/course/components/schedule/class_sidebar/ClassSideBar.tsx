@@ -12,6 +12,7 @@ const ClassCard: React.FC<{ classItem: ClassSession }> = ({ classItem }) => {
   })
 
   const style: React.CSSProperties = {
+    position: "sticky",
     border: "1px solid #ccc",
     borderRadius: "8px",
     padding: "8px",
@@ -19,7 +20,8 @@ const ClassCard: React.FC<{ classItem: ClassSession }> = ({ classItem }) => {
     backgroundColor: "#fff",
     cursor: "grab",
     opacity: isDragging ? 0.5 : 1,
-    transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined
+    transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
+    zIndex: isDragging ? "1000" : "1"
   }
 
   return (

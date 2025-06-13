@@ -1,22 +1,28 @@
-@mixin cell-style {
-    border: 1px solid #ccc;
-    height: 56px;
-    text-align: center;
-    vertical-align: top;
-    position: relative;
-}
+.droppable-cell {
+  border: 1px solid #ccc;
+  height: 56px;
+  text-align: center;
+  vertical-align: top;
+  position: relative;
+  background-color: transparent;
 
-.correct-cell {
-    background: green;
-    @include cell-style;
-}
+  &.correct-cell {
+    background-color: #bbf7d0; // green
+  }
 
-.error-cell {
-    background: red;
-    @include cell-style;
-}
+  &.error-cell {
+    background-color: #fecaca; // red
+  }
 
-.schedule-cell {
-    background: transparent;
-    @include cell-style;
+  .class-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #dbeafe;
+    border-radius: 6px;
+    padding: 4px;
+    font-size: 12px;
+  }
 }

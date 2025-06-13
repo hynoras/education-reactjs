@@ -63,24 +63,24 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ className = [], placedClass
                   const rowSpan = getRowSpan(classData.startAt, classData.endAt)
                   return (
                     <DroppableCell
-                      className={className[1] || ""}
                       key={cellKey}
                       day={day}
                       time={time}
                       placedClass={classData}
                       rowSpan={rowSpan}
+                      placedClasses={placedClasses}
                     />
                   )
                 }
 
                 return (
                   <DroppableCell
-                    className={className[1] || ""}
                     key={cellKey}
                     day={day}
                     time={time}
                     placedClass={null}
                     rowSpan={1}
+                    placedClasses={placedClasses}
                   />
                 )
               })}
