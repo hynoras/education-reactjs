@@ -13,7 +13,7 @@ const changeURL = (stage: string): string | undefined => {
 }
 
 export const api = axios.create({
-  baseURL: changeURL("development"),
+  baseURL: changeURL("production_koyeb"),
   withCredentials: true
 })
 
