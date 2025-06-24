@@ -1,25 +1,23 @@
 import { ClassSession } from "course/models/dtos/classSession"
 import DroppableCell from "../droppable_cell/DroppableCell"
 import { DAYSLOTS, getRowSpan, TIMESLOTS } from "course/utils/schedule/scheduleUtils"
-import { WithClassName } from "shared/models/dtos/dataDisplayandEntry"
+import { DayOfWeek } from "shared/enums/dayOfWeek"
 
-type ScheduleGridProps = WithClassName & {
+type ScheduleGridProps = {
   placedClasses: {
     [key: string]: ClassSession
   }
+  activeDragClass?: ClassSession | null
+  dragOverCellKey?: string | null
+  registerCellRef?: (key: string, node: HTMLTableCellElement | null) => void
 }
 
-const ScheduleGrid: React.FC<ScheduleGridProps> = ({ className = [], placedClasses }) => {
-  const tableStyle: React.CSSProperties = {
-    borderCollapse: "collapse",
-    width: "100%"
-  }
-
-  const headerCellStyle: React.CSSProperties = {
-    border: "1px solid #ccc",
-    padding: "4px"
-  }
-
+const ScheduleGrid: React.FC<ScheduleGridProps> = ({
+  placedClasses,
+  activeDragClass,
+  dragOverCellKey,
+  registerCellRef
+}) => {
   const coveredCells = new Set<string>()
 
   Object.entries(placedClasses).forEach(([cellKey, classData]) => {
@@ -36,14 +34,26 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ className = [], placedClass
     }
   })
 
+  if (activeDragClass && dragOverCellKey) {
+    const [dragDay, dragTime] = dragOverCellKey.split("-") as [DayOfWeek, string]
+    const span = getRowSpan(activeDragClass.startAt, activeDragClass.endAt)
+    const startIndex = TIMESLOTS.findIndex((t) => t.split("-")[0] === dragTime)
+
+    for (let i = 1; i < span; i++) {
+      const nextTime = TIMESLOTS[startIndex + i]
+      if (!nextTime) continue
+      coveredCells.add(`${dragDay}-${nextTime.split("-")[0]}`)
+    }
+  }
+
   return (
-    <section className={className[0] || ""} style={{ flex: 1, padding: "16px", overflowX: "auto" }}>
-      <table style={tableStyle}>
+    <section className={"schedule-grid"} style={{ flex: 1, padding: "16px", overflowX: "auto" }}>
+      <table className="schedule-grid-table">
         <thead>
           <tr>
-            <th style={{ width: "90px" }}></th>
+            <th style={{ width: "120px" }}></th>
             {DAYSLOTS.map((day) => (
-              <th key={day} style={headerCellStyle}>
+              <th key={day} className="schedule-grid-header-cell">
                 {day}
               </th>
             ))}
@@ -52,35 +62,23 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ className = [], placedClass
         <tbody>
           {TIMESLOTS.map((time) => (
             <tr key={time}>
-              <td style={headerCellStyle}>{time}</td>
+              <td className="schedule-grid-time-cell">{time}</td>
               {DAYSLOTS.map((day) => {
                 const cellKey = `${day}-${time.split("-")[0]}`
 
                 if (coveredCells.has(cellKey)) return null
 
                 const classData = placedClasses[cellKey]
-                if (classData) {
-                  const rowSpan = getRowSpan(classData.startAt, classData.endAt)
-                  return (
-                    <DroppableCell
-                      key={cellKey}
-                      day={day}
-                      time={time}
-                      placedClass={classData}
-                      rowSpan={rowSpan}
-                      placedClasses={placedClasses}
-                    />
-                  )
-                }
-
+                const rowSpan = classData ? getRowSpan(classData.startAt, classData.endAt) : 1
                 return (
                   <DroppableCell
                     key={cellKey}
                     day={day}
                     time={time}
-                    placedClass={null}
-                    rowSpan={1}
+                    placedClass={classData ?? null}
+                    rowSpan={rowSpan}
                     placedClasses={placedClasses}
+                    registerCellRef={registerCellRef}
                   />
                 )
               })}

@@ -1,28 +1,74 @@
+.class-sidebar {
+  width: 250px;
+  height: 90vh;
+  padding: 16px;
+  background-color: #fef3c7;
+  overflow-y: auto;
+  .class-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    cursor: grab;
+    opacity: 1;
+  }
+  .dragging {
+    width: 72px;
+    height: 100px;
+    opacity: 0.5;
+    z-index: 1000;
+  }
+}
+
+.schedule-grid {
+  .schedule-grid-table {
+    .schedule-grid-header-cell {
+      width: 100px;
+    }
+    .schedule-grid-time-cell {
+      text-align: center;
+    }
+  }
+}
+
 .droppable-cell {
-  border: 1px solid #ccc;
+  position: relative;
+  border: 1px solid white;
   height: 56px;
   text-align: center;
   vertical-align: top;
-  position: relative;
-  background-color: transparent;
 
-  &.correct-cell {
-    background-color: #bbf7d0; // green
+  .overlay-span {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.6;
+    border-radius: 6px;
+    pointer-events: none;
+    transition: background-color 0.2s ease;
   }
 
-  &.error-cell {
-    background-color: #fecaca; // red
+  .valid-drop {
+    background-color: #bbf7d0;
+  }
+
+  .invalid-drop {
+    background-color: #fecaca;
   }
 
   .class-box {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
+    z-index: 2;
     background-color: #dbeafe;
-    border-radius: 6px;
     padding: 4px;
     font-size: 12px;
+    border-radius: 6px;
   }
+}
+
+.drag-overlay {
+  transition: all 0.1s ease-in-out;
+  box-shadow: 0 0 0 2px #22c55e inset;
 }
